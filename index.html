@@ -62,7 +62,7 @@
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
         }
 
         .card {
@@ -112,7 +112,7 @@
         }
 
         .card-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
             margin-bottom: 1rem;
             line-height: 1.4;
@@ -148,17 +148,26 @@
             transform: translateX(5px);
         }
 
-        /* 5장 전용 스타일 (예시) */
-        .card.ch5 .chapter-badge {
-            background: rgba(168, 85, 247, 0.15);
-            color: #d8b4fe;
-            border-color: rgba(168, 85, 247, 0.3);
-        }
-        
-        .card.ch5:hover::before {
-            background: linear-gradient(90deg, #a855f7, #f472b6);
-        }
+        /* 각 장별 테마 컬러 설정 */
+        .card.ch5 .chapter-badge { background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border-color: rgba(168, 85, 247, 0.3); }
+        .card.ch5:hover::before { background: linear-gradient(90deg, #a855f7, #f472b6); }
+        .card.ch5 .card-footer { color: #d8b4fe; }
 
+        .card.ch6 .chapter-badge { background: rgba(59, 130, 246, 0.15); color: #93c5fd; border-color: rgba(59, 130, 246, 0.3); }
+        .card.ch6:hover::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .card.ch6 .card-footer { color: #93c5fd; }
+
+        .card.ch7 .chapter-badge { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.3); }
+        .card.ch7:hover::before { background: linear-gradient(90deg, #10b981, #34d399); }
+        .card.ch7 .card-footer { color: #6ee7b7; }
+
+        .card.ch8 .chapter-badge { background: rgba(245, 158, 11, 0.15); color: #fcd34d; border-color: rgba(245, 158, 11, 0.3); }
+        .card.ch8:hover::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .card.ch8 .card-footer { color: #fcd34d; }
+
+        .card.ch9 .chapter-badge { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.3); }
+        .card.ch9:hover::before { background: linear-gradient(90deg, #ef4444, #f87171); }
+        .card.ch9 .card-footer { color: #fca5a5; }
     </style>
 </head>
 <body>
@@ -170,25 +179,23 @@
 
     <div class="grid-container">
         
-        <!-- 제5장 (준비 중 혹은 다른 파일 연결용) -->
-        <a href="chapter5/index.html" class="card ch5" id="ch5-link">
+        <!-- 제5장 -->
+        <a href="chapter5/index.html" class="card ch5">
             <div class="chapter-badge">제 5장</div>
-            <div class="card-title">PPT 발표 자료<br>(준비 중)</div>
+            <div class="card-title">전망이론과 마인드셋의<br>변화 효과</div>
             <div class="card-desc">
-                제5장 내용에 관한 PPT 발표 자료 또는 관련 과제물이 위치할 공간입니다.<br><br>
-                <small>* 아직 파일이 연결되지 않았다면 클릭 시 오류가 날 수 있습니다.</small>
+                새마을운동과 행동경제학의 전망이론을 통한 마인드셋의 변화 효과를 알아봅니다.
             </div>
             <div class="card-footer">
-                <span>자세히 보기 <span class="arrow">→</span></span>
+                <span>열람하기 <span class="arrow">→</span></span>
             </div>
         </a>
 
-        <!-- 제6장 (시뮬레이터) -->
-        <a href="chapter6/index.html" class="card">
+        <!-- 제6장 -->
+        <a href="chapter6/index.html" class="card ch6">
             <div class="chapter-badge">제 6장</div>
-            <div class="card-title">죄수의 딜레마 &amp;<br>맞대응전략 시뮬레이터</div>
+            <div class="card-title">마을간 경쟁, 차등적지원,<br>그리고 협력</div>
             <div class="card-desc">
-                제6장 마을간 경쟁, 차등적 지원, 그리고 협력.<br>
                 정부의 맞대응전략(Tit-for-Tat)을 이해할 수 있는 다크모드 인터랙티브 시뮬레이터를 체험해 보세요.
             </div>
             <div class="card-footer">
@@ -196,14 +203,44 @@
             </div>
         </a>
 
+        <!-- 제7장 -->
+        <a href="chapter7/index.html" class="card ch7">
+            <div class="chapter-badge">제 7장</div>
+            <div class="card-title">정부의 맞대응전략</div>
+            <div class="card-desc">
+                새마을운동 당시 정부의 맞대응전략에 대한 심층적인 분석을 제공합니다.<br><br>
+                <small>* 아직 파일이 준비되지 않았습니다.</small>
+            </div>
+            <div class="card-footer">
+                <span>열람하기 <span class="arrow">→</span></span>
+            </div>
+        </a>
+
+        <!-- 제8장 (PDF) -->
+        <a href="제8장 새마을지도자의 리더십과 마을간 경쟁.pdf" target="_blank" class="card ch8">
+            <div class="chapter-badge">제 8장 [PDF]</div>
+            <div class="card-title">새마을지도자의 리더십과<br>마을간 경쟁</div>
+            <div class="card-desc">
+                마을간 경쟁을 촉진시킨 새마을지도자의 리더십에 대해 다룬 PDF 문서를 엽니다.
+            </div>
+            <div class="card-footer">
+                <span>PDF 열기 <span class="arrow">→</span></span>
+            </div>
+        </a>
+
+        <!-- 제9장 (PDF) -->
+        <a href="제9장 네트워크 상호성과 마을단위 사업.pdf" target="_blank" class="card ch9">
+            <div class="chapter-badge">제 9장 [PDF]</div>
+            <div class="card-title">네트워크 상호성과<br>마을단위 사업</div>
+            <div class="card-desc">
+                네트워크 상호성에 기반한 마을단위 사업의 특징을 정리한 PDF 문서를 엽니다.
+            </div>
+            <div class="card-footer">
+                <span>PDF 열기 <span class="arrow">→</span></span>
+            </div>
+        </a>
+
     </div>
 
-    <script>
-        // 만약 chapter5/index.html 이 없다면 사용자에게 알림
-        document.getElementById('ch5-link').addEventListener('click', function(e) {
-            // e.preventDefault(); // 만약 아직 링크 이동을 막고 싶다면 주석 해제
-            // alert('제5장 자료는 아직 업로드되지 않았거나 폴더 위치를 연결해야 합니다.');
-        });
-    </script>
 </body>
 </html>
