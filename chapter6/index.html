@@ -585,41 +585,169 @@
       <div class="result-box result-positive">
         <strong>핵심:</strong> δ > 1 − a/N 이면, 무임승차보다 공동기금 모집 참여가 합리적 선택 🎯
       </div>
+
+      <!-- Competition Simulator -->
+      <div id="comp-simulator" style="margin-top: 2rem; padding: 1.5rem; background: rgba(15, 23, 42, 0.7); border-radius: 12px; border: 1px solid rgba(99,102,241,0.2); box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+        <h5 style="color: #fff; margin-bottom: 20px; font-size: 1rem; display: flex; align-items: center; gap: 10px;">
+          <span style="background: #6366f1; width: 4px; height: 18px; border-radius: 2px;"></span>
+          마을간 경쟁 시뮬레이터 (δ=0.6 가정)
+        </h5>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 20px;">
+          <!-- My Choice -->
+          <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px;">
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 12px;">나의 선택 (우리 마을 A)</p>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <button onclick="updateCompSim(10)" id="comp-btn-coop" style="padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #94a3b8; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+                🤝 협력 (10만 기부)
+              </button>
+              <button onclick="updateCompSim(0)" id="comp-btn-free" style="padding: 10px; border-radius: 6px; border: 1px solid #ef4444; background: rgba(239,68,68,0.3); color: #fca5a5; cursor: pointer; font-weight: 600; transition: all 0.3s; box-shadow: 0 0 15px rgba(239,68,68,0.2);">
+                🏃 무임승차 (0원)
+              </button>
+            </div>
+          </div>
+
+          <!-- Rival Status -->
+          <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px;">
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 12px;">경쟁 마을 B 상태</p>
+            <div style="padding: 12px; border-radius: 6px; background: rgba(255,255,255,0.05); text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+              <span style="color: #cbd5e1; font-weight: 600;">기부 합계: 95만원</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Result Display -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 8px;">
+            <div style="text-align: center; flex: 1;">
+              <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px;">우리 마을 A</div>
+              <div id="sim-total-a" style="font-size: 1.2rem; font-weight: 800; color: #ef4444;">90만</div>
+            </div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: #475569;">VS</div>
+            <div style="text-align: center; flex: 1;">
+              <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px;">경쟁 마을 B</div>
+              <div style="font-size: 1.2rem; font-weight: 800; color: #94a3b8;">95만</div>
+            </div>
+          </div>
+
+          <div id="comp-result-card" style="padding: 1.2rem; background: rgba(239,68,68,0.1); border-radius: 10px; border: 1px solid rgba(239,68,68,0.3); transition: all 0.4s ease;">
+            <h6 id="comp-status" style="font-weight: 800; font-size: 1.1rem; margin-bottom: 8px; color: #fca5a5;">❌ 패배: 마을 기금 부족</h6>
+            <div style="font-family: 'Consolas', monospace; font-size: 0.85rem; color: #94a3b8; line-height: 1.6;">
+              <div id="comp-calc">(10만 - 0만) + (0.5 × 90만) + 0.6 × (90만 - 95만)</div>
+              <div id="comp-final" style="color: #fca5a5; font-size: 1.4rem; font-weight: 800; margin-top: 5px;">= 52.0만원</div>
+            </div>
+            <p id="comp-desc" style="margin-top: 12px; font-size: 0.8rem; color: #fca5a5; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">
+              ⚠️ 내가 기부를 안 해서 마을이 경쟁에서 졌습니다. 나 혼자 돈을 아꼈지만, 공동체 패배로 인해 총 효용은 낮아집니다.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        function updateCompSim(myT) {
+          const totalB = 95;
+          const aN = 0.5;
+          const delta = 0.6;
+          const W = 10;
+          
+          const totalA = 90 + myT;
+          const win = totalA > totalB;
+          
+          const benefit = aN * totalA;
+          const compReward = delta * (totalA - totalB);
+          const finalVal = (W - myT) + benefit + compReward;
+          
+          const btnCoop = document.getElementById('comp-btn-coop');
+          const btnFree = document.getElementById('comp-btn-free');
+          const simTotalA = document.getElementById('sim-total-a');
+          const resCard = document.getElementById('comp-result-card');
+          const status = document.getElementById('comp-status');
+          const calc = document.getElementById('comp-calc');
+          const final = document.getElementById('comp-final');
+          const desc = document.getElementById('comp-desc');
+
+          simTotalA.innerText = totalA + '만';
+          final.innerText = '= ' + finalVal.toFixed(1) + '만원';
+          
+          if (myT === 10) {
+            btnCoop.style.background = 'rgba(16,185,129,0.3)';
+            btnCoop.style.color = '#6ee7b7';
+            btnCoop.style.borderColor = '#10b981';
+            btnCoop.style.boxShadow = '0 0 15px rgba(16,185,129,0.2)';
+            
+            btnFree.style.background = 'rgba(255,255,255,0.05)';
+            btnFree.style.color = '#94a3b8';
+            btnFree.style.borderColor = 'rgba(255,255,255,0.1)';
+            btnFree.style.boxShadow = 'none';
+
+            simTotalA.style.color = '#6ee7b7';
+            resCard.style.background = 'rgba(16,185,129,0.1)';
+            resCard.style.borderColor = 'rgba(16,185,129,0.3)';
+            status.innerText = '🏆 승리: 우리 마을이 경쟁에서 이겼습니다!';
+            status.style.color = '#6ee7b7';
+            calc.innerText = '(10만 - 10만) + (0.5 × ' + totalA + '만) + 0.6 × (' + totalA + '만 - ' + totalB + '만)';
+            final.style.color = '#6ee7b7';
+            desc.innerText = '✅ 내가 기부에 참여하여 마을이 승리했습니다! 무임승차(52만)할 때보다 나의 최종 효용(53만)이 더 큽니다.';
+            desc.style.color = '#6ee7b7';
+          } else {
+            btnFree.style.background = 'rgba(239,68,68,0.3)';
+            btnFree.style.color = '#fca5a5';
+            btnFree.style.borderColor = '#ef4444';
+            btnFree.style.boxShadow = '0 0 15px rgba(239,68,68,0.2)';
+            
+            btnCoop.style.background = 'rgba(255,255,255,0.05)';
+            btnCoop.style.color = '#94a3b8';
+            btnCoop.style.borderColor = 'rgba(255,255,255,0.1)';
+            btnCoop.style.boxShadow = 'none';
+
+            simTotalA.style.color = '#ef4444';
+            resCard.style.background = 'rgba(239,68,68,0.1)';
+            resCard.style.borderColor = 'rgba(239,68,68,0.3)';
+            status.innerText = '❌ 패배: 마을 기금 부족으로 경쟁에서 졌습니다';
+            status.style.color = '#fca5a5';
+            calc.innerText = '(10만 - 0만) + (0.5 × ' + totalA + '만) + 0.6 × (' + totalA + '만 - ' + totalB + '만)';
+            final.style.color = '#fca5a5';
+            desc.innerText = '⚠️ 내가 기부를 안 해서 마을이 경쟁에서 졌습니다. 나 혼자 돈을 아꼈지만, 공동체 패배로 인해 총 효용은 더 낮아졌습니다.';
+            desc.style.color = '#fca5a5';
+          }
+        }
+      </script>
     </div>
   </div>
 
-  <!-- Slide 8: Case Studies -->
+  <!-- Slide 8: Case Study 1 (Dongmak) -->
   <div class="slide" data-slide="7">
     <div class="slide-header">
       <span class="slide-number">07</span>
-      <h2>사례 연구</h2>
+      <h2>사례 연구 ①: 경기도 용인 동막마을</h2>
     </div>
     <div class="slide-content">
-      <div class="case-studies">
-        <div class="case-card">
-          <div class="case-header">
-            <span class="case-location">📍 경기도 용인군 동막마을</span>
-            <span class="case-year">1976년</span>
-          </div>
-          <div class="case-body">
-            <h4>성과에 따른 보상의 동기부여 효과</h4>
-            <ul>
-              <li>1976년 우수 성과 인정 → 1977년 <strong>150만원 특별지원금</strong> 수령</li>
-              <li>지원금을 종잣돈으로 <strong>비육우 사업, 특용작물 재배</strong> 추진</li>
-              <li>주민 39명 참석 회의에서 자발적 사업 계획 수립</li>
-            </ul>
-            <div class="case-quote">"여러분의 끊임없는 협조 노력으로 우수마을 특별지원사업을 지원받게 되었습니다"</div>
-
-            <!-- Case Image & Citation -->
-            <div style="margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">
+      <div class="case-card" style="max-width: 850px; margin: 0 auto; background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255,255,255,0.1);">
+        <div class="case-header">
+          <span class="case-location">📍 경기도 용인군 동막마을</span>
+          <span class="case-year">1976년</span>
+        </div>
+        <div class="case-body">
+          <h4>성과에 따른 보상의 동기부여 효과</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start;">
+            <div>
+              <ul style="margin-bottom: 1.5rem;">
+                <li>1976년 우수 성과 인정 → 1977년 <strong>150만원 특별지원금</strong> 수령</li>
+                <li>지원금을 종잣돈으로 <strong>비육우 사업, 특용작물 재배</strong> 추진</li>
+                <li>주민 39명 참석 회의에서 자발적 사업 계획 수립</li>
+              </ul>
+              <div class="case-quote">"여러분의 끊임없는 협조 노력으로 우수마을 특별지원사업을 지원받게 되었습니다"</div>
+            </div>
+            <div>
+              <!-- Case Image & Citation -->
               <div style="border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 1rem;">
                 <img src="images/greatsaemaul.jpg" alt="동막마을 사례" style="width: 100%; height: auto; display: block;">
               </div>
               <div style="background: rgba(0,0,0,0.2); padding: 0.8rem; border-radius: 6px; border-left: 3px solid #fcd34d; text-align: left;">
-                <p style="color: #cbd5e1; font-size: 0.75rem; margin: 0; line-height: 1.4; word-break: keep-all;">
+                <p style="color: #cbd5e1; font-size: 0.7rem; margin: 0; line-height: 1.4; word-break: keep-all;">
                   <strong>출처:</strong> 동막새마을회. (1977, 12월 10일). <em>회의록(하사금 사업시행)</em> (관리번호: 124447). 새마을운동 아카이브.
                 </p>
-                <a href="http://archives.saemaul.or.kr/record/search/view/124447" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 600; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.5rem;">
+                <a href="http://archives.saemaul.or.kr/record/search/view/124447" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 600; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.5rem;">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
                   원문 링크
                 </a>
@@ -627,27 +755,69 @@
             </div>
           </div>
         </div>
-        <div class="case-card">
-          <div class="case-header">
-            <span class="case-location">📍 강원도 정선군 남평리</span>
-            <span class="case-year">1975년</span>
-          </div>
-          <div class="case-body">
-            <h4>무임승차 방지를 위한 자발적 제재</h4>
-            <ul>
-              <li>교통 불편 해결 위해 <strong>107m 남평교 가설</strong> 결의</li>
-              <li><strong>"불참하는 자는 주민 자격 상실"</strong> 선언</li>
-              <li>즉석 성금 <strong>70만 7천원 + 토지 3백평</strong> 희사</li>
-            </ul>
-            <div class="case-quote">"처음 시작할 당시의 의욕을 식히지 않고 끝까지 계속하는 것이 제일 중요하다"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 9: Case Study 2 (Nampyung) -->
+  <div class="slide" data-slide="8">
+    <div class="slide-header">
+      <span class="slide-number">08</span>
+      <h2>사례 연구 ②: 강원도 정선 남평마을</h2>
+    </div>
+    <div class="slide-content">
+      <div class="case-card" style="max-width: 950px; margin: 0 auto; background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255,255,255,0.1);">
+        <div class="case-header">
+          <span class="case-location">📍 강원도 정선군 남평리</span>
+          <span class="case-year">1975년</span>
+        </div>
+        <div class="case-body">
+          <h4>무임승차 방지를 위한 자발적 제재와 협력</h4>
+          <div style="display: grid; grid-template-columns: 1.2fr 1.5fr; gap: 2.5rem; align-items: start;">
+            <div>
+              <ul style="margin-bottom: 2rem;">
+                <li>교통 불편 해결 위해 <strong>107m 남평교 가설</strong> 결의</li>
+                <li style="color: #fca5a5;"><strong>"불참하는 자는 주민 자격 상실"</strong> - 강력한 자발적 규범</li>
+                <li>즉석 성금 <strong>70만 7천원 + 토지 3백평</strong> 희사</li>
+                <li>연인원 3,500명 동원, 7개월 만에 교량 완공</li>
+              </ul>
+              <div class="case-quote" style="font-size: 0.9rem;">"처음 시작할 당시의 의욕을 식히지 않고 끝까지 계속하는 것이 제일 중요하다"</div>
+              
+              <div style="margin-top: 2rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; border-left: 3px solid #fcd34d;">
+                <p style="color: #cbd5e1; font-size: 0.7rem; margin: 0; line-height: 1.5; word-break: keep-all;">
+                  <strong>출처:</strong> 새마을운동중앙회. (1978). <em>[성공사례] 강원도 정선군 북면 남평리 (슬라이드)</em> (관리번호: 144451). 새마을운동 아카이브.
+                </p>
+                <a href="http://archives.saemaul.or.kr/record/search/view/144451" target="_blank" style="color: #fbbf24; text-decoration: none; font-weight: 600; font-size: 0.7rem; display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.8rem;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                  아카이브 원문 보기
+                </a>
+              </div>
+            </div>
+            
+            <!-- Image Grid -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+              <div style="border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); aspect-ratio: 4/3; background: #000;">
+                <img src="images/nampyung_bridge1.jpg" alt="남평교 사례 1" style="width:100%; height:100%; object-fit: contain;">
+              </div>
+              <div style="border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); aspect-ratio: 4/3; background: #000;">
+                <img src="images/nampyung_bridge2.jpg" alt="남평교 사례 2" style="width:100%; height:100%; object-fit: contain;">
+              </div>
+              <div style="border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); aspect-ratio: 4/3; background: #000;">
+                <img src="images/nampyung_bridge3.jpg" alt="남평교 사례 3" style="width:100%; height:100%; object-fit: contain;">
+              </div>
+              <div style="border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); aspect-ratio: 4/3; background: #000;">
+                <img src="images/nampyung_bridge4.jpg" alt="남평교 사례 4" style="width:100%; height:100%; object-fit: contain;">
+              </div>
+              <p style="grid-column: span 2; font-size: 0.7rem; color: #94a3b8; text-align: center; margin-top: 0.5rem;">[남평교 건설 과정 및 완공 사진 (1975)]</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Slide 9: Conclusion -->
-  <div class="slide" data-slide="8">
+  <!-- Slide 10: Conclusion -->
+  <div class="slide" data-slide="9">
     <div class="slide-bg-pattern"></div>
     <div class="conclusion-slide">
       <div class="chapter-badge">CONCLUSION</div>
@@ -683,7 +853,7 @@
   <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
   </button>
-  <div class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">9</span></div>
+  <div class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">10</span></div>
   <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
   </button>
