@@ -40,11 +40,34 @@
 
         @media (max-width: 600px) {
             body { padding: 2rem 1rem; }
-            h1 { font-size: 2rem; }
+            h1 { font-size: 2rem; white-space: pre-line; line-height: 1.2; }
             .subtitle { font-size: 1rem; }
             .grid-container { grid-template-columns: 1fr; }
             footer { margin-top: 3rem; padding: 1.5rem 1rem; }
             .footer-info { gap: 0.8rem; font-size: 0.8rem; }
+            .header-info { padding: 0.8rem 1.2rem; font-size: 0.95rem; }
+        }
+
+        .header-info {
+            margin-bottom: 2rem;
+            color: #cbd5e1;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            background: rgba(255,255,255,0.05);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .info-span {
+            font-weight: 400;
+        }
+
+        .info-name {
+            color: white;
+            font-weight: 700;
+            font-size: 1.15rem;
         }
 
         header {
@@ -222,15 +245,29 @@
 <body>
 
     <header>
-        <h1>새마을세미나 과제 포털</h1>
-        <div style="margin-bottom: 2rem; color: #cbd5e1; font-size: 1.05rem; line-height: 1.6; background: rgba(255,255,255,0.05); padding: 1rem 2rem; border-radius: 12px; display: inline-block; border: 1px solid rgba(255,255,255,0.1);">
-            <strong>새마을국제개발학과</strong><br>
-            박사 1기<br>
-            22650117<br>
-            <strong style="color: white; font-size: 1.15rem;">박문식</strong>
+        <h1 id="mainTitle">박문식 새마을세미나 과제</h1>
+        <div class="header-info">
+            <span class="info-span">새마을국제개발학과</span><br>
+            <span class="info-span">박사 1기</span><br>
+            <span class="info-span">22650117</span><br>
+            <span class="info-name">박문식</span>
         </div>
         <p class="subtitle">열람하실 과제의 챕터를 선택해 주세요.</p>
     </header>
+
+    <script>
+        // 모바일에서 제목 2줄로 표기하기 위해 <br> 삽입
+        function adjustTitle() {
+            const title = document.getElementById('mainTitle');
+            if (window.innerWidth <= 600) {
+                title.innerHTML = '박문식<br>새마을세미나 과제';
+            } else {
+                title.innerHTML = '박문식 새마을세미나 과제';
+            }
+        }
+        window.addEventListener('resize', adjustTitle);
+        window.addEventListener('load', adjustTitle);
+    </script>
 
     <div class="grid-container">
 
@@ -346,10 +383,10 @@
 
     <footer>
         <div class="footer-info">
-            <span><strong>새마을국제개발학과</strong></span>
-            <span>박사 1기</span>
-            <span>22650117</span>
-            <span style="color: var(--text-color); font-weight: 600;">박문식</span>
+            <span class="info-span">새마을국제개발학과</span>
+            <span class="info-span">박사 1기</span>
+            <span class="info-span">22650117</span>
+            <span class="info-name" style="font-size: 0.95rem;">박문식</span>
         </div>
         <p style="margin-top: 1rem; opacity: 0.6;">© 2026 Saemaul Seminar Project. All rights reserved.</p>
     </footer>
