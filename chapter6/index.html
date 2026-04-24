@@ -351,6 +351,59 @@
             <span>a: 편익계수</span>
             <span>N: 주민 수</span>
           </div>
+
+          <details style="margin-top: 1.5rem; text-align: left;">
+            <summary style="cursor: pointer; padding: 0.6rem 1rem; background: rgba(99,102,241,0.1); border-radius: 8px; color: #a5b4fc; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(99,102,241,0.2); display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              Σtⱼ (시그마) 항의 시각적 이해 (클릭)
+            </summary>
+            <div style="padding-top: 1rem;">
+              <div style="background: rgba(0,0,0,0.2); padding: 1.2rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                <p style="font-size: 0.9rem; color: #cbd5e1; margin-bottom: 1.2rem; line-height: 1.5;">
+                  Σtⱼ는 마을 전체 주민들이 낸 기부금의 합계를 의미합니다. 이를 풀어서 보면 다음과 같습니다:
+                </p>
+                
+                <!-- Expanded Sigma Visualization -->
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                  <div style="background: var(--surface2); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--accent1); color: var(--accent1); font-weight: 700; font-size: 0.9rem;">t₁</div>
+                  <div style="color: #94a3b8;">+</div>
+                  <div style="background: var(--surface2); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--accent1); color: var(--accent1); font-weight: 700; font-size: 0.9rem;">t₂</div>
+                  <div style="color: #94a3b8;">+</div>
+                  <div style="color: #94a3b8; font-size: 1.2rem;">...</div>
+                  <div style="color: #94a3b8;">+</div>
+                  <div style="background: #ef444415; padding: 8px 12px; border-radius: 8px; border: 1px dashed #ef4444; color: #ef4444; font-weight: 700; position: relative; font-size: 0.9rem;">
+                    tᵢ (나)
+                    <div style="position: absolute; top: -22px; left: 50%; transform: translateX(-50%); font-size: 0.65rem; white-space: nowrap; color: #fca5a5; font-weight: 400;">무임승차 시 0</div>
+                  </div>
+                  <div style="color: #94a3b8;">+</div>
+                  <div style="color: #94a3b8; font-size: 1.2rem;">...</div>
+                  <div style="color: #94a3b8;">+</div>
+                  <div style="background: var(--surface2); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--accent1); color: var(--accent1); font-weight: 700; font-size: 0.9rem;">tₙ</div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                  <div style="background: rgba(16,185,129,0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(16,185,129,0.2);">
+                    <h5 style="color: #6ee7b7; margin-bottom: 8px; font-size: 0.85rem;">내가 협력할 때 (tᵢ = W)</h5>
+                    <ul style="font-size: 0.75rem; color: #94a3b8; list-style: none; padding: 0;">
+                      <li style="margin-bottom: 4px;">• 내 지갑에서 <strong>비용 W 지출</strong></li>
+                      <li>• 혜택: (a/N) × (전체 합계)</li>
+                    </ul>
+                  </div>
+                  <div style="background: rgba(239,68,68,0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(239,68,68,0.2);">
+                    <h5 style="color: #fca5a5; margin-bottom: 8px; font-size: 0.85rem;">내가 무임승차할 때 (tᵢ = 0)</h5>
+                    <ul style="font-size: 0.75rem; color: #94a3b8; list-style: none; padding: 0;">
+                      <li style="margin-bottom: 4px;">• <strong>비용 0 (자원 보존)</strong></li>
+                      <li>• 혜택: (a/N) × (타인들만의 합계)</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <p style="margin-top: 1rem; font-size: 0.8rem; color: #94a3b8; text-align: center; font-style: italic; line-height: 1.4;">
+                  "a/N < 1 이라면, 내가 낸 돈(W)에 비해 돌아오는 혜택(a/N × W)이 적기 때문에,<br>개인에게는 무임승차가 수학적으로 '우월전략'이 됩니다."
+                </p>
+              </div>
+            </div>
+          </details>
         </div>
         <div class="condition-cards">
           <div class="condition fail">
