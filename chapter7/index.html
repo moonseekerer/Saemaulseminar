@@ -17,14 +17,48 @@
         </header>
 
         <div class="tabs">
-            <button class="tab-btn active" data-target="matrix">보수 행렬 보기</button>
-            <button class="tab-btn" data-target="theory">이론적 하방 분석</button>
-            <button class="tab-btn" data-target="simulation">1:1 시뮬레이션</button>
-            <button class="tab-btn" data-target="tournament">🏆 다자간 토너먼트</button>
+            <button class="tab-btn active" data-target="intro">메인</button>
+            <button class="tab-btn" data-target="matrix">보수 행렬</button>
+            <button class="tab-btn" data-target="theory">이론적 분석</button>
+            <button class="tab-btn" data-target="simulation">1:1 대결</button>
+            <button class="tab-btn" data-target="tournament">🏆 토너먼트</button>
             <button class="tab-btn" data-target="interactive">플레이 모드</button>
         </div>
 
         <main>
+            <!-- 메인 화면 (Intro) -->
+            <section id="intro" class="view active">
+                <div class="glass-panel title-card">
+                    <div class="chapter-badge">CHAPTER 7</div>
+                    <h2 class="main-title">정부의 맞대응전략</h2>
+                    <div class="title-divider"></div>
+                    <p class="main-subtitle">죄수의 딜레마와 반복 게임 시뮬레이션</p>
+                    
+                    <div class="user-info-block">
+                        <div class="info-item">
+                            <span class="info-label">소속</span>
+                            <span class="info-value">새마을국제개발학과</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">과정</span>
+                            <span class="info-value">박사 1기</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">학번</span>
+                            <span class="info-value">22650117</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">성명</span>
+                            <span class="info-value highlight-name">박문식</span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 3rem;">
+                        <button class="primary-btn" onclick="document.querySelector('[data-target=\'interactive\']').click()" style="padding: 1rem 2.5rem; font-size: 1.2rem; box-shadow: 0 10px 25px rgba(49, 130, 206, 0.4);">시뮬레이터 시작하기</button>
+                    </div>
+                </div>
+            </section>
+
             <!-- 플레이 모드 -->
             <section id="interactive" class="view">
                 <div class="glass-panel" style="margin-bottom: 2rem; padding: 1.5rem;">
@@ -294,7 +328,7 @@
             </section>
 
             <!-- 보수 행렬 -->
-            <section id="matrix" class="view active">
+            <section id="matrix" class="view">
                 <div class="glass-panel matrix-panel">
                     <h2>보수 행렬 (Payoff Matrix)</h2>
                     <p>각 플레이어가 얻게 되는 점수 구조입니다. (나의 획득 점수, 상대의 획득 점수)</p>

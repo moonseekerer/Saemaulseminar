@@ -452,21 +452,101 @@ h1 {
     padding: 0 1rem;
 }
 
+/* Title Card & Intro */
+.title-card {
+    text-align: center;
+    padding: 5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+}
+
+.title-card .chapter-badge {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: #63b3ed;
+    background: rgba(99, 179, 237, 0.15);
+    padding: 0.6rem 1.5rem;
+    border-radius: 100px;
+    border: 1px solid rgba(99, 179, 237, 0.3);
+    margin-bottom: 2rem;
+}
+
+.main-title {
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fff, #90cdf4, #63b3ed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.title-divider {
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-blue), #805ad5);
+    margin-bottom: 2rem;
+    border-radius: 2px;
+}
+
+.main-subtitle {
+    font-size: 1.4rem;
+    color: var(--text-secondary);
+    margin-bottom: 4rem;
+    font-weight: 300;
+}
+
+.user-info-block {
+    display: flex;
+    gap: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1.5rem 3rem;
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.info-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.info-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.highlight-name {
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 800;
+    text-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
 @media (max-width: 600px) {
-    .action-buttons {
-        gap: 1rem;
-    }
-    .action-btn {
-        width: 120px;
-        height: 120px;
-    }
-    .action-btn .emoji {
-        font-size: 2.5rem;
-    }
-    .payoff-table th, .payoff-table td {
-        padding: 0.8rem;
-    }
-    .payoff-table strong {
-        font-size: 1.2rem;
-    }
+    .main-title { font-size: 2.5rem; }
+    .main-subtitle { font-size: 1.1rem; }
+    .user-info-block { gap: 1rem; padding: 1rem 1.5rem; }
+    .info-value { font-size: 1rem; }
+    .highlight-name { font-size: 1.1rem; }
+    
+    .action-buttons { gap: 1rem; }
+    .action-btn { width: 120px; height: 120px; }
+    .action-btn .emoji { font-size: 2.5rem; }
+    .payoff-table th, .payoff-table td { padding: 0.8rem; }
+    .payoff-table strong { font-size: 1.2rem; }
 }
