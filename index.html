@@ -184,6 +184,30 @@
         .card.ch9 .chapter-badge { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.3); }
         .card.ch9:hover::before { background: linear-gradient(90deg, #ef4444, #f87171); }
         .card.ch9 .card-footer { color: #fca5a5; }
+
+        footer {
+            margin-top: 5rem;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--card-border);
+            width: 100%;
+            max-width: 1000px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-info {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-info span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -310,6 +334,16 @@
         </a>
 
     </div>
+
+    <footer>
+        <div class="footer-info">
+            <span><strong>새마을국제개발학과</strong></span>
+            <span>박사 1기</span>
+            <span>22650117</span>
+            <span style="color: var(--text-color); font-weight: 600;">박문식</span>
+        </div>
+        <p style="margin-top: 1rem; opacity: 0.6;">© 2026 Saemaul Seminar Project. All rights reserved.</p>
+    </footer>
 
 </body>
 </html>
