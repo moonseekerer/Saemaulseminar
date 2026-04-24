@@ -70,6 +70,17 @@ function init() {
 
     // Setup Tournament Mode
     setupTournament();
+
+    // Start Simulator from Intro
+    const btnStartSim = document.getElementById('btn-start-simulator');
+    if (btnStartSim) {
+        btnStartSim.addEventListener('click', () => {
+            document.querySelector('.tabs').style.display = 'flex';
+            document.getElementById('intro').classList.remove('active');
+            // Default to Matrix view
+            document.querySelector('[data-target="matrix"]').click();
+        });
+    }
 }
 
 // --- Navigation ---
