@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>죄수의 딜레마 & 맞대응전략 시뮬레이터</title>
+    <meta name="description" content="정부의 맞대응전략(Tit-for-Tat)을 이해할 수 있는 다크모드 인터랙티브 시뮬레이터입니다.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app" class="container">
+        <header>
+            <h1>🤝 죄수의 딜레마 시뮬레이터</h1>
+            <p class="subtitle">반복 게임에서의 <strong>맞대응전략(Tit-for-Tat)</strong> 생존 방식 체험하기</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-target="matrix">보수 행렬 보기</button>
+            <button class="tab-btn" data-target="theory">이론적 하방 분석</button>
+            <button class="tab-btn" data-target="simulation">1:1 시뮬레이션</button>
+            <button class="tab-btn" data-target="tournament">🏆 다자간 토너먼트</button>
+            <button class="tab-btn" data-target="interactive">플레이 모드</button>
+        </div>
+
+        <main>
+            <!-- 플레이 모드 -->
+            <section id="interactive" class="view">
+                <div class="glass-panel" style="margin-bottom: 2rem; padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <label for="play-rounds" style="font-weight: 600; font-size: 1.05rem;">게임 라운드 수:</label>
+                            <input type="number" id="play-rounds" value="10" min="1" max="1000" style="padding: 0.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); color: white; border-radius: 8px; width: 80px; text-align: center; font-size: 1rem;">
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <label for="play-beta" style="font-weight: 600; font-size: 1.05rem;">할인율(𝛽):</label>
+                            <input type="number" id="play-beta" value="1.0" min="0" max="1" step="0.05" style="padding: 0.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); color: white; border-radius: 8px; width: 80px; text-align: center; font-size: 1rem;">
+                        </div>
+                        <button id="btn-apply-play-settings" class="primary-btn" style="padding: 0.6rem 1.5rem; font-size: 1rem; flex: none;">설정 적용 및 초기화</button>
+                    </div>
+                </div>
+                <div class="glass-panel game-board">
+                    <div class="status-bar">
+                        <div class="player-status">
+                            <h3>나 (User)</h3>
+                            <div class="score-display">점수: <span id="user-score">0</span></div>
+                        </div>
+                        <div class="round-status" style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                            <span class="round-badge">Round <span id="current-round">1</span> / <span id="total-rounds-display">10</span></span>
+                            <div style="background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.4); padding: 0.5rem 1rem; border-radius: 12px; text-align: center; min-width: 160px; transition: transform 0.3s;" id="welfare-container">
+                                <div style="font-size: 0.85rem; color: #ffd700; font-weight: bold; margin-bottom: 0.2rem;">사회 전체 보수 합산</div>
+                                <div style="font-size: 1.4rem; font-weight: bold; color: #fff;"><span id="total-welfare">0</span> <span style="font-size:1rem; font-weight: normal;">점</span></div>
+                            </div>
+                        </div>
+                        <div class="player-status">
+                            <h3>상대 (AI: 맞대응)</h3>
+                            <div class="score-display">점수: <span id="ai-score">0</span></div>
+                        </div>
+                    </div>
+
+                    <div class="action-area">
+                        <div class="action-prompt">이번 라운드의 선택은?</div>
+                        <div class="action-buttons">
+                            <button id="btn-cooperate" class="action-btn cooperate">
+                                <span class="emoji">🕊️</span>
+                                <span class="text">협력 (Cooperate)</span>
+                            </button>
+                            <button id="btn-defect" class="action-btn defect">
+                                <span class="emoji">🗡️</span>
+                                <span class="text">배신 (Defect)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="history-log" id="history-log">
+                        <!-- 라운드 결과가 여기에 추가됨 -->
+                        <div class="log-placeholder">게임이 시작되면 결과가 이곳에 기록됩니다. 상대방은 '맞대응전략'을 사용합니다!</div>
+                    </div>
+                    
+                    <div class="game-over-panel hidden" id="game-over-panel">
+                        <h2>게임 종료!</h2>
+                        <p id="game-result-message"></p>
+
+                        <!-- 가상 시나리오 점수 비교 -->
+                        <div id="play-score-compare" style="
+                            margin: 1.5rem 0;
+                            background: rgba(0,0,0,0.25);
+                            border: 1px solid rgba(255,255,255,0.1);
+                            border-radius: 12px;
+                            padding: 1.2rem 1.4rem;
+                            text-align: left;
+                        ">
+                            <div style="font-size:0.82rem; font-weight:700; color:#94a3b8; margin-bottom:1rem; letter-spacing:0.05em; display:flex; justify-content:space-between;">
+                                <span>📐 만약 다른 전략을 썼다면?</span>
+                                <div style="display:flex; gap:1.5rem; text-align:right;">
+                                    <span style="width:70px;">내 점수</span>
+                                    <span style="width:80px;">사회 전체 점수</span>
+                                </div>
+                            </div>
+                            <div style="display:grid; gap:0.6rem; font-size:0.95rem;">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span style="color:#e2e8f0; flex:1;">🕊️ 매 라운드 협력했을 때</span>
+                                    <div style="display:flex; gap:1.5rem; text-align:right;">
+                                        <span id="hyp-allc-score" style="font-weight:700; color:var(--cooperate-color); width:70px;">—</span>
+                                        <span id="hyp-allc-total" style="font-weight:700; color:#94a3b8; width:80px;">—</span>
+                                    </div>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span style="color:#e2e8f0; flex:1;">🗡️ 매 라운드 배신했을 때</span>
+                                    <div style="display:flex; gap:1.5rem; text-align:right;">
+                                        <span id="hyp-alld-score" style="font-weight:700; color:var(--defect-color); width:70px;">—</span>
+                                        <span id="hyp-alld-total" style="font-weight:700; color:#94a3b8; width:80px;">—</span>
+                                    </div>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span style="color:#e2e8f0; flex:1;">🎯 실제 결과</span>
+                                    <div style="display:flex; gap:1.5rem; text-align:right;">
+                                        <span id="hyp-actual-score" style="font-weight:700; color:#ffd700; width:70px;">—</span>
+                                        <span id="hyp-actual-total" style="font-weight:700; color:#ffd700; width:80px;">—</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="hyp-diff-msg" style="margin-top:1rem; padding-top:0.8rem; border-top:1px solid rgba(255,255,255,0.08); font-size:0.88rem; color:#cbd5e1; line-height:1.7;"></div>
+                        </div>
+
+                        <button id="btn-restart" class="primary-btn">다시 하기</button>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 봇 시뮬레이션 모드 -->
+            <section id="simulation" class="view">
+                <div class="glass-panel">
+                    <h2>1:1 봇 대전 시뮬레이션</h2>
+                    <p>특정 두 전략이 선택된 라운드 수 동안 단 한 판의 승부를 펼칩니다.</p>
+                    
+                    <div class="sim-settings" style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+                        <div class="setting-group" style="margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <label for="sim-rounds" style="font-weight: 600; font-size: 1.1rem;">대결 라운드 수:</label>
+                                <input type="number" id="sim-rounds" value="50" min="1" max="1000" style="padding: 0.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); color: white; border-radius: 8px; width: 100px; text-align: center; font-size: 1rem;">
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <label for="sim-beta" style="font-weight: 600; font-size: 1.1rem; margin-left: 0.5rem;">할인율(β):</label>
+                                <input type="number" id="sim-beta" value="1.0" min="0" max="1" step="0.05" style="padding: 0.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); color: white; border-radius: 8px; width: 90px; text-align: center; font-size: 1rem;">
+                            </div>
+                        </div>
+                        <div style="text-align: center; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+                            * 할인율이 1.0 미만이면 라운드가 지날수록 획득하는 점수의 현재 가치가 감소합니다.
+                        </div>
+                        <div class="setting-group 1v1-matchup" style="display: flex; gap: 1.5rem; justify-content: center; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">
+                            <div style="flex: 1; text-align: center;">
+                                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; color: var(--accent-blue);">전략 A 선택:</label>
+                                <select id="sim-strat-A" style="width: 100%; padding: 0.8rem; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: white; border-radius: 8px; font-size: 1rem; cursor: pointer;">
+                                    <!-- Options populated by JS -->
+                                </select>
+                            </div>
+                            <span style="font-size: 1.8rem; font-weight: 700; color: var(--text-secondary);">VS</span>
+                            <div style="flex: 1; text-align: center;">
+                                <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; color: var(--defect-color);">전략 B 선택:</label>
+                                <select id="sim-strat-B" style="width: 100%; padding: 0.8rem; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: white; border-radius: 8px; font-size: 1rem; cursor: pointer;">
+                                    <!-- Options populated by JS -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="controls" style="text-align: center; margin: 2rem 0;">
+                        <button id="btn-run-sim" class="primary-btn">시뮬레이션 실행 시작</button>
+                    </div>
+
+                    <!-- 실시간 현황 피드 -->
+                    <div class="sim-live-view hidden" id="sim-live-view" style="margin-bottom: 2rem; padding: 1.5rem; background: rgba(49, 130, 206, 0.1); border-radius: 12px; border: 1px solid rgba(49, 130, 206, 0.3);">
+                        <h3 id="sim-live-matchup" style="text-align: center; margin-bottom: 1rem; color: #fff;">대기 중...</h3>
+                        <div class="progress-bar-container" style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 1rem;">
+                            <div class="progress-bar" id="sim-progress" style="width: 0%; height: 100%; background: var(--accent-blue); transition: width 0.1s linear;"></div>
+                        </div>
+                        <div class="live-log" id="sim-live-log" style="text-align: center; font-family: monospace; font-size: 1.2rem; letter-spacing: 2px;">
+                            <!-- 실시간 매치 로고 -->
+                        </div>
+                    </div>
+                    
+                    <div class="sim-results hidden" id="sim-results">
+                        <h3 style="margin-bottom: 1rem;">최종 결과</h3>
+                        <div class="leaderboard" id="leaderboard">
+                            <!-- 시뮬레이션 결과가 랭킹 형태로 표시됨 -->
+                        </div>
+
+                        <!-- 사회 전체 복지 비교 패널 -->
+                        <div id="sim-welfare-panel" style="
+                            margin-top: 2rem;
+                            background: linear-gradient(135deg, rgba(255,215,0,0.06), rgba(49,130,206,0.06));
+                            border: 1px solid rgba(255,215,0,0.25);
+                            border-radius: 14px;
+                            padding: 1.5rem;
+                        ">
+                            <h3 style="margin-bottom: 0.4rem; color: #ffd700;">🌍 사회 전체 복지 비교</h3>
+                            <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:1.5rem;">
+                                두 전략이 만들어낸 <strong style="color:#e2e8f0;">사회 전체 점수 합산</strong>을 최선의 시나리오와 비교합니다.
+                            </p>
+
+                            <!-- 3개 비교 카드 -->
+                            <div id="sim-welfare-cards" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:1rem; margin-bottom:1.5rem;">
+                                <!-- JS로 동적 생성 -->
+                            </div>
+
+                            <!-- 효율성 게이지 바 -->
+                            <div style="margin-bottom:1.2rem;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.4rem;">
+                                    <span>협력 효율성 (실제 합산 / 최선 합산)</span>
+                                    <span id="sim-welfare-pct" style="font-weight:700; color:#ffd700;">0%</span>
+                                </div>
+                                <div style="width:100%; height:14px; background:rgba(255,255,255,0.08); border-radius:8px; overflow:hidden;">
+                                    <div id="sim-welfare-bar" style="height:100%; width:0%; border-radius:8px; transition: width 0.8s ease; background: linear-gradient(90deg, var(--cooperate-color), #ffd700);"></div>
+                                </div>
+                            </div>
+
+                            <!-- 손실 메시지 -->
+                            <div id="sim-welfare-msg" style="font-size:0.95rem; color:#e2e8f0; line-height:1.7;"></div>
+                        </div>
+                        
+                        <h3 style="margin-top: 2rem; margin-bottom: 1rem;">라운드별 상세 기록</h3>
+                        <div class="history-log" id="sim-round-log" style="max-height: 400px; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1rem 0.5rem; overflow-y: auto;">
+                            <!-- 라운드 로그가 이곳에 표시됨 -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 다자간 토너먼트 모드 -->
+            <section id="tournament" class="view">
+                <div class="glass-panel">
+                    <h2>🏆 다자간 리그 토너먼트</h2>
+                    <p style="margin-bottom: 0.5rem;">모든 전략이 서로 한 번씩 맞붙는 <strong>풀리그(Round-Robin)</strong> 방식으로 총점을 겨룹니다.</p>
+                    <p style="margin-bottom: 2rem; color: var(--text-secondary); font-size: 0.95rem;">⚡ 1대1 매치에서는 '항상 배신'이 유리하지만, 다자간 환경에서 누가 진정한 강자인지 확인하세요!</p>
+
+                    <div class="sim-settings" style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <label for="tour-rounds" style="font-weight: 600; font-size: 1.05rem;">대결 라운드 수:</label>
+                                <input type="number" id="tour-rounds" value="50" min="1" max="500" style="padding: 0.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); color: white; border-radius: 8px; width: 90px; text-align: center; font-size: 1rem;">
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <label for="tour-beta" style="font-weight: 600; font-size: 1.05rem;">할인율(β):</label>
+                                <input type="number" id="tour-beta" value="1.0" min="0" max="1" step="0.05" style="padding: 0.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); color: white; border-radius: 8px; width: 80px; text-align: center; font-size: 1rem;">
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 1.2rem; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-secondary);">
+                            참가 전략: <strong style="color: #e2e8f0;">맞대응 · 항상협력 · 항상배신 · 무작위 · 무관용</strong>
+                        </div>
+                        <!-- 전략 체크박스 -->
+                        <div id="tour-strategy-checks" style="display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; margin-bottom: 0.5rem;">
+                            <!-- JS로 동적 생성 -->
+                        </div>
+                    </div>
+
+                    <div class="controls" style="text-align: center; margin: 2rem 0;">
+                        <button id="btn-run-tournament" class="primary-btn" style="font-size: 1.1rem; padding: 0.8rem 2.5rem;">🚀 토너먼트 시작</button>
+                    </div>
+
+                    <!-- 진행 상황 -->
+                    <div id="tour-live-view" class="sim-live-view hidden" style="margin-bottom: 2rem; padding: 1.5rem; background: rgba(49, 130, 206, 0.1); border-radius: 12px; border: 1px solid rgba(49, 130, 206, 0.3);">
+                        <h3 style="text-align: center; margin-bottom: 0.5rem; color: #fff;">대전 진행 중...</h3>
+                        <div id="tour-current-match" style="text-align: center; margin-bottom: 1rem; font-size: 1.1rem; color: var(--text-secondary);"></div>
+                        <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                            <div id="tour-progress" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent-blue), #a855f7); transition: width 0.3s ease;"></div>
+                        </div>
+                        <div id="tour-match-counter" style="text-align: center; margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);"></div>
+                    </div>
+
+                    <!-- 최종 결과 -->
+                    <div id="tour-results" class="sim-results hidden">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.3rem;">🏅 최종 순위 (총 누적 점수 기준)</h3>
+                        <div id="tour-leaderboard" style="margin-bottom: 2rem;"></div>
+
+                        <!-- 인사이트 박스 -->
+                        <div id="tour-insight" style="background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(49,130,206,0.08)); border: 1px solid rgba(255,215,0,0.3); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+                            <!-- JS로 동적 생성 -->
+                        </div>
+
+                        <!-- 매치업 결과 표 -->
+                        <h3 style="margin-bottom: 1rem;">📊 전체 매치업 결과표</h3>
+                        <div style="overflow-x: auto; margin-bottom: 2rem;">
+                            <table id="tour-matrix-table" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;"></table>
+                        </div>
+
+                        <!-- 개별 매치 기록 -->
+                        <h3 style="margin-bottom: 1rem;">🔍 개별 매치 상세 기록</h3>
+                        <div id="tour-match-logs" style="display: grid; gap: 1rem;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 보수 행렬 -->
+            <section id="matrix" class="view active">
+                <div class="glass-panel matrix-panel">
+                    <h2>보수 행렬 (Payoff Matrix)</h2>
+                    <p>각 플레이어가 얻게 되는 점수 구조입니다. (나의 획득 점수, 상대의 획득 점수)</p>
+                    <table class="payoff-table">
+                        <tr>
+                            <th></th>
+                            <th>상대방 협력</th>
+                            <th>상대방 배신</th>
+                        </tr>
+                        <tr>
+                            <th>나 협력</th>
+                            <td class="mutual-cooperate">
+                                <strong>+3, +3</strong><br/>
+                                <span><strong style="color:var(--cooperate-color);">R</strong> (Reward, 상호 보상)</span>
+                            </td>
+                            <td class="sucker">
+                                <strong>0, +5</strong><br/>
+                                <span><strong style="color:var(--text-secondary);">S</strong> (Sucker, 호구의 대가)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>나 배신</th>
+                            <td class="temptation">
+                                <strong>+5, 0</strong><br/>
+                                <span><strong style="color:var(--defect-color);">T</strong> (Temptation, 배신의 유혹)</span>
+                            </td>
+                            <td class="mutual-defect">
+                                <strong>+1, +1</strong><br/>
+                                <span><strong style="color:var(--accent-blue);">P</strong> (Penalty/Punishment, 상호 처벌)</span>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="info-box">
+                        <p>💡 <strong>죄수의 딜레마(Prisoner's Dilemma)란?</strong><br/>쌍방 배신(+1)보다 쌍방 협력(+3)을 하는 것이 윈윈(Win-Win)입니다. 하지만 내가 협력할 때 상대가 배신하면 나는 0점, 상대는 5점을 얻습니다. 
+                        상대방의 배신이 두려워서, 혹은 상대방을 속여 큰 이익(+5)을 얻고 싶은 유혹 때문에 결국 둘 다 배신(+1)을 선택하게 되는 모순적 상황을 의미합니다.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 이론적 분석 -->
+            <section id="theory" class="view">
+                <div class="glass-panel" style="line-height: 1.6;">
+                    <h2>맞대응전략의 수학적 분석 (3라운드)</h2>
+                    <p class="subtitle" style="margin-bottom: 2rem;">A가 맞대응전략을 쓸 때, B가 협력(C)을 선택할 유인 탐구</p>
+                    
+                    <div class="info-box" style="margin-bottom: 2rem;">
+                        <p style="text-align: center; font-size: 1.1rem; margin-bottom: 1rem;"><strong>전체 보수 &nbsp;=&nbsp; (1라운드의 보수) &nbsp;+&nbsp; 𝛽 (2라운드의 보수) &nbsp;+&nbsp; 𝛽² (3라운드의 보수)</strong></p>
+                        <p style="font-size: 0.95rem;">* <strong>𝛽 (미래할인인자)</strong> : 0 &lt; 𝛽 &lt; 1 의 값을 가집니다. 미래의 효용을 현재가치로 환산하며, 값이 클수록 미래를 더 중시한다는 의미입니다.</p>
+                    </div>
+
+                    <h3 style="color: var(--accent-blue); margin-bottom: 1rem;">1. B의 선택 전략 조합</h3>
+                    <p style="margin-bottom: 1rem;">3라운드가 끝나면 더 이상 게임이 진행되지 않으므로, B는 마지막 3라운드에서 반드시 우월전략인 배신(D)을 선택합니다. 문제는 미래가 남은 1, 2라운드의 선택입니다. B가 취할 수 있는 선택 조합과 결과는 다음과 같습니다:</p>
+                    <ul style="list-style: none; padding-left: 0; margin-bottom: 2rem; font-size: 1.1rem; line-height: 2;">
+                        <li>✅ <strong>CCD 조합</strong>: 1R(C), 2R(C), 3R(D) &nbsp;&nbsp;➡&nbsp;&nbsp; <code style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #e2e8f0; font-family: Cambria, 'Times New Roman', serif;">𝑅 + 𝛽 𝑅 + 𝛽² 𝑇</code></li>
+                        <li>✅ <strong>DCD 조합</strong>: 1R(D), 2R(C), 3R(D) &nbsp;&nbsp;➡&nbsp;&nbsp; <code style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #e2e8f0; font-family: Cambria, 'Times New Roman', serif;">𝑇 + 𝛽 𝑆 + 𝛽² 𝑇</code></li>
+                        <li>✅ <strong>CDD 조합</strong>: 1R(C), 2R(D), 3R(D) &nbsp;&nbsp;➡&nbsp;&nbsp; <code style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #e2e8f0; font-family: Cambria, 'Times New Roman', serif;">𝑅 + 𝛽 𝑇 + 𝛽² 𝑃</code></li>
+                        <li>✅ <strong>DDD 조합</strong>: 1R(D), 2R(D), 3R(D) &nbsp;&nbsp;➡&nbsp;&nbsp; <code style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #e2e8f0; font-family: Cambria, 'Times New Roman', serif;">𝑇 + 𝛽 𝑃 + 𝛽² 𝑃</code></li>
+                    </ul>
+
+                    <h3 style="color: var(--accent-blue); margin-bottom: 1rem;">2. 협력이 합리적일 조건 (CCD가 최적일 조건)</h3>
+                    <div style="background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border-left: 4px solid var(--accent-blue);">
+                        <p style="margin-bottom: 1.5rem;">B가 1라운드와 2라운드에서 C(협력)를 선택하려면, CCD 조합의 전체보수가 나머지 경우보다 커야 합니다.</p>
+                        <ol style="margin-left: 1.5rem; line-height: 2; font-size: 1.05rem; font-family: Cambria, 'Times New Roman', serif;">
+                            <li><strong>CCD > DCD</strong>: <code>𝑅 + 𝛽 𝑅 + 𝛽² 𝑇 &nbsp;>&nbsp; 𝑇 + 𝛽 𝑆 + 𝛽² 𝑇</code> <br>&nbsp;➡&nbsp; 정리하면 <strong style="color: var(--cooperate-color); font-size: 1.2rem;">𝛽 &nbsp;>&nbsp; (𝑇 - 𝑅) / (𝑅 - 𝑆)</strong></li>
+                            <li style="margin-top: 1rem;"><strong>CCD > CDD</strong>: <code>𝑅 + 𝛽 𝑅 + 𝛽² 𝑇 &nbsp;>&nbsp; 𝑅 + 𝛽 𝑇 + 𝛽² 𝑃</code> <br>&nbsp;➡&nbsp; 정리하면 <strong style="color: var(--cooperate-color); font-size: 1.2rem;">𝛽 &nbsp;>&nbsp; (𝑇 - 𝑅) / (𝑇 - 𝑃)</strong></li>
+                            <li style="margin-top: 1rem;"><strong>CCD > DDD</strong>: 부등식을 풀면 앞의 두 조건과 일치함을 알 수 있습니다.</li>
+                        </ol>
+                        <hr style="border-color: rgba(255,255,255,0.1); margin: 1.5rem 0;">
+                        <p style="text-align: center; font-size: 1.3rem; font-family: Cambria, 'Times New Roman', serif; margin: 0;">
+                            ∴ 결론: &nbsp; <strong style="color: #ffd700;">𝛽 &nbsp;>&nbsp; max { (𝑇-𝑅) / (𝑅-𝑆) , (𝑇-𝑅) / (𝑇-𝑃) }</strong> &nbsp; 일 때 B는 늘 협력합니다.
+                        </p>
+                    </div>
+
+                    <h3 style="color: var(--accent-blue); margin-top: 3rem; margin-bottom: 1rem;">🔎 이론 인터랙티브 시뮬레이터</h3>
+                    <p style="margin-bottom: 1.5rem;">위의 수학적 조건을 직접 변수(T, R, P, S, 𝛽)를 조절하며 테스트해보세요. 𝛽의 변화에 따라 4가지 선택 조합(CCD, DCD, CDD, DDD) 중 어떤 조합이 가장 높은 보수를 가져다주는지 실시간으로 확인할 수 있습니다.</p>
+                    
+                    <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; margin-bottom: 3rem; border: 1px solid rgba(255,255,255,0.1);">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <label for="theo-t" style="font-size: 0.85rem; line-height: 1.3;"><strong>T</strong> <span style="color: var(--text-secondary); font-size: 0.75rem;"><br>Temptation (배신의 유혹)</span></label>
+                                <input type="number" id="theo-t" value="5" step="1" style="padding: 0.5rem; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: white; border-radius: 8px;">
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <label for="theo-r" style="font-size: 0.85rem; line-height: 1.3;"><strong>R</strong> <span style="color: var(--text-secondary); font-size: 0.75rem;"><br>Reward (상호 보상)</span></label>
+                                <input type="number" id="theo-r" value="3" step="1" style="padding: 0.5rem; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: white; border-radius: 8px;">
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <label for="theo-p" style="font-size: 0.85rem; line-height: 1.3;"><strong>P</strong> <span style="color: var(--text-secondary); font-size: 0.75rem;"><br>Penalty/Punishment (처벌)</span></label>
+                                <input type="number" id="theo-p" value="1" step="1" style="padding: 0.5rem; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: white; border-radius: 8px;">
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <label for="theo-s" style="font-size: 0.85rem; line-height: 1.3;"><strong>S</strong> <span style="color: var(--text-secondary); font-size: 0.75rem;"><br>Sucker (호구의 대가)</span></label>
+                                <input type="number" id="theo-s" value="0" step="1" style="padding: 0.5rem; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: white; border-radius: 8px;">
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 8px;">
+                            <label for="theo-beta" style="font-weight: 600; min-width: 140px; font-size: 1.1rem;">𝛽 (할인율): <span id="theo-beta-val" style="color: var(--cooperate-color); margin-left: 0.5rem;">0.80</span></label>
+                            <input type="range" id="theo-beta" value="0.8" min="0" max="1" step="0.01" style="flex: 1; cursor: pointer; accent-color: var(--accent-blue);">
+                        </div>
+
+                        <h4 style="margin-bottom: 1rem; color: #e2e8f0;">조합별 전체 보수 결과:</h4>
+                        <div id="theo-results" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; text-align: center;">
+                            <!-- JS will populate boxes here -->
+                        </div>
+                        
+                        <div id="theo-conclusion" style="margin-top: 1.5rem; text-align: center; font-size: 1.15rem; font-weight: bold; background: rgba(255, 215, 0, 0.1); color: #ffd700; padding: 1rem; border-radius: 8px;">
+                            <!-- Conclusion text populated by JS -->
+                        </div>
+                    </div>
+
+                    <h3 style="color: #ffd700; margin-bottom: 1.5rem; margin-top: 3rem;">3. 협력(새마을운동) 성공 조건을 만드는 요인</h3>
+                    <p style="margin-bottom: 1.5rem;">위 수식이 보여주는 조건은, <strong>특정 환경 아래에서 맞대응전략이 어떻게 협력을 유도하는지명증</strong>합니다.</p>
+                    <div style="display: grid; gap: 1.2rem;">
+                        <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--accent-blue);">
+                            <h4 style="color: var(--accent-blue); margin-bottom: 0.5rem; font-size: 1.15rem;">1. 미래할인인자(𝛽)가 클수록 📈</h4>
+                            <p style="color: #cbd5e1;">𝛽가 클수록 위 조건이 아주 쉽게 충족됩니다. 새마을운동 당시 <strong>'후손에게 가난을 물려줄 수 없다'</strong>는 의식이 확산되었는데, 이는 미래를 중시하는 성향(𝛽 상승)으로 해석되며 정부-주민의 협력 가능성을 대폭 높였습니다.</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--cooperate-color);">
+                            <h4 style="color: var(--cooperate-color); margin-bottom: 0.5rem; font-size: 1.15rem;">2. 상호 협력 보수(R)가 높을수록 🎁</h4>
+                            <p style="color: #cbd5e1;">R이 클수록 협력 유인이 강화됩니다. 우수 마을에 대한 <strong>자재 지원, 하사금, 마을 비석, 지도자 초청 등 다양한 보상적 조치</strong>는 협력의 보수(R)를 높여 성공적으로 협력을 이끌어내는 인센티브 설계였습니다.</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--defect-color);">
+                            <h4 style="color: var(--defect-color); margin-bottom: 0.5rem; font-size: 1.15rem;">3. 배신의 이익(T)이 낮을수록 📉</h4>
+                            <p style="color: #cbd5e1;">T가 작을수록 상대방을 배신할 유혹이 지워집니다. 수식의 조건을 T에 대해 미분하면 양수 <code>(𝑅-𝑃) / (𝑇-𝑃)²</code> 가 나오며, 이는 <strong>나 혼자 얌체처럼 이익을 독식(T)하는 게 어려워질수록</strong> 오히려 협력이 한층 강하게 유도됨을 수학적으로 증명합니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
