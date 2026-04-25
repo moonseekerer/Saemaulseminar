@@ -1,0 +1,43 @@
+/* Chapter 8 Specific Styles */
+.slide-bg-pattern {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(245, 158, 11, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(239, 68, 68, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 80%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+}
+
+.chapter-badge {
+  color: #fcd34d; background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+/* 5 Leadership Cards Grid */
+.leadership-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Additional Card Accents for Chapter 8 */
+.card-accent4 { border-top: 3px solid #10b981; } /* emerald */
+.card-accent5 { border-top: 3px solid #a855f7; } /* purple */
+
+.card-accent-emerald {
+  background: rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.2);
+  border-top: 3px solid #10b981;
+}
+.card-accent-emerald h3 { color: #34d399 !important; }
+.card-accent-emerald .card-icon { color: #10b981; }
+
+.card-accent-purple {
+  background: rgba(168, 85, 247, 0.05);
+  border-color: rgba(168, 85, 247, 0.2);
+  border-top: 3px solid #a855f7;
+}
+.card-accent-purple h3 { color: #c084fc !important; }
+.card-accent-purple .card-icon { color: #a855f7; }
+
+/* Keep styles consistent with existing overview-cards */
+.leadership-grid .overview-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; color: #fff; }
+.leadership-grid .overview-card p { font-size: 0.9rem; color: var(--text-muted); }

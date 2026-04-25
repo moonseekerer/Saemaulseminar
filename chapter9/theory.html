@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제9장 이론 — 협력의 진화와 네트워크 상호성</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #f8fafc;
+            --text-sec: #94a3b8;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.5);
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text);
+            line-height: 1.7;
+            padding: 4rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        /* Nav */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-sec);
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            background: var(--surface);
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        .nav-link:hover {
+            color: var(--text);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Header */
+        header {
+            margin-bottom: 5rem;
+            text-align: center;
+        }
+        .chapter-label {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #60a5fa, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .main-quote {
+            font-size: 1.4rem;
+            color: var(--text);
+            font-weight: 600;
+            padding: 1.5rem;
+            border-left: 4px solid var(--accent);
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 0 12px 12px 0;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 4rem;
+        }
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        h2::before {
+            content: '';
+            width: 8px;
+            height: 1.8rem;
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--text-sec);
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
+        .highlight {
+            color: var(--text);
+            font-weight: 600;
+            background: linear-gradient(transparent 70%, rgba(59, 130, 246, 0.2) 0);
+        }
+
+        /* Comparison Card */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        .comp-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .comp-card.bad { border-top: 4px solid var(--danger); }
+        .comp-card.good { border-top: 4px solid var(--success); }
+        .comp-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .comp-card ul {
+            list-style: none;
+            font-size: 0.95rem;
+            color: var(--text-sec);
+        }
+        .comp-card li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .comp-card li::before {
+            content: '•';
+            color: var(--accent);
+        }
+
+        /* Network Visual Concept */
+        .network-viz {
+            height: 200px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .node-cluster {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            width: 120px;
+            justify-content: center;
+        }
+        .node {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        .node.defector {
+            background: var(--danger);
+            box-shadow: none;
+            opacity: 0.4;
+        }
+
+        /* Citation */
+        .citation-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px dashed var(--border);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-top: 5rem;
+        }
+        .citation-box h4 {
+            font-size: 0.9rem;
+            color: var(--text-sec);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+        .citation-text {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            color: var(--text);
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .nav-bar { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="nav-bar">
+            <a href="../index.html" class="nav-link">← 전체 목차</a>
+            <a href="index.html" class="nav-link">시뮬레이터 실행하기 →</a>
+        </nav>
+
+        <header>
+            <span class="chapter-label">Chapter 09. Network Reciprocity</span>
+            <h1>네트워크 상호성과<br>협력의 진화</h1>
+            <div class="main-quote">
+                "협력은 공간에서 온다 (Cooperation comes from space)"
+            </div>
+        </header>
+
+        <section>
+            <h2>협력의 딜레마</h2>
+            <p>
+                마틴 노박(Martin Nowak)을 비롯한 진화게임이론 연구자들은 죄수의 딜레마 상황에서 '배신'이 우세해지기 쉬운 구조임에도 불구하고, 
+                현실 세계에서 어떻게 <span class="highlight">'협력'이 진화하고 유지될 수 있는지</span>를 탐구해 왔습니다.
+            </p>
+            <p>
+                전통적인 모델인 <span class="highlight">'완전 혼합(Well-mixed population)'</span> 집단에서는 모든 개체가 무작위로 상호작용합니다. 
+                이 경우, 배신자는 협력자를 착취하며 비용 없이 이득만 취하므로 결국 집단 전체를 장악하게 됩니다. 
+                이러한 모델은 현실에서 빈번하게 관측되는 협력 행위들을 설명하는 데 한계가 있었습니다.
+            </p>
+        </section>
+
+        <div class="comparison-grid">
+            <div class="comp-card bad">
+                <h3>완전 혼합 집단</h3>
+                <ul>
+                    <li>무작위적 상호작용</li>
+                    <li>배신자가 협력자를 항상 착취</li>
+                    <li>평균 보수: 배신자 > 협력자</li>
+                    <li>결과: 협력의 도태</li>
+                </ul>
+            </div>
+            <div class="comp-card good">
+                <h3>구조화된 집단</h3>
+                <ul>
+                    <li>지리적·사회적 네트워크 존재</li>
+                    <li>인접한 이웃과만 상호작용</li>
+                    <li>협력자들의 클러스터 형성</li>
+                    <li>결과: 협력의 진화 및 유지</li>
+                </ul>
+            </div>
+        </div>
+
+        <section>
+            <h2>구조화된 모집단과 공간의 힘</h2>
+            <p>
+                하지만 현실에서는 협력적 상황이 자주 관측되고, 그 협력행위들이 유지되는 경우가 많다. 완전혼합 모집단을 가정함으로써 현실을 제대로 설명하지 못하는 기존 모델의 한계를 극복하기 위해 노박(Nowak, 2006)을 비롯한 여러 연구자들은 <span class="highlight">‘구조화된 모집단(structured population)’</span>이라는 개념을 도입했다.
+            </p>
+            <p>
+                노박은 실제 세상의 개체들이 무작위로 섞이는 완전 혼합 상태와는 다르다는 점에 주목했다. 현실은 물리적 공간의 제약이나 지리적인 한계로 인해 만나는 대상이 한정되어 있으며, 주로 인접한 이웃들과 제한적이고 고정적인 상호작용을 맺게 된다. 노박은 이처럼 특정 지리적·사회적 네트워크 구조에 얽매여 있는 제약이 오히려 <span class="highlight">협력자들끼리 뭉쳐(cluster) 배신자의 침투를 막는 방어막</span>으로 작용하며, 결과적으로 협력이 살아남아 진화할 수 있는 결정적 토대가 됨을 수학적으로 증명했다.
+            </p>
+            <div class="network-viz">
+                <div class="node-cluster">
+                    <div class="node"></div><div class="node"></div><div class="node"></div>
+                    <div class="node"></div><div class="node"></div><div class="node"></div>
+                </div>
+                <div style="width: 50px;"></div>
+                <div class="node defector" style="position: absolute; top: 20%; right: 20%;"></div>
+                <div class="node defector" style="position: absolute; bottom: 20%; right: 15%;"></div>
+            </div>
+            <p>
+                즉, 공간적 구조가 배신자의 침투를 막는 <span class="highlight">'방어막'</span>으로 작용하는 것입니다. 
+                노박은 이러한 네트워크 상호성이 협력을 자연선택에 의해 안정적으로 정착시키는 결정적 토대임을 수학적으로 증명했습니다.
+            </p>
+        </section>
+
+        <div class="citation-box">
+            <h4>Primary Reference</h4>
+            <div class="citation-text">
+                Nowak, M. A. (2006). Five rules for the evolution of cooperation. Science, 314(5805), 1560-1563.
+            </div>
+        </div>
+
+        <footer style="margin-top: 5rem; text-align: center; color: var(--text-sec); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 2rem;">
+            © 2026 Saemaul Seminar Project - Network Reciprocity & Cooperation
+        </footer>
+    </div>
+
+</body>
+</html>

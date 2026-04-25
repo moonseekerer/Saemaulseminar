@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제9장 — 매-비둘기 게임 진화 시뮬레이터</title>
+    <meta name="description" content="네트워크 상호성과 마을단위 사업 — 매-비둘기 게임 진화 시뮬레이터">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.75);
+            --surface-solid: #1e293b;
+            --border: rgba(255,255,255,0.1);
+            --text: #f8fafc;
+            --text-sec: #94a3b8;
+            --red: #ef4444;
+            --red-soft: rgba(239,68,68,0.15);
+            --blue: #3b82f6;
+            --blue-soft: rgba(59,130,246,0.15);
+            --accent: #f87171;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%,   rgba(239,68,68,0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(59,130,246,0.12) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 1.5rem 5rem;
+        }
+
+        /* ── 상단 네비 ── */
+        .nav-bar {
+            width: 100%;
+            max-width: 860px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 2.5rem;
+        }
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            text-decoration: none;
+            color: var(--text-sec);
+            font-size: 0.9rem;
+            padding: 0.4rem 0.9rem;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--surface);
+            backdrop-filter: blur(8px);
+            transition: all 0.25s;
+        }
+        .nav-back:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+        .chapter-badge {
+            background: var(--red-soft);
+            color: var(--accent);
+            border: 1px solid rgba(239,68,68,0.3);
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* ── 헤더 ── */
+        header {
+            width: 100%;
+            max-width: 860px;
+            margin-bottom: 2.5rem;
+        }
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #f87171, #fb923c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.6rem;
+            line-height: 1.3;
+        }
+        .subtitle {
+            color: var(--text-sec);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ── 이론 설명 카드 ── */
+        .theory-card {
+            width: 100%;
+            max-width: 860px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.8rem 2rem;
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+        }
+        .theory-card h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .payoff-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        .payoff-table th, .payoff-table td {
+            border: 1px solid var(--border);
+            padding: 0.7rem 1rem;
+            text-align: center;
+        }
+        .payoff-table th {
+            background: rgba(255,255,255,0.06);
+            color: var(--text-sec);
+            font-weight: 600;
+        }
+        .payoff-table td { color: var(--text); }
+        .ess-formula {
+            background: rgba(248, 113, 113, 0.08);
+            border-left: 3px solid var(--accent);
+            padding: 0.8rem 1.2rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+            color: var(--text-sec);
+            margin-top: 1rem;
+        }
+        .ess-formula strong { color: var(--text); }
+
+        /* ── 시뮬레이터 컨테이너 ── */
+        .sim-card {
+            width: 100%;
+            max-width: 860px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+        }
+        .sim-card h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* ── 컨트롤 패널 ── */
+        .control-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-bottom: 1.8rem;
+            align-items: flex-end;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-sec);
+            letter-spacing: 0.02em;
+        }
+        input[type="number"] {
+            padding: 0.55rem 0.8rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 0.95rem;
+            width: 110px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input[type="number"]:focus { border-color: var(--accent); }
+
+        .run-btn {
+            padding: 0.6rem 1.6rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #ef4444, #f97316);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+            letter-spacing: 0.03em;
+        }
+        .run-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+        .run-btn:active { transform: translateY(0); }
+
+        /* ── 결과 표시 ── */
+        .ess-display {
+            background: rgba(248,113,113,0.08);
+            border: 1px solid rgba(248,113,113,0.25);
+            border-radius: 10px;
+            padding: 0.8rem 1.2rem;
+            font-size: 0.95rem;
+            color: var(--text-sec);
+            margin-bottom: 1.4rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .ess-display .ess-val {
+            color: var(--text);
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+        .ess-display .ess-item { display: flex; align-items: center; gap: 0.4rem; }
+
+        /* ── 차트 ── */
+        .chart-wrapper {
+            position: relative;
+            height: 380px;
+        }
+
+        /* ── 설명 섹션 ── */
+        .explanation-card {
+            width: 100%;
+            max-width: 860px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.8rem 2rem;
+            backdrop-filter: blur(10px);
+        }
+        .explanation-card h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #60a5fa;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .explanation-card p {
+            color: var(--text-sec);
+            font-size: 0.95rem;
+            line-height: 1.75;
+            margin-bottom: 0.8rem;
+        }
+        .explanation-card p:last-child { margin-bottom: 0; }
+        .highlight { color: var(--text); font-weight: 600; }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .control-panel { flex-direction: column; }
+            input[type="number"] { width: 100%; }
+            .chart-wrapper { height: 280px; }
+            .theory-card, .sim-card, .explanation-card { padding: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav-bar">
+        <a href="../index.html" class="nav-back">← 목차로</a>
+        <span class="chapter-badge">제 9장</span>
+    </nav>
+
+    <header>
+        <h1>매-비둘기 게임 진화 시뮬레이터</h1>
+        <p class="subtitle">네트워크 상호성과 마을단위 사업 — 진화게임이론의 복제자 동학(Replicator Dynamics)을 통해<br>집단 내 전략 비율의 수렴 과정을 시각적으로 탐색합니다.</p>
+        <div style="margin-top: 1.5rem;">
+            <a href="theory.html" class="nav-back" style="background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); color: #60a5fa;">📖 이론 학습: 협력은 공간에서 온다 →</a>
+        </div>
+    </header>
+
+    <!-- 이론 카드 -->
+    <section class="theory-card" aria-label="보수 행렬">
+        <h2>🎯 보수 행렬 (Payoff Matrix)</h2>
+        <table class="payoff-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>상대방: 매 (Hawk)</th>
+                    <th>상대방: 비둘기 (Dove)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>나: 매 (Hawk)</strong></td>
+                    <td id="cell-HH">(V−C)/2</td>
+                    <td id="cell-HD">V</td>
+                </tr>
+                <tr>
+                    <td><strong>나: 비둘기 (Dove)</strong></td>
+                    <td id="cell-DH">0</td>
+                    <td id="cell-DD">V/2</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="ess-formula">
+            <strong>ESS(진화적 안정 전략):</strong>
+            V ≥ C이면 매 전략이 100% 지배 |
+            V &lt; C이면 혼합 균형 p* = V/C 비율로 수렴
+        </div>
+    </section>
+
+    <!-- 시뮬레이터 -->
+    <section class="sim-card" aria-label="시뮬레이터">
+        <h2>⚙️ 시뮬레이션 설정</h2>
+
+        <div class="control-panel">
+            <div class="input-group">
+                <label for="valV">자원 가치 (V)</label>
+                <input type="number" id="valV" value="2" step="1" min="0">
+            </div>
+            <div class="input-group">
+                <label for="valC">부상 비용 (C)</label>
+                <input type="number" id="valC" value="4" step="1" min="0">
+            </div>
+            <div class="input-group">
+                <label for="initHawk">초기 매의 비율 (0~1)</label>
+                <input type="number" id="initHawk" value="0.1" step="0.05" min="0" max="1">
+            </div>
+            <div class="input-group">
+                <label for="generations">세대 수</label>
+                <input type="number" id="generations" value="60" step="10" min="10" max="500">
+            </div>
+            <button class="run-btn" onclick="runSimulation()" id="runBtn">시뮬레이션 실행</button>
+        </div>
+
+        <div class="ess-display" id="essDisplay">
+            <span class="ess-item">이론적 ESS 매 비율: <span class="ess-val" id="essVal">—</span></span>
+            <span class="ess-item">수렴값 (최종 세대): <span class="ess-val" id="finalVal">—</span></span>
+        </div>
+
+        <div class="chart-wrapper">
+            <canvas id="populationChart"></canvas>
+        </div>
+    </section>
+
+    <!-- 해석 -->
+    <section class="explanation-card" aria-label="이론 해설">
+        <h2>📖 복제자 동학(Replicator Dynamics) 해설</h2>
+        <p>
+            <span class="highlight">매(Hawk)</span>는 자원을 위해 항상 싸우는 전략이며,
+            <span class="highlight">비둘기(Dove)</span>는 갈등을 피하고 상대가 물러설 때만 자원을 얻습니다.
+        </p>
+        <p>
+            두 전략이 집단 내에서 공존할 때, 다음 세대의 전략 비율은
+            해당 전략의 <span class="highlight">기대 적합도(fitness)</span>가 집단 평균보다 높을수록 증가합니다.
+            이 관계를 수식으로 표현한 것이 복제자 방정식입니다:
+            <em>p(t+1) = p(t) × f_H / f_avg</em>
+        </p>
+        <p>
+            V &lt; C(부상 비용 &gt; 자원 가치)인 경우, 매가 너무 많아지면 싸움 비용이 커져 비둘기가 유리해지고,
+            비둘기가 너무 많아지면 매가 자원을 독점해 유리해집니다. 이 동학이 두 전략을 <span class="highlight">p* = V/C</span>의 비율로 수렴</span>시킵니다.
+        </p>
+        <p>
+            새마을운동의 맥락에서 이 모델은 마을 내 <span class="highlight">협력적(비둘기)</span> 행동과
+            <span class="highlight">경쟁적(매)</span> 행동의 균형이 인센티브 구조에 따라 어떻게 달라지는지를 설명합니다.
+        </p>
+    </section>
+
+<script>
+    let chartInstance = null;
+
+    function runSimulation() {
+        const V   = parseFloat(document.getElementById('valV').value) || 2;
+        const C   = parseFloat(document.getElementById('valC').value) || 4;
+        const gen = parseInt(document.getElementById('generations').value) || 60;
+        let   p   = parseFloat(document.getElementById('initHawk').value);
+
+        // clamp
+        p = Math.max(0, Math.min(1, p));
+
+        const W0 = 10; // baseline fitness to prevent negative values
+        const hawkData = [], doveData = [], labels = [];
+
+        for (let t = 0; t <= gen; t++) {
+            hawkData.push(+(p * 100).toFixed(4));
+            doveData.push(+((1 - p) * 100).toFixed(4));
+            labels.push(t);
+
+            const payoff_H = p * ((V - C) / 2) + (1 - p) * V;
+            const payoff_D = (1 - p) * (V / 2);
+
+            const f_H   = W0 + payoff_H;
+            const f_D   = W0 + payoff_D;
+            const f_avg = p * f_H + (1 - p) * f_D;
+
+            if (f_avg > 0) p = p * (f_H / f_avg);
+            p = Math.max(0, Math.min(1, p));
+        }
+
+        // ESS 이론값
+        const essHawk = V >= C ? 100 : (V / C) * 100;
+        document.getElementById('essVal').textContent  = essHawk.toFixed(1) + '%';
+        document.getElementById('finalVal').textContent = hawkData[hawkData.length - 1].toFixed(1) + '%';
+
+        // 보수 행렬 셀 업데이트
+        document.getElementById('cell-HH').textContent = `(${V}−${C})/2 = ${((V-C)/2).toFixed(1)}`;
+        document.getElementById('cell-HD').textContent = `${V}`;
+        document.getElementById('cell-DD').textContent = `${V}/2 = ${(V/2).toFixed(1)}`;
+
+        drawChart(labels, hawkData, doveData, essHawk, V, C);
+    }
+
+    function drawChart(labels, hawkData, doveData, essHawk, V, C) {
+        const ctx = document.getElementById('populationChart').getContext('2d');
+        if (chartInstance) chartInstance.destroy();
+
+        const essLine = {
+            label: `ESS 균형 (${essHawk.toFixed(1)}%)`,
+            data: labels.map(() => essHawk),
+            borderColor: 'rgba(251,191,36,0.7)',
+            borderDash: [6, 4],
+            borderWidth: 1.5,
+            pointRadius: 0,
+            fill: false,
+            tension: 0
+        };
+
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [
+                    {
+                        label: '매(Hawk) 비율 (%)',
+                        data: hawkData,
+                        borderColor: '#f87171',
+                        backgroundColor: 'rgba(248,113,113,0.08)',
+                        fill: true,
+                        tension: 0.25,
+                        pointRadius: 0,
+                        borderWidth: 2.5
+                    },
+                    {
+                        label: '비둘기(Dove) 비율 (%)',
+                        data: doveData,
+                        borderColor: '#60a5fa',
+                        backgroundColor: 'rgba(96,165,250,0.08)',
+                        fill: true,
+                        tension: 0.25,
+                        pointRadius: 0,
+                        borderWidth: 2.5
+                    },
+                    essLine
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: { duration: 600, easing: 'easeInOutQuart' },
+                plugins: {
+                    legend: {
+                        labels: { color: '#94a3b8', font: { size: 13 } }
+                    },
+                    title: {
+                        display: true,
+                        text: `V=${V}, C=${C} — 복제자 동학 시뮬레이션`,
+                        color: '#f1f5f9',
+                        font: { size: 14, weight: '600' },
+                        padding: { bottom: 16 }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(15,23,42,0.9)',
+                        titleColor: '#f1f5f9',
+                        bodyColor: '#94a3b8',
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: ctx => ` ${ctx.dataset.label}: ${parseFloat(ctx.parsed.y).toFixed(1)}%`
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        min: 0, max: 100,
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: '#64748b', callback: v => v + '%' },
+                        title: { display: true, text: '집단 내 비율 (%)', color: '#64748b' }
+                    },
+                    x: {
+                        grid: { color: 'rgba(255,255,255,0.04)' },
+                        ticks: { color: '#64748b' },
+                        title: { display: true, text: '세대 (Generation)', color: '#64748b' }
+                    }
+                }
+            }
+        });
+    }
+
+    window.onload = runSimulation;
+</script>
+
+</body>
+</html>
