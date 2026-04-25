@@ -53,7 +53,7 @@
         }
 
         .header-info {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             color: #cbd5e1;
             font-size: 1.05rem;
             line-height: 1.6;
@@ -72,6 +72,47 @@
             color: white;
             font-weight: 700;
             font-size: 1.15rem;
+        }
+
+        .reference-links {
+            margin-bottom: 2.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .ref-link {
+            background: rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .ref-link span {
+            font-size: 0.85rem;
+            transition: transform 0.3s ease;
+        }
+
+        .ref-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .ref-link:hover span {
+            transform: translate(2px, -2px);
         }
 
         header {
@@ -255,6 +296,14 @@
             <span class="info-span">박사 1기</span><br>
             <span class="info-span">22650117</span><br>
             <span class="info-name">박문식</span>
+        </div>
+        <div class="reference-links">
+            <a href="http://archives.saemaul.or.kr/" target="_blank" class="ref-link">
+                새마을운동 아카이브 <span>↗</span>
+            </a>
+            <a href="https://www.archives.go.kr/next/viewMainNew.do" target="_blank" class="ref-link">
+                국가기록원 <span>↗</span>
+            </a>
         </div>
         <p class="subtitle">열람하실 과제의 챕터를 선택해 주세요.</p>
     </header>
