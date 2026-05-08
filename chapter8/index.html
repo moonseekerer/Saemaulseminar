@@ -154,8 +154,54 @@
     </div>
   </div>
 
-  <!-- Slide 4: 아이젠코프 실험 결과 -->
+  <!-- Slide 3-NEW: Words & Deeds 게임 시뮬레이터 -->
   <div class="slide" data-slide="3">
+    <div class="slide-header">
+      <span class="slide-number" style="color: #f59e0b; background: rgba(245,158,11,0.15);">02-B</span>
+      <h2>⚔️ Words &amp; Deeds 투자 컨테스트</h2>
+    </div>
+    <div class="slide-content" style="padding: 0.5rem 2rem 1rem;">
+      <div style="display: grid; grid-template-columns: 1fr 260px; gap: 1.2rem; height: 100%;">
+
+        <!-- Left: Game Terminal -->
+        <div style="background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden;">
+          <div style="background: rgba(245,158,11,0.12); border-bottom: 1px solid rgba(245,158,11,0.2); padding: 0.5rem 1rem; display: flex; align-items: center; gap: 0.5rem;">
+            <div style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444;"></div>
+            <div style="width: 10px; height: 10px; border-radius: 50%; background: #f59e0b;"></div>
+            <div style="width: 10px; height: 10px; border-radius: 50%; background: #10b981;"></div>
+            <span style="margin-left: 0.4rem; color: #fcd34d; font-size: 0.8rem; font-weight: bold; letter-spacing: 0.05em;">WORDS &amp; DEEDS SIMULATOR v1.0</span>
+          </div>
+          <div id="wd-log" style="flex: 1; overflow-y: auto; padding: 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.4rem; min-height: 220px; max-height: 320px;"></div>
+          <div id="wd-input" style="border-top: 1px solid rgba(255,255,255,0.08); padding: 0.8rem 1rem;"></div>
+        </div>
+
+        <!-- Right: Stats Panel -->
+        <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+          <div style="background: rgba(30,41,59,0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 1rem;">
+            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.6rem; font-weight: bold;">📊 현재 성적</div>
+            <div id="wd-score-display"><div style="text-align: center; color: #64748b; font-size: 0.8rem;">게임 시작 전</div></div>
+          </div>
+          <div style="background: rgba(30,41,59,0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 1rem;">
+            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.6rem; font-weight: bold;">📋 게임 규칙</div>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.75rem; color: #94a3b8; line-height: 1.85;">
+              <li>• 매 라운드 <strong style="color: #fcd34d;">100pt</strong> 지급</li>
+              <li>• 승리 상금 <strong style="color: #fcd34d;">300pt</strong> → 3명 균등</li>
+              <li>• 수익 = (100-투자) + 승리보상</li>
+              <li>• 승리확률 = 내팀÷(내팀+상대)</li>
+              <li>• 팔로워는 리더 행동을 관찰</li>
+            </ul>
+          </div>
+          <div id="wd-npc-info" style="background: rgba(30,41,59,0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 1rem; flex: 1;">
+            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.6rem; font-weight: bold;">👥 팀원 정보</div>
+            <div style="font-size: 0.75rem; color: #64748b;">역할 선택 후 표시됩니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 4: 아이젠코프 실험 결과 -->
+  <div class="slide" data-slide="4">
     <div class="slide-header">
       <span class="slide-number" style="color: #f59e0b; background: rgba(245,158,11,0.15);">03</span>
       <h2>아이젠코프(Eisenkopf)의 리더십 실험 결과</h2>
@@ -221,7 +267,7 @@
   </div>
 
   <!-- Slide 5: 사례연구 -->
-  <div class="slide" data-slide="4">
+  <div class="slide" data-slide="5">
     <div class="slide-header">
       <span class="slide-number" style="color: #f59e0b; background: rgba(245,158,11,0.15);">04</span>
       <h2>사례연구: 새마을지도자의 리더십 발휘</h2>
@@ -276,7 +322,7 @@
   <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
   </button>
-  <div class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">5</span></div>
+  <div class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">6</span></div>
   <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
   </button>
@@ -291,5 +337,6 @@
 
 <script src="script.js"></script>
 <script src="../chapter6/script.js"></script>
+<script src="wd-game.js"></script>
 </body>
 </html>
