@@ -1,5 +1,5 @@
 // Chapter 8 Specific JS - Simulation Logic
-function calculateFollower() {
+function calculatePayoff() {
   const leaderInput = document.getElementById('leaderContribution').value;
   const compLevel = document.getElementById('competitionLevel').value;
   const leaderCont = parseInt(leaderInput) || 0;
@@ -13,37 +13,33 @@ function calculateFollower() {
     return;
   }
   
-  // 알파: 지도자 기여의 60%를 기본적으로 따라함
-  // 베타: 경쟁 강도(1~5)에 따라 10%~50% 추가 기여 유발
-  const alpha = 0.6;
-  const beta_multiplier = 1 + (compLevel * 0.1); 
+  const E = 1000000;
+  // Prize based on competition level (1=200k, 2=400k, 3=600k, 4=800k, 5=1000k)
+  const P = compLevel * 200000;
   
-  let followerExpected = (leaderCont * alpha) * beta_multiplier;
+  const U_win = E - leaderCont + P;
+  const U_lose = E - leaderCont;
   
-  const resultDiv = document.getElementById('followerResult');
-  const formulaDiv = document.getElementById('followerFormula');
+  const winResult = document.getElementById('winResult');
+  const winFormula = document.getElementById('winFormula');
+  const loseResult = document.getElementById('loseResult');
+  const loseFormula = document.getElementById('loseFormula');
   const commentDiv = document.getElementById('simComment');
   const simBox = document.getElementById('simResult');
   
-  resultDiv.innerText = Math.round(followerExpected).toLocaleString() + " 원";
-  formulaDiv.innerText = `식: (${leaderCont.toLocaleString()} × 0.6) × (1 + ${compLevel} × 0.1) = ${Math.round(followerExpected).toLocaleString()}`;
+  winResult.innerText = U_win.toLocaleString() + " 원";
+  winFormula.innerText = `100만 - ${leaderCont/10000}만 + ${P/10000}만`;
+  
+  loseResult.innerText = U_lose.toLocaleString() + " 원";
+  loseFormula.innerText = `100만 - ${leaderCont/10000}만`;
   
   let comment = "";
   if(leaderCont === 0) {
-    comment = "<span style='color: #ef4444; font-weight: bold; font-size: 0.95rem;'>⚠️ 지도자의 솔선수범이 없어 주민들의 참여 동력이 발생하지 않습니다.</span>";
-    resultDiv.style.color = "#ef4444";
-    simBox.style.borderLeftColor = "#ef4444";
-    simBox.style.background = "rgba(239, 68, 68, 0.1)";
-  } else if (compLevel >= 4 && leaderCont > 500000) {
-    comment = "<span style='color: #f59e0b; font-weight: bold; font-size: 0.95rem;'>🔥 높은 헌신(솔선수범)과 강한 마을경쟁이 결합되어 주민들의 폭발적인 협력을 이끌어냈습니다!</span>";
-    resultDiv.style.color = "#f59e0b";
-    simBox.style.borderLeftColor = "#f59e0b";
-    simBox.style.background = "rgba(245, 158, 11, 0.1)";
+    comment = "<span style='color: #ef4444; font-weight: bold;'>⚠️ 무임승차(0원 기여):</span> 패배 시 손실은 없으나, 경쟁에서 이길 확률이 0%에 가까워 보상(P)을 얻을 수 없습니다.";
+  } else if (leaderCont === 1000000) {
+    comment = "<span style='color: #f59e0b; font-weight: bold;'>🔥 전액 기여(솔선수범):</span> 패배 시 모든 것을 잃는 위험이 따르지만, 승리 확률이 극대화되어 보상(P)을 획득할 가능성이 가장 높습니다.";
   } else {
-    comment = "<span style='color: #34d399; font-weight: bold; font-size: 0.95rem;'>✅ 지도자의 기여와 경쟁 강도에 비례하여 주민들이 일정 수준 협력합니다.</span>";
-    resultDiv.style.color = "#10b981";
-    simBox.style.borderLeftColor = "#10b981";
-    simBox.style.background = "rgba(16, 185, 129, 0.1)";
+    comment = "<span style='color: #34d399; font-weight: bold;'>✅ 적절한 기여:</span> 기여금이 커질수록 승리 확률이 올라가며, 승리 시의 추가 편익과 패배 시의 리스크를 동시에 감수합니다.";
   }
   commentDiv.innerHTML = comment;
   

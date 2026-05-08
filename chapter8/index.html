@@ -124,16 +124,16 @@
 
         <!-- 시뮬레이션 파트 -->
         <div class="simulation-part" style="background: rgba(30, 41, 59, 0.5); padding: 1.8rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
-          <h3 style="color: #60a5fa; margin-bottom: 0.5rem; font-size: 1.2rem;">⚙️ 시뮬레이션: 내가 지도자라면?</h3>
-          <p style="color: #34d399; font-size: 0.85rem; margin-bottom: 1.2rem; line-height: 1.4;">※ 지도자가 먼저 <strong>솔선수범</strong>하여 기여할수록, 마을 주민들의 자발적인 참여(기여도)가 훨씬 더 크게 나타납니다.</p>
+          <h3 style="color: #60a5fa; margin-bottom: 0.5rem; font-size: 1.2rem;">⚙️ 시뮬레이션: 나의 최종 편익은?</h3>
+          <p style="color: #34d399; font-size: 0.85rem; margin-bottom: 1.2rem; line-height: 1.4;">※ 기여금과 경쟁 강도에 따른 승리/패배 시의 결과를 직접 확인해 보세요.</p>
           <div style="display: flex; flex-direction: column; gap: 1.2rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 0.8rem 1rem; border-radius: 6px;">
-              <span style="font-weight: 600; color: #cbd5e1; font-size: 0.9rem;">나의 초기 자본 (내 돈)</span>
+              <span style="font-weight: 600; color: #cbd5e1; font-size: 0.9rem;">나의 초기 자본 (E)</span>
               <span style="font-weight: 700; color: #10b981; font-size: 1.1rem;">1,000,000 원</span>
             </div>
             
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <label style="font-size: 0.9rem; color: #94a3b8; font-weight: bold;">내가 마을을 위해 먼저 내놓을 기여금</label>
+              <label style="font-size: 0.9rem; color: #94a3b8; font-weight: bold;">나의 기여금 (C<sub>i</sub>)</label>
               <input type="hidden" id="leaderContribution" value="0">
               <div style="display: flex; gap: 0.5rem;">
                 <button type="button" onclick="setContribution(0, this)" class="contribution-btn" style="flex: 1; padding: 0.8rem 0; border: 1px solid #3b82f6; background: #3b82f6; color: white; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s;">0원</button>
@@ -144,20 +144,31 @@
             </div>
             
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <label for="competitionLevel" style="font-size: 0.9rem; color: #94a3b8; font-weight: bold;">마을간 경쟁 강도 (1~5)</label>
+              <label for="competitionLevel" style="font-size: 0.9rem; color: #94a3b8; font-weight: bold;">정부 차등 지원금 규모 (경쟁 강도 1~5)</label>
               <input type="range" id="competitionLevel" min="1" max="5" value="3" style="width: 100%; cursor: pointer;">
               <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #64748b;">
-                <span>낮음</span><span>보통</span><span>높음</span>
+                <span>20만원 (낮음)</span><span>60만원 (보통)</span><span>100만원 (높음)</span>
               </div>
             </div>
             
-            <button onclick="calculateFollower()" style="padding: 0.9rem; background: linear-gradient(135deg, #3b82f6, #2563eb); border: none; border-radius: 6px; color: #fff; font-weight: 700; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">결과 확인 (시뮬레이션 실행)</button>
+            <button onclick="calculatePayoff()" style="padding: 0.9rem; background: linear-gradient(135deg, #3b82f6, #2563eb); border: none; border-radius: 6px; color: #fff; font-weight: 700; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">결과 확인 (시뮬레이션 실행)</button>
             
-            <div id="simResult" style="display: none; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; border-radius: 4px; animation: fadeIn 0.3s ease;">
-              <div style="font-size: 0.85rem; color: #a7f3d0; margin-bottom: 0.4rem;">주민 1인당 예상 협력 기여금</div>
-              <div id="followerResult" style="font-size: 1.4rem; font-weight: 700; color: #10b981;">0 원</div>
-              <div id="followerFormula" style="font-size: 0.8rem; color: #64748b; margin-top: 0.3rem; font-family: 'Noto Sans KR', sans-serif; background: rgba(0,0,0,0.1); padding: 4px 8px; border-radius: 4px; display: inline-block;"></div>
-              <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.6rem; line-height: 1.4;" id="simComment"></div>
+            <div id="simResult" style="display: none; padding: 1rem; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; animation: fadeIn 0.3s ease;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <div style="font-size: 0.9rem; color: #34d399; font-weight: bold;">🏆 승리 시 (Win)</div>
+                <div style="text-align: right;">
+                  <div id="winResult" style="font-size: 1.2rem; font-weight: 700; color: #10b981;">0 원</div>
+                  <div id="winFormula" style="font-size: 0.75rem; color: #64748b; margin-top: 0.2rem;"></div>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-size: 0.9rem; color: #f87171; font-weight: bold;">💔 패배 시 (Lose)</div>
+                <div style="text-align: right;">
+                  <div id="loseResult" style="font-size: 1.2rem; font-weight: 700; color: #ef4444;">0 원</div>
+                  <div id="loseFormula" style="font-size: 0.75rem; color: #64748b; margin-top: 0.2rem;"></div>
+                </div>
+              </div>
+              <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 1rem; line-height: 1.4; padding-top: 0.8rem; border-top: 1px dashed rgba(255,255,255,0.1);" id="simComment"></div>
             </div>
           </div>
         </div>
