@@ -96,17 +96,29 @@
         
         <!-- 수식 파트 -->
         <div class="formula-part" style="background: rgba(30, 41, 59, 0.5); padding: 1.8rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
-          <h3 style="color: #fcd34d; margin-bottom: 1rem; font-size: 1.2rem;">🧮 수식: 솔선수범의 메커니즘</h3>
+          <h3 style="color: #fcd34d; margin-bottom: 1rem; font-size: 1.2rem;">🧮 수식: 마을간 경쟁의 기대 편익</h3>
           <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.2rem;">
-            지도자(Leader)가 먼저 기여도 <i>C<sub>L</sub></i>을 결정하고, 주민(Follower)들이 이를 관찰한 후 자신의 기여도 <i>C<sub>F</sub></i>를 결정하는 <strong>순차적 공공재 게임</strong>입니다.
+            경쟁 체제 하에서 개인이 얻게 되는 <strong>승리 시의 편익</strong>과 <strong>패배 시의 편익</strong>입니다.
           </p>
-          <div style="background: rgba(0,0,0,0.3); padding: 1.5rem 1.2rem; border-radius: 8px; text-align: center; margin-bottom: 1.2rem; font-family: 'Noto Sans KR', sans-serif; font-size: 1.5rem; font-weight: 700; color: #f8fafc; border: 1px solid rgba(255,255,255,0.1); letter-spacing: 1px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);">
-            <i style="font-family: 'Georgia', serif; font-style: italic;">C<sub>F</sub></i> = &alpha; &times; <i style="font-family: 'Georgia', serif; font-style: italic;">C<sub>L</sub></i> + &beta; &times; <span style="font-size: 1.3rem;">(경쟁 인센티브)</span>
+          
+          <div style="background: rgba(0,0,0,0.3); padding: 1rem 1.2rem; border-radius: 8px; margin-bottom: 0.8rem; border: 1px solid rgba(16, 185, 129, 0.3); box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);">
+            <div style="color: #34d399; font-size: 0.85rem; font-weight: bold; margin-bottom: 0.4rem;">🏆 승리했을 때 편익 (Winning Payoff)</div>
+            <div style="text-align: center; font-family: 'Noto Sans KR', sans-serif; font-size: 1.3rem; font-weight: 700; color: #f8fafc; letter-spacing: 1px;">
+              <i style="font-family: 'Georgia', serif; font-style: italic;">U<sub>win</sub></i> = <i style="font-family: 'Georgia', serif; font-style: italic;">E</i> - <i style="font-family: 'Georgia', serif; font-style: italic;">C<sub>i</sub></i> + <i style="font-family: 'Georgia', serif; font-style: italic;">P</i>
+            </div>
           </div>
+
+          <div style="background: rgba(0,0,0,0.3); padding: 1rem 1.2rem; border-radius: 8px; margin-bottom: 1.2rem; border: 1px solid rgba(239, 68, 68, 0.3); box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);">
+            <div style="color: #f87171; font-size: 0.85rem; font-weight: bold; margin-bottom: 0.4rem;">💔 패배했을 때 편익 (Losing Payoff)</div>
+            <div style="text-align: center; font-family: 'Noto Sans KR', sans-serif; font-size: 1.3rem; font-weight: 700; color: #f8fafc; letter-spacing: 1px;">
+              <i style="font-family: 'Georgia', serif; font-style: italic;">U<sub>lose</sub></i> = <i style="font-family: 'Georgia', serif; font-style: italic;">E</i> - <i style="font-family: 'Georgia', serif; font-style: italic;">C<sub>i</sub></i>
+            </div>
+          </div>
+
           <ul style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.7; list-style-type: none; padding: 0;">
-            <li><span style="color: #f87171; font-weight: bold;">C<sub>L</sub></span>: 지도자의 솔선수범 기여금</li>
-            <li><span style="color: #f87171; font-weight: bold;">&alpha;</span>: 주민들의 반응 계수 (신뢰도)</li>
-            <li><span style="color: #f87171; font-weight: bold;">&beta;</span>: 마을간 경쟁 차등지원에 따른 추가 동인</li>
+            <li><span style="color: #60a5fa; font-weight: bold;">E (Endowment)</span>: 개인의 초기 자본 (내 돈)</li>
+            <li><span style="color: #60a5fa; font-weight: bold;">C<sub>i</sub> (Contribution)</span>: 개인이 마을(팀)을 위해 내놓은 기여금</li>
+            <li><span style="color: #60a5fa; font-weight: bold;">P (Prize)</span>: 승리 시 마을에 주어지는 차등 지원금(분배 몫)</li>
           </ul>
         </div>
 
