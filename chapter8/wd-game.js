@@ -65,8 +65,17 @@ const WD = (() => {
       return;
     }
     const color = s.cumScore >= 0 ? '#10b981' : '#ef4444';
+    // 권고 vs 실제 투자 비교 바
+    const recVal  = s.role === 'leader' ? s.rec          : s.npcLeaderRec;
+    const bidVal  = s.role === 'leader' ? s.myBid        : s.npcLeaderActual;
+    const recLabel = s.role === 'leader' ? '내 권고액'   : '리더 권고';
+    const bidLabel = s.role === 'leader' ? '내 실제 투자' : '리더 실제';
+    const barMatch = bidVal >= recVal * 0.9;
+    const barColor = s.round === 0 ? '#64748b' : (barMatch ? '#10b981' : '#ef4444');
+    const recW  = Math.max(2, recVal);
+    const bidW  = Math.max(2, bidVal);
     $score().innerHTML = `
-      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+      <div style="display:flex;flex-direction:column;gap:0.55rem;">
         <div style="display:flex;justify-content:space-between;">
           <span style="font-size:0.75rem;color:#94a3b8;">라운드</span>
           <span style="font-weight:bold;color:#fcd34d;">${s.round} / ${s.totalRounds}</span>
@@ -78,6 +87,18 @@ const WD = (() => {
         <div style="display:flex;justify-content:space-between;">
           <span style="font-size:0.75rem;color:#94a3b8;">전적</span>
           <span style="font-weight:bold;color:#cbd5e1;">${s.wins}승 ${s.losses}패</span>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:0.5rem;">
+          <div style="font-size:0.72rem;color:#94a3b8;margin-bottom:0.35rem;font-weight:bold;">📊 이번 라운드 언행 비교</div>
+          <div style="font-size:0.7rem;color:#94a3b8;margin-bottom:0.15rem;">${recLabel}: <strong style="color:#fcd34d;">${recVal}pt</strong></div>
+          <div style="width:100%;height:10px;background:rgba(255,255,255,0.07);border-radius:5px;overflow:hidden;margin-bottom:0.3rem;">
+            <div style="width:${recW}%;height:100%;background:#f59e0b;border-radius:5px;"></div>
+          </div>
+          <div style="font-size:0.7rem;color:#94a3b8;margin-bottom:0.15rem;">${bidLabel}: <strong style="color:${barColor};">${bidVal}pt</strong></div>
+          <div style="width:100%;height:10px;background:rgba(255,255,255,0.07);border-radius:5px;overflow:hidden;">
+            <div style="width:${bidW}%;height:100%;background:${barColor};border-radius:5px;"></div>
+          </div>
+          <div style="font-size:0.68rem;margin-top:0.3rem;color:${barColor};font-weight:bold;">${bidVal === 0 && recVal === 0 ? '대기 중' : barMatch ? '✅ 언행일치' : '⚠️ 언행불일치'}</div>
         </div>
       </div>`;
   }
@@ -177,23 +198,52 @@ const WD = (() => {
 
   // ── 게임 흐름 ────────────────────────────────
 
-  // 시작 화면
+  // 시작 화면 (설명 카드 포함)
   function showIdle() {
     reset();
     $log().innerHTML = '';
-    sep();
-    addMsg('<strong style="color:#fcd34d;font-size:0.95rem;">⚔️ WORDS &amp; DEEDS 시뮬레이터</strong>', 'sys');
-    addMsg('<em style="color:#64748b;font-size:0.78rem;">Based on Eisenkopf (2020), The Leadership Quarterly</em>', 'sys');
-    sep();
-    addMsg('Words and Deeds 시뮬레이터를 가동합니다.', 'title');
-    addMsg('플레이어의 역할(리더/팔로워)을 선택해 주십시오.', 'title');
+    $log().innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:0.7rem;">
+        <div style="text-align:center;padding:0.5rem 0;">
+          <div style="font-size:1rem;font-weight:bold;color:#fcd34d;">⚔️ WORDS &amp; DEEDS</div>
+          <div style="font-size:0.72rem;color:#64748b;">Eisenkopf (2020) 기반 투자 컨테스트</div>
+        </div>
+
+        <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:0.65rem 0.8rem;">
+          <div style="font-size:0.78rem;color:#fcd34d;font-weight:bold;margin-bottom:0.3rem;">🎯 게임 목표</div>
+          <div style="font-size:0.75rem;color:#cbd5e1;line-height:1.55;">
+            3인 팀으로 상대팀과 <strong style="color:#fcd34d;">투자 컨테스트</strong>를 벌입니다.<br>
+            투자를 많이 할수록 승리 확률↑, 적게 할수록 내 포인트 보존↑<br>
+            <em style="color:#94a3b8;">→ 팀 전체의 협력이 핵심!</em>
+          </div>
+        </div>
+
+        <div style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:8px;padding:0.65rem 0.8rem;">
+          <div style="font-size:0.78rem;color:#a5b4fc;font-weight:bold;margin-bottom:0.3rem;">👥 팀 구성 &amp; 역할</div>
+          <div style="font-size:0.75rem;color:#cbd5e1;line-height:1.6;">
+            <span style="color:#f59e0b;">👑 리더</span>: 권고 발표 → 직접 투자 → 팔로워 반응 관찰<br>
+            <span style="color:#60a5fa;">🏃 팔로워</span>: 리더 관찰 → 내 투자 결정 → 결과 확인
+          </div>
+        </div>
+
+        <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:0.65rem 0.8rem;">
+          <div style="font-size:0.78rem;color:#f87171;font-weight:bold;margin-bottom:0.3rem;">⚡ 핵심 메커니즘</div>
+          <div style="font-size:0.75rem;color:#cbd5e1;line-height:1.6;">
+            <strong style="color:#10b981;">언행일치</strong>: 권고 ≈ 실제투자 → 팔로워 신뢰 → 협력↑<br>
+            <strong style="color:#ef4444;">언행불일치</strong>: 권고 &gt; 실제투자 → 배신감 → 협력↓↓<br>
+            <em style="color:#94a3b8;">행동(Deeds)은 말(Words)보다 2배 이상 영향력!</em>
+          </div>
+        </div>
+
+        <div style="font-size:0.75rem;color:#64748b;text-align:center;">역할을 선택하면 게임이 시작됩니다.</div>
+      </div>`;
     setInput(`
       <div style="display:flex;gap:0.6rem;">
-        <button onclick="WD.selectRole('leader')" style="flex:1;padding:0.65rem;background:linear-gradient(135deg,#f59e0b,#ef4444);border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;font-size:0.88rem;">
-          👑 리더
+        <button onclick="WD.selectRole('leader')" style="flex:1;padding:0.7rem;background:linear-gradient(135deg,#f59e0b,#ef4444);border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;font-size:0.88rem;">
+          👑 리더로 시작
         </button>
-        <button onclick="WD.selectRole('follower')" style="flex:1;padding:0.65rem;background:linear-gradient(135deg,#3b82f6,#6366f1);border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;font-size:0.88rem;">
-          🏃 팔로워
+        <button onclick="WD.selectRole('follower')" style="flex:1;padding:0.7rem;background:linear-gradient(135deg,#3b82f6,#6366f1);border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;font-size:0.88rem;">
+          🏃 팔로워로 시작
         </button>
       </div>`);
     updateScore();
@@ -278,6 +328,24 @@ const WD = (() => {
     if (isNaN(v) || v < 0 || v > 100) { alert('0~100 사이의 숫자를 입력하세요.'); return; }
     s.myBid = v;
     addMsg(`▶ 나(리더): <strong style="color:#34d399;">${v}pt 투자.</strong>`, 'player');
+    // 권고 vs 실제 비교 바 (즉시 표시)
+    const match = v >= s.rec * 0.9;
+    const recW = Math.max(2, s.rec); const bidW = Math.max(2, v);
+    const bc = match ? '#10b981' : '#ef4444';
+    const d = document.createElement('div');
+    d.style.cssText = 'background:rgba(0,0,0,0.25);border-radius:6px;padding:0.55rem 0.7rem;margin:0.2rem 0;font-size:0.75rem;';
+    d.innerHTML = `
+      <div style="color:#94a3b8;margin-bottom:0.3rem;font-weight:bold;">📊 이번 라운드 언행 비교</div>
+      <div style="color:#fcd34d;margin-bottom:0.1rem;">권고: ${s.rec}pt</div>
+      <div style="width:100%;height:8px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;margin-bottom:0.3rem;">
+        <div style="width:${recW}%;height:100%;background:#f59e0b;"></div></div>
+      <div style="color:${bc};margin-bottom:0.1rem;">실제: ${v}pt</div>
+      <div style="width:100%;height:8px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;margin-bottom:0.3rem;">
+        <div style="width:${bidW}%;height:100%;background:${bc};"></div></div>
+      <div style="color:${bc};font-weight:bold;">${match ? '✅ 언행일치 → 팔로워 신뢰 상승' : '⚠️ 언행불일치 → 팔로워 반발 예상'}</div>`;
+    $log().appendChild(d);
+    $log().scrollTop = $log().scrollHeight;
+    updateScore();
     phaseFollowerReact();
   }
 
@@ -312,9 +380,26 @@ const WD = (() => {
     s.phase = 'follower_bid';
 
     addMsg(`👑 <strong>리더 박지훈:</strong> "팀원 여러분, 저는 <strong style="color:#fcd34d;">${rec}pt</strong> 투자를 권고합니다."`, 'npc');
-    addMsg(`👑 <strong>리더 박지훈</strong>이 실제로 <strong style="color:${lies ? '#ef4444' : '#34d399'};">${actual}pt</strong> 투자했습니다.${lies ? ' <span style="color:#ef4444;">(⚠️ 권고와 다름!)</span>' : ''}`, 'npc');
+    addMsg(`👑 <strong>리더 박지훈</strong>이 실제로 <strong style="color:${lies ? '#ef4444' : '#34d399'};">${actual}pt</strong> 투자했습니다.`, 'npc');
+    // 권고 vs 실제 비교 바 즉시 표시
+    const match = actual >= rec * 0.9;
+    const bc = match ? '#10b981' : '#ef4444';
+    const recW = Math.max(2, rec); const actW = Math.max(2, actual);
+    const d = document.createElement('div');
+    d.style.cssText = 'background:rgba(0,0,0,0.25);border-radius:6px;padding:0.55rem 0.7rem;margin:0.2rem 0;font-size:0.75rem;';
+    d.innerHTML = `
+      <div style="color:#94a3b8;margin-bottom:0.3rem;font-weight:bold;">📊 리더의 언행 비교</div>
+      <div style="color:#fcd34d;margin-bottom:0.1rem;">권고: ${rec}pt</div>
+      <div style="width:100%;height:8px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;margin-bottom:0.3rem;">
+        <div style="width:${recW}%;height:100%;background:#f59e0b;"></div></div>
+      <div style="color:${bc};margin-bottom:0.1rem;">실제: ${actual}pt</div>
+      <div style="width:100%;height:8px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;margin-bottom:0.3rem;">
+        <div style="width:${actW}%;height:100%;background:${bc};"></div></div>
+      <div style="color:${bc};font-weight:bold;">${match ? '✅ 언행일치 — 신뢰할 수 있는 리더' : '⚠️ 언행불일치 — 말만 앞세운 리더!'}</div>`;
+    $log().appendChild(d);
+    $log().scrollTop = $log().scrollHeight;
+    updateScore();
     addMsg('당신은 얼마를 투자하시겠습니까? (0~100)', 'title');
-
     setInput(`
       <div style="display:flex;flex-direction:column;gap:0.5rem;">
         <label style="font-size:0.8rem;color:#94a3b8;">나의 투자액 (0~100)</label>
