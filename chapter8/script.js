@@ -46,3 +46,18 @@ function calculateFollower() {
   
   simBox.style.display = 'block';
 }
+
+function setContribution(amount, btnElement) {
+  document.getElementById('leaderContribution').value = amount;
+  
+  const buttons = document.querySelectorAll('.contribution-btn');
+  buttons.forEach(btn => {
+    btn.style.background = 'rgba(0,0,0,0.2)';
+    btn.style.border = '1px solid rgba(255,255,255,0.2)';
+    btn.style.color = '#fff';
+  });
+  
+  btnElement.style.background = '#3b82f6';
+  btnElement.style.border = '1px solid #3b82f6';
+  btnElement.style.color = 'white';
+}
