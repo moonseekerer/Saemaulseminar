@@ -30,19 +30,22 @@ function calculateFollower() {
   
   let comment = "";
   if(leaderCont === 0) {
-    comment = "지도자의 솔선수범이 없어 주민들의 참여 동력이 발생하지 않습니다.";
-    resultDiv.style.color = "#94a3b8";
-    simBox.style.borderLeftColor = "#94a3b8";
+    comment = "<span style='color: #ef4444; font-weight: bold; font-size: 0.95rem;'>⚠️ 지도자의 솔선수범이 없어 주민들의 참여 동력이 발생하지 않습니다.</span>";
+    resultDiv.style.color = "#ef4444";
+    simBox.style.borderLeftColor = "#ef4444";
+    simBox.style.background = "rgba(239, 68, 68, 0.1)";
   } else if (compLevel >= 4 && leaderCont > 500000) {
-    comment = "높은 헌신(솔선수범)과 강한 마을경쟁이 결합되어 주민들의 폭발적인 협력을 이끌어냈습니다!";
+    comment = "<span style='color: #f59e0b; font-weight: bold; font-size: 0.95rem;'>🔥 높은 헌신(솔선수범)과 강한 마을경쟁이 결합되어 주민들의 폭발적인 협력을 이끌어냈습니다!</span>";
+    resultDiv.style.color = "#f59e0b";
+    simBox.style.borderLeftColor = "#f59e0b";
+    simBox.style.background = "rgba(245, 158, 11, 0.1)";
+  } else {
+    comment = "<span style='color: #34d399; font-weight: bold; font-size: 0.95rem;'>✅ 지도자의 기여와 경쟁 강도에 비례하여 주민들이 일정 수준 협력합니다.</span>";
     resultDiv.style.color = "#10b981";
     simBox.style.borderLeftColor = "#10b981";
-  } else {
-    comment = "지도자의 기여와 경쟁 강도에 비례하여 주민들이 일정 수준 협력합니다.";
-    resultDiv.style.color = "#34d399";
-    simBox.style.borderLeftColor = "#34d399";
+    simBox.style.background = "rgba(16, 185, 129, 0.1)";
   }
-  commentDiv.innerText = comment;
+  commentDiv.innerHTML = comment;
   
   simBox.style.display = 'block';
 }
