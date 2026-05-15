@@ -6,6 +6,10 @@
     <title>제9장 — 네트워크 상호성 공간 진화 시뮬레이터</title>
     <meta name="description" content="마틴 노박의 네트워크 상호성 및 죄수의 딜레마 공간 진화 시뮬레이터">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- KaTeX for premium math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -311,6 +315,56 @@
             .action-buttons { grid-template-columns: 1fr; }
             .card { padding: 1.2rem; }
         }
+
+        /* Case Study & Evidence Frame Utilities */
+        .case-study-card {
+            grid-column: 1 / -1;
+            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(59, 130, 246, 0.05);
+        }
+        .formula-box-inline {
+            background: rgba(239, 68, 68, 0.03);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.2rem 0;
+            font-size: 0.95rem;
+        }
+        .evidence-teaser {
+            margin-top: 1.5rem;
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.03);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            color: inherit;
+        }
+        .evidence-teaser:hover {
+            background: rgba(59, 130, 246, 0.08);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .evidence-icon {
+            font-size: 2rem;
+            opacity: 0.8;
+        }
+        .evidence-text strong {
+            display: block;
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+        .evidence-text span {
+            font-size: 0.85rem;
+            color: var(--text-sec);
+        }
     </style>
 </head>
 <body>
@@ -411,6 +465,37 @@
             <h2>📈 세대별 전략 점유율 추이</h2>
             <div class="chart-wrapper">
                 <canvas id="popChart"></canvas>
+            </div>
+        </section>
+
+        <!-- 하단 실증 사례 연구: 용인군 동막마을 -->
+        <section class="card case-study-card full-width" aria-label="역사적 실증 사례">
+            <h2 style="color: #60a5fa;">📂 국내 역사 실증: 경기도 용인군 동막마을의 '품앗이 배제' 제도</h2>
+            <div style="color: var(--text-sec); font-size: 1rem; line-height: 1.7;">
+                <p style="margin-bottom: 1rem;">
+                    위 2D 격자 시뮬레이션의 역학은 단순한 이론이 아닙니다. 
+                    사용자님의 <strong>Saemaul SDGs Knowledge Hub</strong> 디지털 아카이브에 기록된 용인군 남사면 통삼리 동막마을은, 공동체 내의 무임승차 현상을 제어하기 위해 마틴 노박의 진화 조건식(\(b/c > k\))의 물리적 구현이라 할 수 있는 파격적인 자치 규약을 역사상 최초로 공식화했습니다.
+                </p>
+                
+                <div class="formula-box-inline">
+                    <div style="color: var(--defect); font-weight: 700; margin-bottom: 0.5rem;">📜 동막마을 공동체 규약 원본 텍스트 (영광의 발자취 125p)</div>
+                    <div style="line-height: 1.8; font-style: italic; color: #cbd5e1;">
+                        "○ 마을 규약에 따라 저해 요인이 되거나 규약을 위반하는 자에게는 <strong>일 품앗이를 하지 않는 방법</strong> 등 민주적 협동방법으로 개발을 촉진하며 미풍양속을 선양하고자 규약을 제정하였다."
+                    </div>
+                </div>
+
+                <p style="margin-bottom: 1rem;">
+                    규약을 어기고 공동체 이익을 착취하는 개체는 <strong>'품앗이(이웃 연결선) 일체 차단'</strong>을 당합니다. 이는 공간 모델링에서 배신자 노드의 연결 수(\(k\))를 0으로 수렴시켜 고립(Isolation)시키는 행위였으며, 이를 통해 협력자들끼리만 강력하게 뭉친 **'협력 방어 클러스터'**를 만들어 내 무너져 가던 부락을 최우수 자립 마을로 일구어냈습니다.
+                </p>
+
+                <!-- Clickable Evidence Viewer Link -->
+                <a href="viewer.html" class="evidence-teaser">
+                    <div class="evidence-icon">📄</div>
+                    <div class="evidence-text">
+                        <strong>역사 기록 원본 문서 보기</strong>
+                        <span>클릭하면 용인군 동막마을 원본 문서(영광의 발자취 p.125) 고화질 뷰어로 이동합니다.</span>
+                    </div>
+                </a>
             </div>
         </section>
 
