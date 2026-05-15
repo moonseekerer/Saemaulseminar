@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>제9장 이론 — 협력의 진화와 네트워크 상호성</title>
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- KaTeX for premium math formulas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
     <style>
         :root {
             --bg: #0f172a;
@@ -16,6 +20,7 @@
             --accent-glow: rgba(59, 130, 246, 0.5);
             --success: #10b981;
             --danger: #ef4444;
+            --math-bg: rgba(59, 130, 246, 0.05);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,7 +33,7 @@
                 radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.1) 0px, transparent 50%);
             background-attachment: fixed;
             color: var(--text);
-            line-height: 1.7;
+            line-height: 1.8;
             padding: 4rem 1.5rem;
             display: flex;
             flex-direction: column;
@@ -37,7 +42,7 @@
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 860px;
         }
 
         /* Nav */
@@ -51,7 +56,7 @@
             text-decoration: none;
             color: var(--text-sec);
             font-size: 0.9rem;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.2rem;
             border: 1px solid var(--border);
             border-radius: 30px;
             background: var(--surface);
@@ -79,7 +84,7 @@
             display: block;
         }
         h1 {
-            font-size: 2.8rem;
+            font-size: 3rem;
             font-weight: 800;
             line-height: 1.2;
             margin-bottom: 1.5rem;
@@ -88,20 +93,20 @@
             -webkit-text-fill-color: transparent;
         }
         .main-quote {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: var(--text);
             font-weight: 600;
             padding: 1.5rem;
             border-left: 4px solid var(--accent);
             background: rgba(59, 130, 246, 0.05);
             border-radius: 0 12px 12px 0;
-            margin: 2rem 0;
+            margin: 2.5rem 0;
             text-align: left;
         }
 
         /* Sections */
         section {
-            margin-bottom: 4rem;
+            margin-bottom: 5rem;
         }
         h2 {
             font-size: 1.8rem;
@@ -118,6 +123,12 @@
             background: var(--accent);
             border-radius: 4px;
         }
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #cbd5e1;
+        }
 
         p {
             margin-bottom: 1.5rem;
@@ -130,6 +141,50 @@
             color: var(--text);
             font-weight: 600;
             background: linear-gradient(transparent 70%, rgba(59, 130, 246, 0.2) 0);
+        }
+
+        /* Payoff Table Style */
+        .payoff-wrapper {
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+        .payoff-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .payoff-table th, .payoff-table td {
+            padding: 1.2rem;
+            border: 1px solid var(--border);
+        }
+        .payoff-table th {
+            background: rgba(255,255,255,0.05);
+            color: #cbd5e1;
+            font-weight: 600;
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: var(--math-bg);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+            text-align: center;
+            box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.05);
+        }
+        .formula-box.highlight-box {
+            background: rgba(16, 185, 129, 0.05);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        .formula-desc {
+            font-size: 0.95rem;
+            color: var(--text-sec);
+            margin-top: 0.5rem;
         }
 
         /* Comparison Card */
@@ -151,6 +206,7 @@
         .comp-card h3 {
             margin-bottom: 1rem;
             font-size: 1.2rem;
+            margin-top: 0;
         }
         .comp-card ul {
             list-style: none;
@@ -167,36 +223,77 @@
             color: var(--accent);
         }
 
+        /* Key Takeaway / Insight */
+        .insight-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 3rem 0;
+        }
+        .insight-box h3 {
+            margin-top: 0;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
         /* Network Visual Concept */
         .network-viz {
-            height: 200px;
-            background: rgba(255,255,255,0.03);
+            height: 220px;
+            background: rgba(255,255,255,0.02);
             border-radius: 20px;
-            margin: 2rem 0;
+            border: 1px solid var(--border);
+            margin: 2.5rem 0;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
         }
-        .node-cluster {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            width: 120px;
-            justify-content: center;
+        .lattice {
+            display: grid;
+            grid-template-columns: repeat(5, 30px);
+            gap: 8px;
         }
         .node {
-            width: 20px;
-            height: 20px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             background: var(--accent);
-            box-shadow: 0 0 10px var(--accent-glow);
+            box-shadow: 0 0 8px var(--accent-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #fff;
         }
         .node.defector {
             background: var(--danger);
-            box-shadow: none;
-            opacity: 0.4;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+        }
+        .viz-label {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.85rem;
+            color: var(--text-sec);
+        }
+
+        /* Case Study */
+        .case-study {
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            background: rgba(249, 115, 22, 0.03);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-top: 3rem;
+        }
+        .case-study h3 {
+            margin-top: 0;
+            color: #f97316;
         }
 
         /* Citation */
@@ -224,6 +321,44 @@
             h1 { font-size: 2rem; }
             .comparison-grid { grid-template-columns: 1fr; }
             .nav-bar { flex-direction: column; gap: 1rem; }
+            .formula-box { padding: 1rem; }
+        }
+
+        /* Document Evidence Clickable Frame */
+        .evidence-teaser {
+            margin-top: 1.5rem;
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.03);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            color: inherit;
+        }
+        .evidence-teaser:hover {
+            background: rgba(59, 130, 246, 0.05);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .evidence-icon {
+            font-size: 2rem;
+            opacity: 0.8;
+        }
+        .evidence-text strong {
+            display: block;
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+        .evidence-text span {
+            font-size: 0.85rem;
+            color: var(--text-sec);
         }
     </style>
 </head>
@@ -240,19 +375,57 @@
             <h1>네트워크 상호성과<br>협력의 진화</h1>
             <div class="main-quote">
                 "협력은 공간에서 온다 (Cooperation comes from space)"
+                <div style="font-size: 0.95rem; color: var(--text-sec); margin-top: 0.5rem; font-weight: normal;">
+                    — Martin A. Nowak (Science, 2006)
+                </div>
             </div>
         </header>
 
         <section>
-            <h2>협력의 딜레마</h2>
+            <h2>1. 협력의 딜레마와 기존 모델의 한계</h2>
             <p>
-                마틴 노박(Martin Nowak)을 비롯한 진화게임이론 연구자들은 죄수의 딜레마 상황에서 '배신'이 우세해지기 쉬운 구조임에도 불구하고, 
-                현실 세계에서 어떻게 <span class="highlight">'협력'이 진화하고 유지될 수 있는지</span>를 탐구해 왔습니다.
+                새마을운동의 가장 두드러진 특징은 사업이 군이나 면과 같은 넓은 행정 단위가 아닌, 평균 100가구 미만의 소규모 <span class="highlight">'마을 단위'</span>에서 추진되었다는 점입니다. 
+                이는 주민 간의 단합과 협동을 촉진하는 데 대단히 효과적이었습니다. 왜 작은 공간적 범위가 협력을 더 잘 이끌어내는지에 대해 진화게임이론(Evolutionary Game Theory)의 관점에서 분석해 봅시다.
             </p>
             <p>
-                전통적인 모델인 <span class="highlight">'완전 혼합(Well-mixed population)'</span> 집단에서는 모든 개체가 무작위로 상호작용합니다. 
-                이 경우, 배신자는 협력자를 착취하며 비용 없이 이득만 취하므로 결국 집단 전체를 장악하게 됩니다. 
-                이러한 모델은 현실에서 빈번하게 관측되는 협력 행위들을 설명하는 데 한계가 있었습니다.
+                전형적인 죄수의 딜레마 상황에서 상대에게 베푸는 이익을 \(b\), 이를 위해 자신이 부담하는 비용을 \(c\)라고 합시다 (\(b > c > 0\)). 보수표는 다음과 같습니다.
+            </p>
+
+            <div class="payoff-wrapper">
+                <table class="payoff-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>상대방: 협력 (C)</th>
+                            <th>상대방: 배신 (D)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>나: 협력 (C)</strong></td>
+                            <td>\(b - c, \;\; b - c\)</td>
+                            <td>\(-c, \;\; b\)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>나: 배신 (D)</strong></td>
+                            <td>\(b, \;\; -c\)</td>
+                            <td>\(0, \;\; 0\)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>완전 혼합 모집단 (Well-mixed Population)</h3>
+            <p>
+                기존 모델은 집단의 모든 개체가 무작위로 서로 만난다고 가정합니다. 협력자 비율을 \(x\)라 할 때, 각 유형의 평균 보수는 다음과 같이 계산됩니다.
+            </p>
+            <div class="formula-box">
+                <div>\(E(C) = x(b - c) + (1 - x)(-c) = xb - c\)</div>
+                <div style="margin-top: 0.8rem;">\(E(D) = x(b) + (1 - x)(0) = xb\)</div>
+                <div class="formula-desc">협력자 비율 \(x\)와 관계없이 언제나 \(E(D) - E(C) = c > 0\) 이 성립합니다.</div>
+            </div>
+            <p>
+                따라서 무작위 혼합 집단에서는 배신자의 평균 보수가 항상 높기 때문에 협력자는 끊임없이 착취를 당하며 종국에는 집단 전체에서 도태되고 맙니다. 즉, 협력의 유지가 불가능합니다.
             </p>
         </section>
 
@@ -270,7 +443,7 @@
                 <h3>구조화된 집단</h3>
                 <ul>
                     <li>지리적·사회적 네트워크 존재</li>
-                    <li>인접한 이웃과만 상호작용</li>
+                    <li>인접한 이웃(\(k\))과만 상호작용</li>
                     <li>협력자들의 클러스터 형성</li>
                     <li>결과: 협력의 진화 및 유지</li>
                 </ul>
@@ -278,32 +451,132 @@
         </div>
 
         <section>
-            <h2>구조화된 모집단과 공간의 힘</h2>
+            <h2>2. 마틴 노박의 혁신: 네트워크 상호성</h2>
             <p>
-                하지만 현실에서는 협력적 상황이 자주 관측되고, 그 협력행위들이 유지되는 경우가 많다. 완전혼합 모집단을 가정함으로써 현실을 제대로 설명하지 못하는 기존 모델의 한계를 극복하기 위해 노박(Nowak, 2006)을 비롯한 여러 연구자들은 <span class="highlight">‘구조화된 모집단(structured population)’</span>이라는 개념을 도입했다.
+                마틴 노박(Martin Nowak)을 비롯한 연구자들은 현실 속 사람들의 상호작용은 무작위적이지 않고, 친구나 지역민 등 한정된 관계망 내에서만 일어난다는 점에 주목하여 <span class="highlight">‘구조화된 모집단(structured population)’</span> 개념을 도입했습니다.
             </p>
             <p>
-                노박은 실제 세상의 개체들이 무작위로 섞이는 완전 혼합 상태와는 다르다는 점에 주목했다. 현실은 물리적 공간의 제약이나 지리적인 한계로 인해 만나는 대상이 한정되어 있으며, 주로 인접한 이웃들과 제한적이고 고정적인 상호작용을 맺게 된다. 노박은 이처럼 특정 지리적·사회적 네트워크 구조에 얽매여 있는 제약이 오히려 <span class="highlight">협력자들끼리 뭉쳐(cluster) 배신자의 침투를 막는 방어막</span>으로 작용하며, 결과적으로 협력이 살아남아 진화할 수 있는 결정적 토대가 됨을 수학적으로 증명했다.
+                이 구조 속에서 개체들은 격자(Lattice)와 같은 공간에 위치하며, 연결된 이웃하고만 게임을 수행합니다. 이로 인해 생겨나는 메커니즘이 바로 <strong>네트워크 상호성(Network Reciprocity)</strong>입니다. 
+                핵심은 <strong>클러스터(Cluster)의 형성</strong>에 있습니다. 협력자끼리 뭉치게 되면 그 내부에서는 높은 보상(\(b-c\))을 서로 교환하며 외곽 배신자의 착취를 막아내는 일종의 '방어막'을 형성합니다.
             </p>
+
             <div class="network-viz">
-                <div class="node-cluster">
-                    <div class="node"></div><div class="node"></div><div class="node"></div>
-                    <div class="node"></div><div class="node"></div><div class="node"></div>
+                <div class="lattice">
+                    <div class="node">C</div><div class="node">C</div><div class="node">C</div><div class="node defector">D</div><div class="node defector">D</div>
+                    <div class="node">C</div><div class="node" style="background:#1d4ed8; border: 2px solid #fff;">C1</div><div class="node">C</div><div class="node defector">D</div><div class="node defector">D</div>
+                    <div class="node">C</div><div class="node">C</div><div class="node" style="background:#2563eb; border: 2px solid #fff;">C2</div><div class="node defector" style="border: 2px solid #fff;">D3</div><div class="node defector">D</div>
+                    <div class="node defector">D</div><div class="node defector">D</div><div class="node defector">D</div><div class="node defector">D</div><div class="node defector">D</div>
                 </div>
-                <div style="width: 50px;"></div>
-                <div class="node defector" style="position: absolute; top: 20%; right: 20%;"></div>
-                <div class="node defector" style="position: absolute; bottom: 20%; right: 15%;"></div>
+                <div class="viz-label">그림: 협력자(Blue)와 배신자(Red) 클러스터의 경계와 상호작용 (상하좌우 이웃 \(k=4\))</div>
+            </div>
+
+            <h3>수학적 메커니즘: 클러스터 경계에서의 보수 분석</h3>
+            <p>
+                각 격자가 \(k\)개의 이웃을 가질 때, 위 그림의 세 경기자 위치별 보수를 도출해 봅시다.
+            </p>
+            <div class="formula-box">
+                <div style="text-align:left; margin-bottom:1rem;"><strong>1) 클러스터 내부 협력자 (\(C_1\)):</strong> 이웃이 모두 협력자</div>
+                <div>\(W_{C, center} = k(b - c)\)</div>
+                <hr style="border-color:rgba(255,255,255,0.1); margin: 1rem 0;">
+                <div style="text-align:left; margin-bottom:1rem;"><strong>2) 경계면 협력자 (\(C_2\)):</strong> 이웃 중 \((k-1)\)명이 협력자, 1명이 배신자</div>
+                <div>\(W_{C, boundary} = (k - 1)(b - c) - c\)</div>
+                <hr style="border-color:rgba(255,255,255,0.1); margin: 1rem 0;">
+                <div style="text-align:left; margin-bottom:1rem;"><strong>3) 경계면 배신자 (\(D_3\)):</strong> 이웃 중 1명만 협력자, \((k-1)\)명은 배신자</div>
+                <div>\(W_{D, boundary} = 1 \cdot b + (k - 1) \cdot 0 = b\)</div>
             </div>
             <p>
-                즉, 공간적 구조가 배신자의 침투를 막는 <span class="highlight">'방어막'</span>으로 작용하는 것입니다. 
-                노박은 이러한 네트워크 상호성이 협력을 자연선택에 의해 안정적으로 정착시키는 결정적 토대임을 수학적으로 증명했습니다.
+                단순 복제 규칙(경계의 협력자 보수가 배신자보다 크면 복제됨)에 따라, 경계면에서 협력이 유지 및 확산하기 위한 조건은 \(W_{C, boundary} > W_{D, boundary}\) 입니다.
+            </p>
+            <div class="formula-box">
+                <div>\((k - 1)(b - c) - c > b\)</div>
+                <div style="font-size: 1.3rem; margin-top: 1rem; color: #fff;">\(\displaystyle \frac{b}{c} > \frac{k}{k - 2}\)</div>
+                <div class="formula-desc">이웃 수 \(k\)가 일정할 때 협력의 이익(\(b\))이 크고 비용(\(c\))이 작을수록 경계에서 협력이 생존합니다.</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>3. 🌟 진화적 안정성 조건: Nowak (2006)</h2>
+            <p>
+                마틴 노박은 클러스터의 불규칙성, 우연한 변동, 배신자의 역침입 등에 저항하며 모집단 전체에서 협력이 안정적으로 진화(Evolutionary Stability)하기 위한 가장 단순하고 최적화된 충분조건을 제시했습니다.
+            </p>
+            <div class="formula-box highlight-box">
+                <div style="color: var(--success); font-weight: 700; margin-bottom: 0.5rem;">마틴 노박의 네트워크 상호성 진화 안정성 조건</div>
+                <div style="font-size: 2rem; font-weight: 800; color: #fff; text-shadow: 0 0 10px rgba(16,185,129,0.3);">
+                    \(\displaystyle \frac{b}{c} > k\)
+                </div>
+                <div style="margin-top: 1rem; font-size: 1.1rem; color: var(--text);">
+                    <strong>협력의 효율성(\(b/c\))이 이웃의 수(\(k\))보다 커야 한다.</strong>
+                </div>
+            </div>
+            <p>
+                이 부등식은 대단히 중요한 직관을 줍니다.
+            </p>
+            <p>
+                1) <strong>사회적 연결성(\(k\))의 역설</strong>: 이웃 수(\(k\))가 크다는 것은 네트워크가 매우 촘촘하고 연결성이 높다는 의미입니다. 이는 협력자 관점에서는 무임승차자(배신자)와 마주쳐 착취당할 '사회적 위험비용'이 증가함을 뜻합니다.
+            </p>
+            <p>
+                2) <strong>공간 제약의 이점</strong>: 네트워크가 지나치게 복잡하지 않고 적절히 제한될수록(즉, \(k\)가 작을수록), 협력자들은 손쉽게 결속하여 배신자로부터 클러스터를 방어하고 진화적으로 안정된 균형을 이룰 수 있습니다.
             </p>
         </section>
 
+        <div class="insight-box">
+            <h3>💡 새마을운동 '마을단위' 설계의 과학</h3>
+            <p style="color: #fff; font-weight: 600; margin-bottom: 1rem;">왜 군·면 단위가 아니라 '자연 부락(마을)'이었을까?</p>
+            <p style="color: rgba(255,255,255,0.85);">
+                새마을운동이 초기에 성공적으로 안착할 수 있었던 과학적 배경은 바로 이 <strong>이웃의 범위(\(k\))를 효과적으로 제어</strong>했기 때문입니다.
+                범위가 너무 넓으면(높은 \(k\)) 익명성이 증가하여 무임승차가 판을 쳐도 감시하거나 격리하기 어렵습니다. 
+                하지만 좁은 마을 단위로 범위를 한정함으로써 주민들은 서로의 노력을 명확히 감시할 수 있었고(\(k\) 최소화), 
+                이는 노박의 진화조건인 \(\frac{b}{c} > k\)를 용이하게 달성하여 <strong>자발적 협력의 진화적 안정성</strong>을 완벽히 확보하도록 도왔습니다.
+            </p>
+        </div>
+
+        <div class="case-study" style="border-color: rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.03);">
+            <h3 style="color: var(--accent);">📂 국내 역사 실증: 경기도 용인군 동막마을의 '품앗이 배제' 제도</h3>
+            <p>
+                사용자님의 <strong>Saemaul SDGs Knowledge Hub</strong> 디지털 아카이브(동막마을 추진기록)에 따르면, 용인군 남사면 통삼리 동막마을은 마틴 노박의 이론적 메커니즘을 마을의 실제 자치 규약으로 완벽하게 정착시킨 역사적 성공 사례입니다.
+            </p>
+            <p>
+                과거 동막마을은 씨족 간 반목과 무임승차가 극심한 오합지졸 부락이었으나, 김종원 지도자를 필두로 아래와 같은 혁신적인 공동체 제재 룰을 도입했습니다.
+            </p>
+            <div class="formula-box" style="background: rgba(239, 68, 68, 0.03); border-color: rgba(239, 68, 68, 0.2); text-align: left; font-size: 1rem;">
+                <div style="color: var(--danger); font-weight: 700; margin-bottom: 0.5rem;">📜 동막마을 공동체 규약 원본 텍스트 (영광의 발자취 125p)</div>
+                <div style="line-height: 1.8; font-style: italic; color: #cbd5e1;">
+                    "○ 마을 규약에 따라 저해 요인이 되거나 규약을 위반하는 자에게는 <strong>일 품앗이를 하지 않는 방법</strong> 등 민주적 협동방법으로 개발을 촉진하며 미풍양속을 선양하고자 규약을 제정하였다."
+                </div>
+            </div>
+            <p>
+                이는 노박의 모델에서 <strong>배신자(Defector)와의 연결성(\(k\))을 인위적으로 차단</strong>하여 격리(Boycott)시키는 진화역학적 조치였습니다. 이를 통해 이기적 구성원의 무임승차 기회를 원천 차단하고, 규약을 준수하는 협력자들끼리만 결속하는 <strong>'품앗이 협력 클러스터'</strong>를 공고히 하여 최우수 새마을 훈장 마을로 거듭나는 기적을 만들었습니다.
+            </p>
+            
+            <!-- Clickable Evidence Viewer Link -->
+            <a href="viewer.html" class="evidence-teaser">
+                <div class="evidence-icon">📄</div>
+                <div class="evidence-text">
+                    <strong>역사 기록 원본 문서 보기</strong>
+                    <span>클릭하면 용인군 동막마을 원본 문서(영광의 발자취 p.125) 고화질 뷰어로 이동합니다.</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="case-study">
+            <h3>📂 사례 연구: 로버트 퍼트넘의 이탈리아 공동체 분석</h3>
+            <p>
+                로버트 퍼트넘(Putnam, 1993) 연구팀은 이탈리아의 지역 정부들의 성과 차이를 연구한 결과, 북부 이탈리아가 남부에 비해 압도적으로 높은 행정 효율성과 신뢰를 구축했음을 밝혀냈습니다.
+            </p>
+            <p>
+                <strong>북부 이탈리아</strong>는 축구 클럽, 합창단 등 수평적인 소규모 모임들이 활성화되어 있었습니다. 이는 마틴 노박의 이론적 시각에서 볼 때, 주민들이 <strong>관리 가능한 소규모 네트워크(낮은 \(k\)) 내에서 반복 교류하며 높은 상호 신뢰를 구축</strong>한 전형적인 협력 클러스터의 예시입니다.
+            </p>
+            <p>
+                반면, 남부 이탈리아는 수직적인 위계구조와 거대한 익명성으로 인해 서로 파편화되었고 협력이 자리 잡기 어려운 조건이었습니다. 결국 공동체의 성공은 네트워크의 크기를 무조건 확장하기보다는, 신뢰를 쌓을 수 있는 적정 범위 내로 구조화하는 데 달려있음을 보여줍니다.
+            </p>
+        </div>
+
         <div class="citation-box">
-            <h4>Primary Reference</h4>
+            <h4>Primary References</h4>
             <div class="citation-text">
-                Nowak, M. A. (2006). Five rules for the evolution of cooperation. Science, 314(5805), 1560-1563.
+                1. Nowak, M. A. (2006). Five rules for the evolution of cooperation. Science, 314(5805), 1560-1563.<br>
+                2. Ostrom, E. (1990). Governing the Commons: The Evolution of Institutions for Collective Action. Cambridge University Press.<br>
+                3. Putnam, R. D. (1993). Making democracy work: Civic traditions in modern Italy. Princeton university press.
             </div>
         </div>
 

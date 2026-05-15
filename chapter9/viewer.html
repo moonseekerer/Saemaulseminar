@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>역사 기록 원본 뷰어</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #090d16;
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #f8fafc;
+            --text-sec: #94a3b8;
+            --accent: #3b82f6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Prevents body scrolling */
+        }
+
+        /* Header */
+        .viewer-header {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .title-group h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .title-group p {
+            font-size: 0.8rem;
+            color: var(--text-sec);
+            margin-top: 0.2rem;
+        }
+
+        .btn-close {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .btn-close:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        /* Image Area */
+        .image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background: radial-gradient(circle, #111827 0%, #030712 100%);
+            position: relative;
+            overflow: auto; /* Allows image panning */
+        }
+
+        /* Blank Placeholder Frame */
+        .image-frame-placeholder {
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 3 / 4;
+            border: 2px dashed rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        
+        .image-frame-placeholder:hover {
+            border-color: var(--accent);
+            background: rgba(59, 130, 246, 0.04);
+        }
+
+        .icon-placeholder {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-sec);
+            font-size: 1.8rem;
+        }
+
+        .placeholder-text {
+            text-align: center;
+        }
+        .placeholder-text h2 {
+            font-size: 1.3rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+        .placeholder-text p {
+            font-size: 0.9rem;
+            color: var(--text-sec);
+            max-width: 300px;
+            line-height: 1.5;
+        }
+
+        /* For actual image when user replaces it later */
+        .actual-image {
+            display: none; /* Hidden initially */
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="viewer-header">
+        <div class="title-group">
+            <h1>역사 기록 원본 문서</h1>
+            <p>경기도 용인군 남사면 통삼리 동막마을 (출처: 영광의 발자취 125p)</p>
+        </div>
+        <a href="theory.html" class="btn-close">✕ 닫기</a>
+    </header>
+
+    <main class="image-container">
+        <!-- Blank Frame Placeholder -->
+        <div class="image-frame-placeholder" id="placeholderFrame">
+            <div class="icon-placeholder">📄</div>
+            <div class="placeholder-text">
+                <h2>이미지 파일 준비 중</h2>
+                <p>이곳에 원본 문서 스캔본 이미지를 넣어주시면 표시됩니다.</p>
+            </div>
+        </div>
+
+        <!-- Real image -->
+        <img src="evidence_dongmak.png" alt="동막마을 원본 기록" class="actual-image" id="evidenceImage" onerror="this.style.display='none'; document.getElementById('placeholderFrame').style.display='flex';">
+    </main>
+
+    <script>
+        // Logic to switch view if the image exists
+        const img = document.getElementById('evidenceImage');
+        const frame = document.getElementById('placeholderFrame');
+        
+        // Force display if img works
+        img.onload = () => {
+            frame.style.display = 'none';
+            img.style.display = 'block';
+        };
+        
+        // Direct check for already loaded state (e.g. cached)
+        if (img.complete && img.naturalHeight !== 0) {
+            frame.style.display = 'none';
+            img.style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
