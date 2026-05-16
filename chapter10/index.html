@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제10장 — 근검절약 정신과 자본축적</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.75);
+            --border: rgba(255,255,255,0.1);
+            --text: #f8fafc;
+            --text-sec: #94a3b8;
+            --accent: #14b8a6; /* Teal for Chapter 10 */
+            --accent-soft: rgba(20, 184, 166, 0.15);
+            --savings: #3b82f6; /* Blue for savings */
+            --depreciation: #ef4444; /* Red for depreciation */
+            --income: #10b981; /* Green for income */
+            --capital: #f59e0b; /* Yellow for capital */
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(20, 184, 166, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.12) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 1.5rem 5rem;
+            line-height: 1.6;
+        }
+        /* Nav */
+        .nav-bar { width: 100%; max-width: 1000px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 2.5rem; }
+        .nav-back { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; color: var(--text-sec); font-size: 0.9rem; padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); backdrop-filter: blur(8px); transition: all 0.25s; }
+        .nav-back:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+        .chapter-badge { background: var(--accent-soft); color: var(--accent); border: 1px solid rgba(20, 184, 166, 0.3); padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        /* Header */
+        header { width: 100%; max-width: 1000px; margin-bottom: 2.5rem; text-align: center; }
+        h1 { font-size: 2.5rem; font-weight: 800; background: linear-gradient(to right, #14b8a6, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.6rem; }
+        .subtitle { color: var(--text-sec); font-size: 1.05rem; max-width: 800px; margin: 0 auto; }
+        
+        .main-content { width: 100%; max-width: 1000px; display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        @media (min-width: 900px) { .main-content { grid-template-columns: 1.2fr 1fr; } .full-width { grid-column: 1 / -1; } }
+        
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; backdrop-filter: blur(12px); display: flex; flex-direction: column; }
+        .card h2 { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.8rem; }
+        
+        /* Cycle Diagram */
+        .cycle-diagram { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 16px; border: 1px dashed rgba(255,255,255,0.1); margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; position: relative; }
+        .cycle-node { flex: 1; text-align: center; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; font-weight: 600; z-index: 2; min-width: 120px; }
+        .cycle-node.income { border-color: var(--income); box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
+        .cycle-node.savings { border-color: var(--savings); box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
+        .cycle-node.investment { border-color: var(--accent); box-shadow: 0 0 15px rgba(20, 184, 166, 0.2); }
+        .cycle-node.capital { border-color: var(--capital); box-shadow: 0 0 15px rgba(245, 158, 11, 0.2); }
+        .cycle-arrow { color: var(--text-sec); font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+        
+        /* Formula Box */
+        .formula-box { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 1.2rem; margin-bottom: 1.5rem; font-size: 0.95rem; }
+        .formula-item { margin-bottom: 0.8rem; display: flex; align-items: center; gap: 1rem; }
+        .formula-item:last-child { margin-bottom: 0; }
+        .f-label { color: var(--text-sec); min-width: 100px; font-weight: 600; }
+        
+        /* Controls */
+        .control-group { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+        .input-item { display: flex; flex-direction: column; gap: 0.4rem; }
+        label { font-size: 0.85rem; color: var(--text-sec); font-weight: 600; display: flex; justify-content: space-between; }
+        .val-badge { color: var(--accent); }
+        input[type="range"] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: var(--accent); cursor: pointer; margin-top: -6px; box-shadow: 0 0 10px var(--accent-soft); }
+        input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: rgba(255,255,255,0.1); border-radius: 2px; }
+        
+        .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: auto; padding-top: 1.5rem; }
+        button { padding: 0.75rem 1rem; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+        .btn-primary { background: linear-gradient(135deg, #14b8a6, #3b82f6); color: white; }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-primary.running { background: #f59e0b; }
+        .btn-secondary { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid var(--border); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.15); }
+        
+        .chart-wrapper { position: relative; height: 280px; width: 100%; margin-top: 1rem; }
+        
+        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem; }
+        .stat-box { background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 12px; text-align: center; border: 1px solid var(--border); }
+        .stat-box .label { font-size: 0.8rem; color: var(--text-sec); margin-bottom: 0.3rem; }
+        .stat-box .value { font-size: 1.3rem; font-weight: 700; color: #fff; }
+        .stat-box.k-val .value { color: var(--capital); }
+        .stat-box.y-val .value { color: var(--income); }
+        .stat-box.s-val .value { color: var(--savings); }
+        .stat-box.d-val .value { color: var(--depreciation); }
+        
+        @media (max-width: 600px) {
+            .cycle-diagram { flex-direction: column; }
+            .cycle-arrow { transform: rotate(90deg); margin: 0.5rem 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav-bar">
+        <a href="../index.html" class="nav-back">← 목차</a>
+        <span class="chapter-badge">제 10장 실습</span>
+    </nav>
+
+    <header>
+        <h1>근검절약 정신과 자본축적</h1>
+        <p class="subtitle">
+            새마을운동의 핵심 정신인 '근검절약'이 어떻게 국가 경제의 자본 축적으로 이어졌는지,<br>
+            <strong>소득생산 → 저축 → 투자 → 일인당 자본 증가</strong>의 선순환 구조(솔로우 모형 기반)를 통해 시뮬레이션해 봅니다.
+        </p>
+    </header>
+
+    <main class="main-content">
+        
+        <!-- 왼쪽: 이론 및 선순환 다이어그램 -->
+        <section class="card">
+            <h2>🔄 자본 축적의 선순환 구조</h2>
+            
+            <div class="cycle-diagram">
+                <div class="cycle-node income">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.2rem;">🏭</div>
+                    소득 생산<br><span style="font-size: 0.8rem; color: #94a3b8;">\(y = f(k)\)</span>
+                </div>
+                <div class="cycle-arrow">➔</div>
+                <div class="cycle-node savings">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.2rem;">💰</div>
+                    저축<br><span style="font-size: 0.8rem; color: #94a3b8;">\(sy\)</span>
+                </div>
+                <div class="cycle-arrow">➔</div>
+                <div class="cycle-node investment">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.2rem;">📈</div>
+                    투자<br><span style="font-size: 0.8rem; color: #94a3b8;">\(i = sy\)</span>
+                </div>
+                <div class="cycle-arrow">➔</div>
+                <div class="cycle-node capital">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.2rem;">🏗️</div>
+                    일인당 자본<br><span style="font-size: 0.8rem; color: #94a3b8;">\(\Delta k\)</span>
+                </div>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-item">
+                    <span class="f-label">자본의 변화량:</span>
+                    <span>\(\Delta k = s \cdot f(k) - \delta \cdot k\)</span>
+                </div>
+                <div style="margin-top: 1rem; color: var(--text-sec); font-size: 0.9rem;">
+                    * <strong>저축률(s)</strong>이 높을수록 새로운 투자가 늘어나 자본이 증가하지만, 기존 자본은 <strong>감가상각(\(\delta\))</strong>에 의해 꾸준히 마모됩니다.<br>
+                    * 새마을운동은 근검절약을 통해 이 <strong>저축률(s)</strong>을 비약적으로 끌어올려 경제 성장의 엔진을 가동했습니다.
+                </div>
+            </div>
+
+            <div class="chart-wrapper">
+                <canvas id="steadyStateChart"></canvas>
+            </div>
+            <div style="text-align: center; font-size: 0.8rem; color: var(--text-sec); margin-top: 0.5rem;">
+                솔로우 모형: 저축 곡선(\(sf(k)\))과 감가상각 직선(\(\delta k\))이 만나는 점이 <strong>균제상태(Steady State)</strong>입니다.
+            </div>
+        </section>
+
+        <!-- 오른쪽: 인터랙티브 시뮬레이터 -->
+        <section class="card">
+            <h2>⚙️ 경제 성장 시뮬레이터</h2>
+            
+            <div class="control-group">
+                <div class="input-item">
+                    <label>저축률 (s) <span class="val-badge" id="valS">20%</span></label>
+                    <input type="range" id="inputS" min="0" max="1" step="0.01" value="0.2">
+                </div>
+                <div class="input-item">
+                    <label>감가상각률 (\(\delta\)) <span class="val-badge" id="valD">10%</span></label>
+                    <input type="range" id="inputD" min="0.01" max="0.3" step="0.01" value="0.1">
+                </div>
+                <div class="input-item">
+                    <label>초기 1인당 자본 (k₀) <span class="val-badge" id="valK0">1.0</span></label>
+                    <input type="range" id="inputK0" min="0.1" max="10" step="0.1" value="1.0">
+                </div>
+                <div class="input-item">
+                    <label>기술/생산성 (A) <span class="val-badge" id="valA">1.0</span></label>
+                    <input type="range" id="inputA" min="0.5" max="3" step="0.1" value="1.0">
+                </div>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-box k-val">
+                    <div class="label">현재 자본 (k)</div>
+                    <div class="value" id="statK">1.00</div>
+                </div>
+                <div class="stat-box y-val">
+                    <div class="label">소득/생산량 (y)</div>
+                    <div class="value" id="statY">1.00</div>
+                </div>
+                <div class="stat-box s-val">
+                    <div class="label">신규 투자 (저축)</div>
+                    <div class="value" id="statS">0.20</div>
+                </div>
+                <div class="stat-box d-val">
+                    <div class="label">감가상각 (마모)</div>
+                    <div class="value" id="statD">0.10</div>
+                </div>
+            </div>
+
+            <div class="chart-wrapper">
+                <canvas id="timeSeriesChart"></canvas>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-secondary" onclick="resetSim()">🔄 초기화</button>
+                <button class="btn-primary" id="startBtn" onclick="toggleSim()">▶ 시뮬레이션 시작</button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer style="margin-top: 3rem; text-align: center; color: var(--text-sec); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 2rem; width: 100%; max-width: 1000px;">
+        © 2026 Saemaul Seminar Project - Capital Accumulation Simulator
+    </footer>
+
+    <script>
+        // 시뮬레이션 변수
+        let time = 0;
+        let k = 1.0;
+        const alpha = 0.5; // 자본소득분배율 (Cobb-Douglas: y = A * k^alpha)
+        
+        let isRunning = false;
+        let timer = null;
+
+        let historyTime = [];
+        let historyK = [];
+        let historyY = [];
+
+        // 차트 객체
+        let ssChartInstance = null;
+        let tsChartInstance = null;
+
+        window.onload = () => {
+            // UI 리스너 연동
+            ['inputS', 'inputD', 'inputK0', 'inputA'].forEach(id => {
+                document.getElementById(id).addEventListener('input', () => {
+                    updateLabels();
+                    if (!isRunning && id === 'inputK0') {
+                        k = parseFloat(document.getElementById('inputK0').value);
+                        updateStats();
+                        updateTimeSeriesChart(); // update dot
+                    }
+                    drawSteadyStateChart();
+                });
+            });
+
+            initCharts();
+            resetSim();
+        };
+
+        function updateLabels() {
+            document.getElementById('valS').textContent = (parseFloat(document.getElementById('inputS').value) * 100).toFixed(0) + '%';
+            document.getElementById('valD').textContent = (parseFloat(document.getElementById('inputD').value) * 100).toFixed(0) + '%';
+            document.getElementById('valK0').textContent = parseFloat(document.getElementById('inputK0').value).toFixed(1);
+            document.getElementById('valA').textContent = parseFloat(document.getElementById('inputA').value).toFixed(1);
+        }
+
+        function resetSim() {
+            stopSim();
+            time = 0;
+            k = parseFloat(document.getElementById('inputK0').value);
+            
+            historyTime = [time];
+            historyK = [k];
+            
+            let A = parseFloat(document.getElementById('inputA').value);
+            let y = A * Math.pow(k, alpha);
+            historyY = [y];
+
+            updateStats();
+            updateTimeSeriesChart();
+            drawSteadyStateChart();
+        }
+
+        function toggleSim() {
+            if (isRunning) stopSim();
+            else startSim();
+        }
+
+        function startSim() {
+            isRunning = true;
+            const btn = document.getElementById('startBtn');
+            btn.innerHTML = '⏸ 일시 정지';
+            btn.classList.add('running');
+            timer = setInterval(step, 150);
+        }
+
+        function stopSim() {
+            isRunning = false;
+            const btn = document.getElementById('startBtn');
+            btn.innerHTML = '▶ 시뮬레이션 시작';
+            btn.classList.remove('running');
+            clearInterval(timer);
+        }
+
+        function step() {
+            const s = parseFloat(document.getElementById('inputS').value);
+            const delta = parseFloat(document.getElementById('inputD').value);
+            const A = parseFloat(document.getElementById('inputA').value);
+
+            let y = A * Math.pow(k, alpha);
+            let savings = s * y;
+            let dep = delta * k;
+            
+            let deltaK = savings - dep;
+            k = k + deltaK;
+            if (k < 0) k = 0;
+            time++;
+
+            historyTime.push(time);
+            historyK.push(k);
+            historyY.push(A * Math.pow(k, alpha));
+
+            if (historyTime.length > 200) {
+                historyTime.shift();
+                historyK.shift();
+                historyY.shift();
+            }
+
+            updateStats();
+            updateTimeSeriesChart();
+            drawSteadyStateChart(); // To update the current dot on steady state chart
+
+            // 균제상태 도달 확인 (변화량이 극히 작을 때)
+            if (Math.abs(deltaK) < 0.001 && time > 10) {
+                stopSim();
+            }
+        }
+
+        function updateStats() {
+            const s = parseFloat(document.getElementById('inputS').value);
+            const delta = parseFloat(document.getElementById('inputD').value);
+            const A = parseFloat(document.getElementById('inputA').value);
+
+            let y = A * Math.pow(k, alpha);
+            let savings = s * y;
+            let dep = delta * k;
+
+            document.getElementById('statK').textContent = k.toFixed(2);
+            document.getElementById('statY').textContent = y.toFixed(2);
+            document.getElementById('statS').textContent = savings.toFixed(2);
+            document.getElementById('statD').textContent = dep.toFixed(2);
+        }
+
+        function initCharts() {
+            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.font.family = "'Pretendard', sans-serif";
+            
+            // 시계열 차트
+            const ctxTS = document.getElementById('timeSeriesChart').getContext('2d');
+            tsChartInstance = new Chart(ctxTS, {
+                type: 'line',
+                data: {
+                    labels: historyTime,
+                    datasets: [
+                        {
+                            label: '1인당 자본 (k)',
+                            data: historyK,
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.1,
+                            pointRadius: 0
+                        },
+                        {
+                            label: '소득 (y)',
+                            data: historyY,
+                            borderColor: '#10b981',
+                            borderWidth: 2,
+                            tension: 0.1,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    interaction: { intersect: false, mode: 'index' },
+                    scales: {
+                        x: { display: false },
+                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    },
+                    plugins: { legend: { position: 'top' } }
+                }
+            });
+
+            // 균제상태(Steady State) 차트
+            const ctxSS = document.getElementById('steadyStateChart').getContext('2d');
+            ssChartInstance = new Chart(ctxSS, {
+                type: 'line',
+                data: { labels: [], datasets: [] },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: { duration: 0 },
+                    elements: { point: { radius: 0 } },
+                    scales: {
+                        x: { 
+                            title: { display: true, text: '자본 (k)' }, 
+                            grid: { display: false },
+                            ticks: { maxTicksLimit: 8 }
+                        },
+                        y: { 
+                            title: { display: true, text: '규모' }, 
+                            beginAtZero: true, 
+                            grid: { color: 'rgba(255,255,255,0.05)' } 
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+        }
+
+        function updateTimeSeriesChart() {
+            tsChartInstance.data.labels = historyTime;
+            tsChartInstance.data.datasets[0].data = historyK;
+            tsChartInstance.data.datasets[1].data = historyY;
+            tsChartInstance.update();
+        }
+
+        function drawSteadyStateChart() {
+            const s = parseFloat(document.getElementById('inputS').value);
+            const delta = parseFloat(document.getElementById('inputD').value);
+            const A = parseFloat(document.getElementById('inputA').value);
+
+            let k_star = Math.pow((s * A) / delta, 1 / (1 - alpha));
+            let maxK = Math.max(10, k_star * 1.5);
+            
+            let labels = [];
+            let dataSavings = [];
+            let dataDep = [];
+            let dataOutput = [];
+            
+            // Add point for current K
+            let currentKPoint = [];
+
+            for (let i = 0; i <= maxK; i += maxK/50) {
+                labels.push(i.toFixed(1));
+                let y = A * Math.pow(i, alpha);
+                dataOutput.push(y);
+                dataSavings.push(s * y);
+                dataDep.push(delta * i);
+                
+                if (Math.abs(i - k) < (maxK/50)/2) {
+                    currentKPoint.push(s * A * Math.pow(k, alpha));
+                } else {
+                    currentKPoint.push(null);
+                }
+            }
+
+            ssChartInstance.data.labels = labels;
+            ssChartInstance.data.datasets = [
+                {
+                    label: '생산 f(k)',
+                    data: dataOutput,
+                    borderColor: '#10b981',
+                    borderWidth: 2,
+                    borderDash: [5, 5]
+                },
+                {
+                    label: '저축 sf(k)',
+                    data: dataSavings,
+                    borderColor: '#3b82f6',
+                    borderWidth: 2
+                },
+                {
+                    label: '감가상각 δk',
+                    data: dataDep,
+                    borderColor: '#ef4444',
+                    borderWidth: 2
+                },
+                {
+                    label: '현재 위치',
+                    data: currentKPoint,
+                    borderColor: '#f59e0b',
+                    backgroundColor: '#f59e0b',
+                    pointRadius: 6,
+                    pointStyle: 'circle',
+                    showLine: false
+                }
+            ];
+            ssChartInstance.update();
+        }
+    </script>
+</body>
+</html>
