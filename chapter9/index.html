@@ -456,8 +456,9 @@
             </div>
 
             <div class="action-buttons">
-                <button class="btn-secondary" onclick="resetSim()">🔄 초기화</button>
-                <button class="btn-primary" id="startBtn" onclick="toggleSim()">▶ 시작</button>
+                <button class="btn-secondary" onclick="resetSim(false)">🎲 무작위 초기화</button>
+                <button class="btn-secondary" onclick="resetSim(true)" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: #10b981;">🧩 클러스터 초기화</button>
+                <button class="btn-primary" id="startBtn" onclick="toggleSim()" style="grid-column: 1 / -1;">▶ 시작</button>
             </div>
         </section>
 
@@ -549,8 +550,10 @@
         };
 
         function updateAnalysis() {
-            const b = parseFloat(document.getElementById('inputB').value) || 1;
-            const c = parseFloat(document.getElementById('inputC').value) || 0.1;
+            const bVal = parseFloat(document.getElementById('inputB').value);
+            const b = isNaN(bVal) ? 1 : bVal;
+            const cVal = parseFloat(document.getElementById('inputC').value);
+            const c = isNaN(cVal) ? 0.1 : cVal;
             const k = parseInt(document.getElementById('selectK').value);
 
             const ratio = b / c;
@@ -573,19 +576,39 @@
         }
 
         // ── 시뮬레이터 코어 논리 ──
-        function resetSim() {
+        function resetSim(isClustered = false) {
             stopSim();
             generation = 0;
             grid = Array.from({length: gridSize}, () => Array(gridSize).fill(0));
             nextGrid = Array.from({length: gridSize}, () => Array(gridSize).fill(0));
             payoffs = Array.from({length: gridSize}, () => Array(gridSize).fill(0));
 
-            const initCoopRatio = parseFloat(document.getElementById('inputInit').value) || 0.4;
+            const initVal = parseFloat(document.getElementById('inputInit').value);
+            const initCoopRatio = isNaN(initVal) ? 0.4 : initVal;
 
             // 랜덤 그리드 생성
             for (let y = 0; y < gridSize; y++) {
                 for (let x = 0; x < gridSize; x++) {
                     grid[y][x] = Math.random() < initCoopRatio ? 1 : 0;
+                }
+            }
+
+            // 클러스터 구조화: 셀룰러 오토마타 (Majority Rule)
+            if (isClustered) {
+                for (let s = 0; s < 3; s++) {
+                    let tempGrid = Array.from({length: gridSize}, () => Array(gridSize).fill(0));
+                    for (let y = 0; y < gridSize; y++) {
+                        for (let x = 0; x < gridSize; x++) {
+                            let cCount = 0;
+                            for (let dy = -1; dy <= 1; dy++) {
+                                for (let dx = -1; dx <= 1; dx++) {
+                                    if (grid[(y + dy + gridSize) % gridSize][(x + dx + gridSize) % gridSize] === 1) cCount++;
+                                }
+                            }
+                            tempGrid[y][x] = cCount >= 5 ? 1 : 0;
+                        }
+                    }
+                    grid = tempGrid;
                 }
             }
 
@@ -663,10 +686,13 @@
 
         // 1세대 전진
         function step() {
-            const b = parseFloat(document.getElementById('inputB').value) || 8;
-            const c = parseFloat(document.getElementById('inputC').value) || 1;
+            const bVal = parseFloat(document.getElementById('inputB').value);
+            const b = isNaN(bVal) ? 8 : bVal;
+            const cVal = parseFloat(document.getElementById('inputC').value);
+            const c = isNaN(cVal) ? 1 : cVal;
             const k = parseInt(document.getElementById('selectK').value);
-            const noise = parseFloat(document.getElementById('inputNoise').value) || 0.005;
+            const noiseVal = parseFloat(document.getElementById('inputNoise').value);
+            const noise = isNaN(noiseVal) ? 0.005 : noiseVal;
 
             // 1. 모든 개체 보수 계산
             for (let y = 0; y < gridSize; y++) {
