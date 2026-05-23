@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제11장 — 내생적 성장이론과 실천을 통한 학습</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Externalized Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="nav-bar">
+        <a href="../index.html" class="nav-back">← 목차</a>
+        <span class="chapter-badge">제 11장 이론 대화방</span>
+    </nav>
+
+    <header>
+        <h1>제 11 장 내생적 성장이론과 실천을 통한 학습(Learning-by-Doing)</h1>
+        <p class="subtitle">
+            새마을운동의 주역인 농민들이 삽과 곡괭이를 직접 들고 현장에서 부딪치며 체득한 실천적 숙련(LBD)이<br>
+            어떻게 국가 전체의 한계생산 체감 없는 내생적 경제 성장과 자립을 달성했는지 이론적으로 규명합니다.
+        </p>
+    </header>
+
+    <!-- Slide Navigation Top Bar -->
+    <div class="slide-navigation-bar">
+        <div class="progress-container">
+            <div class="progress-bar" id="topProgressBar"></div>
+        </div>
+        <div class="slide-tabs">
+            <button class="slide-tab active" id="tab1" onclick="goToSlide(1)"><span>01. 개관</span>솔로우의 한계</button>
+            <button class="slide-tab" id="tab2" onclick="goToSlide(2)"><span>02. AK 모형</span>endless 성장</button>
+            <button class="slide-tab" id="tab3" onclick="goToSlide(3)"><span>03. LBD 이론</span>실천을 통한 학습</button>
+            <button class="slide-tab" id="tab4" onclick="goToSlide(4)"><span>04. 새마을 LBD</span>일하며 배우는 농민</button>
+            <button class="slide-tab" id="tab5" onclick="goToSlide(5)"><span>05. Spillover</span>지식 전파 & 도약</button>
+        </div>
+    </div>
+
+    <main class="main-content">
+        
+        <!-- Left Panel: Slide Explanations -->
+        <section class="card">
+            <div class="slide-content-wrapper" id="slideContainer">
+                
+                <!-- Slide 1 -->
+                <div class="slide-content active" id="slide1">
+                    <div class="slide-num">01 / 05 — 도입부</div>
+                    <h3>🧠 외생적 성장론의 늪과 내생적 기술 진보</h3>
+                    <div class="slide-text">
+                        <p>앞서 다룬 로버트 솔로우(Robert Solow)의 신고전학파 성장모형은 자본의 축적 과정을 훌륭하게 규명했으나, 한계가 뚜렷했습니다. 바로 경제의 장기 성장을 결정하는 가장 결정적 요소인 **'기술진보(\(A\))'**를 스스로 해명하지 못하고, 모형 외부에서 주어지는 '하늘에서 뚝 떨어지는 외생적 변수'로 취급했다는 점입니다.</p>
+                        
+                        <p>또한 솔로우 모형에 의하면, 자본이 쌓일수록 생산 효율성이 떨어지는 **'자본의 한계생산체감 현상'**이 반드시 발생하므로, 독자적인 기술 혁신이 없는 한 모든 국가는 결국 성장이 멈추는 안정상태(Steady State)에 도달해 성장이 영구히 정체됩니다.</p>
+                        
+                        <p>이러한 한계를 전면 극복하고 1980년대 후반에 탄생한 혁신적 이론이 바로 **'내생적 성장이론(Endogenous Growth Theory)'**입니다.</p>
+                        
+                        <div class="saemaul-box">
+                            <strong>💡 핵심 패러다임의 혁신:</strong><br>
+                            폴 로머(Paul Romer), 케네스 애로우(Kenneth Arrow) 등의 석학들은 기술과 지식, 인적 자본(Human Capital)은 외생적으로 주어지는 것이 아니라, **경제 주체들의 교육 투자, 노하우 축적, 실천적 행위 속에서 '내생적(Endogenous)'으로 개발·누적되는 것**임을 수학적으로 증명해냈습니다.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="slide-content" id="slide2">
+                    <div class="slide-num">02 / 05 — Romer의 AK 모형</div>
+                    <h3>🚀 AK 모형: 한계생산체감 장벽의 파괴</h3>
+                    <div class="slide-text">
+                        <p>내생적 성장이론의 가장 대표적이고 직관적인 모형은 **폴 로머(Paul Romer)의 AK 모형**입니다. 이 모형의 총생산함수는 놀랍도록 단순합니다:</p>
+                        
+                        <div class="math-block">
+                            \[Y = A \cdot K\]
+                        </div>
+                        
+                        <p>여기서 \(A\)는 기술 및 소득 효율성 상수이며, 중요한 것은 **자본 \(K\)의 성격**입니다. AK 모형에서 자본은 공장의 굴뚝이나 단순한 기계 같은 물리적 자본(Physical Capital)에만 국한되지 않습니다. 경제 주체들의 머릿속에 축적된 **'지식(Knowledge)'**과 **'인적 자본(Human Capital)'**을 모두 결합한 '광의의 자본'을 의미합니다.</p>
+                        
+                        <p><strong>왜 한계생산성이 체감하지 않는가?</strong><br>
+                        지식과 아이디어는 물건이나 땅과 달리 내가 써도 남이 동시에 쓸 수 있는 **'비경합성(Non-rivalry)'**과 사용에 막대한 돈이 들지 않는 **'양의 외부성(Positive Externality)'**을 가집니다. 지식이 누적될수록 기존 지식을 딛고 더 쉽게 새 지식이 창출되므로, 자본이 쌓여도 한계생산성(\(A\))이 전혀 감소하지 않고 일정하게 유지됩니다.</p>
+                        
+                        <div class="saemaul-box">
+                            <strong>📈 끊임없는 성장(Endless Growth):</strong><br>
+                            한계생산이 무뎌지지 않기 때문에, 투자를 지속해 자본(\(K\))을 늘리면 경제는 솔로우 모형처럼 특정 균제 상태에 갇혀 정체되지 않고, **장기적으로 둔화 없이 영구히 우상향 성장**할 수 있게 됩니다.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="slide-content" id="slide3">
+                    <div class="slide-num">03 / 05 — LBD 이론</div>
+                    <h3>🛠️ 실천을 통한 학습 (Learning by Doing)</h3>
+                    <div class="slide-text">
+                        <p>그렇다면 지속적 성장을 견인하는 '지식'과 '숙련'은 어떻게 축적될까요? 노벨경제학상 수상자 **케네스 애로우(Kenneth Arrow, 1962)** 교수는 학교 강단에서의 이론 교육뿐만 아니라, **실제 작업 현장에서 직접 무언가를 생산하고 수행하는 '실천적 행위(Doing)'** 속에서 노하우가 축적된다고 주장했습니다.</p>
+                        
+                        <p>그것이 바로 **실천을 통한 학습(Learning-by-Doing, LBD)** 이론입니다. 애로우는 생산을 해본 경험(누적 조업량, \(G\))이 많아질수록 노동자들의 숙련(인적 자본, \(H\))이 올라가며 생산성이 고도로 발달한다는 점을 수학적 함수로 규명했습니다:</p>
+                        <div class="math-block">
+                            \[H_t = B \cdot G_t^\theta \quad (0 < \theta < 1)\]
+                        </div>
+                        <p>여기서 \(\theta\)는 학습계수(Learning Rate)이며, 경험(\(G\))이 누적될수록 인적 숙련도(\(H\))는 강력한 탄력을 받아 도약합니다. 이로 인해 동일한 노동을 투입하더라도 지식과 노하우 축적 덕분에 **추가 1단위 생산에 요구되는 소요 시간이나 비용이 기하급수적으로 감소**합니다.</p>
+                        
+                        <p>이를 산업 공학 및 거시경제학에서는 **'학습 곡선(Learning Curve)'**이라고 칭합니다.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 4 -->
+                <div class="slide-content" id="slide4">
+                    <div class="slide-num">04 / 05 — 새마을 LBD 실증</div>
+                    <h3>🌾 "일하며 배우고 배우며 일한다" : 새마을의 LBD</h3>
+                    <div class="slide-text">
+                        <p>새마을운동은 애로우의 '실천을 통한 학습(Learning-by-Doing)' 이론을 전 국가적 농촌 개발 단위에서 가장 성공적으로 입증해 낸 역사적 실증 모델입니다. 새마을운동의 구호 중 가장 과학적인 문구가 바로 **"배우면서 일하고, 일하면서 배우자"**였습니다.</p>
+                        
+                        <p>정부는 농민들에게 다 완성된 전기 시설이나 교량을 무료로 지어 배급하지 않았습니다. 대신 시멘트 335포대와 설계 가이드라인만을 지원하고, **주민들이 직접 삽과 곡괭이를 들고 몸으로 부딪쳐 길을 넓히고 교량을 설계·시공(Doing)하도록** 유도했습니다.</p>
+                        
+                        <div class="saemaul-box">
+                            <strong>🌉 현장에서 내생적으로 싹튼 기술 자본:</strong><br>
+                            - 주민들은 다리를 직접 가설해 보며 철근을 엮는 기술, 시멘트 물 배합의 적정 비율, 하천의 유량을 견디는 각도 계산법을 **현장 실천 속에서 체득(Learning)**했습니다.<br>
+                            - 한 번 전기 가설과 교량 시공을 성공해 본 부락은 다음 차례의 용배수로 정비, 농로 포장 사업 때 **압도적으로 적은 예산과 반으로 줄어든 노동력**만으로도 사업을 완수하는 비약적 효율성 도약을 달성했습니다.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 5 -->
+                <div class="slide-content" id="slide5">
+                    <div class="slide-num">05 / 05 — 지식의 넘침 (Spillover)</div>
+                    <h3>🌐 지식 외부성(Spillover)과 부락 공동체 동반 도약</h3>
+                    <div class="slide-text">
+                        <p>내생적 성장이론에서 지식이 가지는 가장 위대한 사회적 성격은 담장을 넘어 흘러가는 **'지식의 넘침 효과(Knowledge Spillover, 지식 외부성)'**입니다.</p>
+                        
+                        <p>한 마을에서 실천적 노력(LBD)을 통해 교량 가설법이나 조직 운영 지식을 습득하면, 이 지식은 비경합적이므로 그 마을에만 갇혀 있지 않습니다. 이웃 마을 주민들이 와서 구경하고 대화하는 과정에서 **이웃 부락으로 급속도로 지식이 유출·전파**됩니다.</p>
+                        
+                        <p>이로 인해 개별 주민이나 부락의 학습 노하우가 사회 전체의 인적 자본을 동반 상승시키며 전체의 생산성을 고도로 끌어올리는 강력한 <strong>양의 외부성(Positive Externality)</strong>을 창출합니다.</p>
+                        
+                        <div class="saemaul-box">
+                            <strong>📢 새마을지도자 양성소와 전국 전파 네트워크:</strong><br>
+                            성공한 우수 부락의 새마을지도자(예: 경기 여주 목골마을, 충북 옥천 상례곡리 등)들이 농민교육원에 모여 전국의 농민들에게 자신들의 실천 성공담과 노하우를 강의하도록 시스템화했습니다. 이 교육 제도는 지식의 넘침 속도를 국가 차원에서 극대화하여, 대한민국 전체의 인적 자본 수준이 도미노처럼 동반 도약하게 만든 최적의 지식 허브였습니다.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Card Footer Navigation -->
+            <div class="card-footer">
+                <button class="btn-nav" id="prevBtn" onclick="prevSlide()" disabled>← 이전 단계</button>
+                <div class="slide-dots" id="slideDots">
+                    <span class="dot active" onclick="goToSlide(1)"></span>
+                    <span class="dot" onclick="goToSlide(2)"></span>
+                    <span class="dot" onclick="goToSlide(3)"></span>
+                    <span class="dot" onclick="goToSlide(4)"></span>
+                    <span class="dot" onclick="goToSlide(5)"></span>
+                </div>
+                <button class="btn-nav" id="nextBtn" onclick="nextSlide()">다음 단계 →</button>
+            </div>
+        </section>
+        
+        <!-- Right Panel: Synced Interactive Visualizer -->
+        <section class="card visualizer-card">
+            <div class="visualizer-header">
+                <h2 id="visTitle">🔄 성장의 두 갈래 길: Solow vs AK</h2>
+                <span class="badge" id="visBadge">이론 구조도</span>
+            </div>
+            
+            <div class="visualizer-body">
+                
+                <!-- Page 1 Visualizer: Glassmorphic Concept VS Map -->
+                <div class="vis-panel" id="visPanel1">
+                    <div class="concept-map">
+                        <div class="concept-side">
+                            <div class="concept-box-node solow-side">
+                                <h4>🔴 Solow 모형</h4>
+                                <p><strong>외생적 성장</strong></p>
+                                <p style="margin-top: 0.3rem;">자본의 한계생산성 체감<br>\(f''(k) < 0\)</p>
+                                <p style="margin-top: 0.3rem; font-size: 0.72rem; color: #ef4444;">결국 장기 성장이 멈추는 안정상태(Steady State) 도달</p>
+                            </div>
+                        </div>
+                        
+                        <div class="map-vs-arrow">VS</div>
+                        
+                        <div class="concept-side">
+                            <div class="concept-box-node romer-side">
+                                <h4>🟢 AK 내생적 모형</h4>
+                                <p><strong>지식 & 인적자본</strong></p>
+                                <p style="margin-top: 0.3rem;">한계생산성 일정 유지<br>\(Y = A \cdot K\)</p>
+                                <p style="margin-top: 0.3rem; font-size: 0.72rem; color: #10b981;">지식의 비경합성으로 한계생산체감 극복, 영구 성장</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-explanation">
+                        <strong>♻️ 솔로우 장벽을 파괴하는 내생적 성장의 힘:</strong><br>
+                        솔로우 모형은 물적 자본의 한계생산체감으로 인해 기술 외에 장기 성장이 불가능하다고 보았지만, 로머의 내생적 성장이론(AK 모형)은 **인적 자본과 아이디어(지식)의 지속 누적**을 통해 자본 생산성을 영구히 일정하게 유지시켜 끊임없는 자립적 도약을 완성할 수 있음을 증명합니다.
+                    </div>
+                </div>
+
+                <!-- Page 2 to 5 Chart Canvas Area -->
+                <div class="vis-panel hidden" id="visChartArea">
+                    <!-- Standard main chart -->
+                    <div class="chart-wrapper" id="mainChartWrapper">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+
+                    <!-- Slide 5 Network Simulator (Spillover Grid Animation) -->
+                    <div class="network-container hidden" id="villageNetwork">
+                        <div class="grid-villages" id="villageGrid">
+                            <!-- JS will inject 16 village nodes here -->
+                        </div>
+                    </div>
+
+                    <!-- Slide Controls Area -->
+                    <div class="controls-panel">
+                        
+                        <!-- Slide 2: AK vs Solow Dynamic comparison -->
+                        <div id="controlPanel2" class="hidden">
+                            <div class="sliders-grid">
+                                <div class="slider-item" style="grid-column: 1 / -1;">
+                                    <label>인적 자본 및 지식 축적 속도 (\(A\)) <span class="val-badge" id="sliderValA">1.8</span></label>
+                                    <input type="range" id="inputA" min="1.0" max="3.0" step="0.1" value="1.8">
+                                </div>
+                            </div>
+                            <p class="panel-hint" style="margin-top: 0.6rem;">
+                                슬라이더를 흔들어 **지식 축적의 강도(\(A\))**를 높여 보십시오. Solow 모형은 한계가 체감되어 평평해지는 반면, AK 모형은 지식 자본 축적에 반응해 **성장률의 기울기 자체가 영구히 가팔라지는 끝없는 도약**을 시각화합니다.
+                            </p>
+                        </div>
+
+                        <!-- Slide 3: Learning by Doing (Arrow Learning Curve) -->
+                        <div id="controlPanel3" class="hidden">
+                            <div class="sliders-grid">
+                                <div class="slider-item">
+                                    <label>학습 속도 계수 (\(\theta\)) <span class="val-badge" id="sliderValTheta">0.45</span></label>
+                                    <input type="range" id="inputTheta" min="0.1" max="0.8" step="0.05" value="0.45">
+                                </div>
+                                <div class="slider-item">
+                                    <label>초기 필요 공수 (\(B\)) <span class="val-badge" id="sliderValB">100시간</span></label>
+                                    <input type="range" id="inputB" min="40" max="150" step="5" value="100">
+                                </div>
+                            </div>
+                            <p class="panel-hint" style="margin-top: 0.6rem;">
+                                실천(\(Doing\)) 횟수가 거듭될수록 **생산 1단위당 소요되는 노동 시간(시간비용)이 학습 효과로 인해 급격히 감소**하는 학습 곡선(Learning Curve)입니다. 학습 속도 \(\theta\)를 높이면 감소 속도가 비약적으로 빨라집니다.
+                            </p>
+                        </div>
+
+                        <!-- Slide 4: Saemaul Bridge construction simulator -->
+                        <div id="controlPanel4" class="hidden">
+                            <div class="sim-btn-wrapper">
+                                <button class="btn-sim-play" id="btnPlay4" onclick="playSaemaulLBD()">▶ 새마을 교량가설 프로젝트 반복 실행</button>
+                                <button class="btn-sim-reset" onclick="resetSaemaulLBD()">🔄 초기화</button>
+                            </div>
+                            <p class="panel-hint" style="margin-top: 0.6rem;">
+                                주민들이 교량 가설 사업을 1회, 2회, 5회 반복 시도하며 **토목 지식과 노하우(인적자본)를 스스로 몸소 습득(Learning-by-Doing)**하는 시뮬레이션입니다. 매 시행마다 필요한 노동 공수가 기하급수적으로 단축되어 감을 실감나게 재현합니다.
+                            </p>
+                        </div>
+
+                        <!-- Slide 5: Knowledge Spillover Dominos -->
+                        <div id="controlPanel5" class="hidden">
+                            <div class="sim-btn-wrapper">
+                                <button class="btn-sim-play" id="btnPlay5" onclick="playSpillover()">▶ 새마을지도자 양성소 지식 전파 실행</button>
+                                <button class="btn-sim-reset" onclick="resetSpillover()">🔄 초기화</button>
+                            </div>
+                            <p class="panel-hint" style="margin-top: 0.6rem;">
+                                한 모범 우수 부락(선구자)의 기술 지식이 **새마을지도자 교류 교육을 타고 이웃 마을들로 흘러 넘쳐(Spillover)** 지역 경제권 전체가 동반 자립 숙련을 달성해내는 도미노식 넷워크 지식 전파를 재생합니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Live Stats badges -->
+                    <div class="stats-panel" id="badgePanel">
+                        <div class="stat-badge l-stat">
+                            <span class="label" id="statLabel1">조업/시간 (t)</span>
+                            <span class="value" id="statBadgeVal1">-</span>
+                        </div>
+                        <div class="stat-badge hc-stat">
+                            <span class="label" id="statLabel2">인적 자본 (H)</span>
+                            <span class="value" id="statBadgeVal2">-</span>
+                        </div>
+                        <div class="stat-badge eff-stat">
+                            <span class="label" id="statLabel3">소요 노동 공수</span>
+                            <span class="value" id="statBadgeVal3">-</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Academic Resource Section -->
+        <section class="card full-width citation-card">
+            <div class="citation-grid">
+                <div>
+                    <h3 class="citation-title">📚 내생적 성장론 및 실천을 통한 학습 거시경제 해설</h3>
+                    <p style="font-size: 0.92rem; color: var(--text-sec); line-height: 1.65; text-align: justify; margin-bottom: 0px;">
+                        케네스 애로우(Kenneth J. Arrow) 교수가 1962년 창안한 **'실천을 통한 학습(Learning by Doing)'** 이론과 폴 로머(Paul M. Romer) 교수의 **'내생적 기술 진보'** 모형은 현대 거시경제학에서 지속적인 경제 성장을 담보하는 유일한 원동력으로 '인적 지적 자본의 비경합성과 외부성'을 설정했습니다. <br>
+                        새마을운동은 주민들에게 물품과 완제품 인프라를 수동적으로 시혜하지 않고, 스스로의 실천 노동(Doing)을 통한 학습을 유도함으로써 감가상각과 솔로우 장벽을 영구히 파쇄하여, 가난한 소외 부락들이 일제히 고부가가치 현대식 경제 공동체로 동반 도약하는 놀라운 내생적 자립 메커니즘을 역사적으로 완벽히 완수한 기념비적인 실증 궤적입니다.
+                    </p>
+                </div>
+                <div class="citation-box">
+                    <div class="citation-item">
+                        <span class="cit-type">Arrow LBD Seminal Paper</span>
+                        <span class="cit-title">"The Economic Implications of Learning by Doing"</span>
+                        <span class="cit-author">Arrow, Kenneth J. (1962). <strong>Review of Economic Studies</strong>, Vol. 29, No. 3, pp. 155–173.</span>
+                    </div>
+                    <div class="citation-item">
+                        <span class="cit-type">Romer Endogenous Growth Paper</span>
+                        <span class="cit-title">"Endogenous Technological Change"</span>
+                        <span class="cit-author">Romer, Paul M. (1990). <strong>Journal of Political Economy</strong>, Vol. 98, No. 5, Part 2, pp. S71–S102. (2018 노벨경제학상 수상 근거 논문)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 아래쪽: 새마을운동 현장에서의 실천을 통한 학습 역사적 실증 사례 (Full Width) -->
+        <section class="card full-width" style="margin-top: 2rem;">
+            <h2>💎 새마을운동 현장의 '실천을 통한 학습'과 지식 전파 실증 사례</h2>
+            <div class="cases-grid">
+                
+                <div class="case-item">
+                    <span class="case-badge">경북 안동 구담마을</span>
+                    <h3 class="case-title">🌉 삽 하나로 이룩한 구담교 설계·시공과 토목 지식 획득</h3>
+                    <p class="case-desc">낙동강을 가로지르는 200m 대교(구담교) 가설을 위해 주민들은 설계 가이드만을 확보한 채 직접 강바닥에 우물을 파고 지지대를 세우는 **직접적인 토목 공사(Doing)**를 개시했습니다. 이 과정에서 시멘트 압착 기술과 수중 지지 공법 등 고난도의 토목 지식을 **현장 실천을 통해 내생적으로 체득(Learning-by-Doing)**했습니다. 시공 횟수가 증가하며 시행착오가 극소화되어 후반부 교각 공사는 초반 대비 3배 이상의 초고속 공기로 돌파하여 자립적 완성을 달성했습니다.</p>
+                </div>
+
+                <div class="case-item">
+                    <span class="case-badge">지식 넘침(Spillover) 실증</span>
+                    <h3 class="case-title">📢 새마을지도자 연수원의 지식 외부성 극대화 제도</h3>
+                    <p class="case-desc">한 모범 마을의 성공 지식을 전국적으로 빠르게 전파시키기 위해 정부는 **새마을지도자 연수원**을 개설하여 우수 마을 지도자가 직접 강단에 올라 자신들이 LBD로 획득한 시공 노하우와 주민 갈등 해결법을 강의하도록 구축했습니다. 강의를 들은 타지 부락 지도자들이 자신들의 마을로 복귀해 이를 이식함으로써 **지식의 거대한 넘침 효과(Knowledge Spillover)**를 창출해냈으며, 이는 전국의 인적 자본을 동시에 수직 상승시키는 결정적 촉매가 되었습니다.</p>
+                </div>
+
+                <div class="case-item">
+                    <span class="case-badge">경기 평택 상리마을</span>
+                    <h3 class="case-title">🚜 공동 영농단 조직과 신식 농기계 작동법 공동 학습</h3>
+                    <p class="case-desc">이앙기, 경운기 등 신형 대형 농기계를 최초 도입 시 사용법 미숙으로 잦은 고장과 비효율에 부딪쳤으나, 마을 청년들이 주축이 되어 직접 분해·조립하고 현장에서 흙을 파며 조작법을 익히는 **실천적 공동 학습(LBD)**을 실시했습니다. 이렇게 얻은 인적 기계 지식을 바탕으로 공동 구판장과 수리 센터를 가동하여, 농기계 가동 효율성을 초창기 대비 4배 격상시키고 쌀 생산력을 비약적으로 도약시켜 전형적인 춘궁기 빈곤을 극적으로 완전 퇴치했습니다.</p>
+                </div>
+
+                <div class="case-item">
+                    <span class="case-badge">경북 칠곡 지천면</span>
+                    <h3 class="case-title">🧶 부녀회 한지/양잠 부업 가내 가공 기술의 도미노 전파</h3>
+                    <p class="case-desc">한지 및 섬유 가공 공업을 농가 한쪽에서 양잠업과 연계하여 개발하기 위해 부녀회장들이 먼저 시범 농가에서 누에 치기와 섬유 자재 가공(Doing)을 실천했습니다. 이 과정에서 습득한 품질 향상 기술 숙련도는 이웃 부락 부녀회원들에게 전수되어 약 3개월 만에 지천면 내 12개 부락으로 **지식 유출(Spillover)**이 이루어졌습니다. 이는 가내 양잠 공업 협동조합 결성으로 결실을 맺어 농한기 유휴 노동력을 활용한 고부가가치 농외 소득 확보의 이정표를 썼습니다.</p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        © 2026 Saemaul Seminar Interactive Library - Endogenous Growth presentation Module
+    </footer>
+
+    <!-- Externalized JavaScript Logic -->
+    <script defer src="script.js"></script>
+</body>
+</html>
