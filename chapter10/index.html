@@ -219,6 +219,214 @@
             </div>
         </section>
 
+        <!-- 아래쪽: 새마을운동 역사적 저축/절약 실증 사례 연구 (Full Width) -->
+        <section class="card full-width" style="margin-top: 2rem;">
+            <h2>💎 새마을운동 역사적 저축·절약 실증 사례</h2>
+            <style>
+                .cases-grid {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 1.5rem;
+                    margin-bottom: 2.5rem;
+                }
+                @media (min-width: 768px) {
+                    .cases-grid {
+                        grid-template-columns: 1fr 1fr;
+                    }
+                }
+                .case-item {
+                    background: rgba(255, 255, 255, 0.02);
+                    border: 1px solid var(--border);
+                    border-radius: 16px;
+                    padding: 1.5rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.8rem;
+                    transition: all 0.25s;
+                }
+                .case-item:hover {
+                    transform: translateY(-2px);
+                    border-color: var(--accent);
+                    background: rgba(255, 255, 255, 0.04);
+                }
+                .case-badge {
+                    background: var(--accent-soft);
+                    color: var(--accent);
+                    padding: 0.2rem 0.6rem;
+                    border-radius: 8px;
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                    align-self: flex-start;
+                }
+                .case-title {
+                    font-size: 1.1rem;
+                    color: #fff;
+                    font-weight: 700;
+                }
+                .case-desc {
+                    font-size: 0.88rem;
+                    color: #cbd5e1;
+                    line-height: 1.6;
+                    text-align: justify;
+                }
+                
+                /* Geumgo interactive section */
+                .geumgo-section {
+                    border-top: 1px solid rgba(255, 255, 255, 0.08);
+                    padding-top: 2rem;
+                    margin-top: 1rem;
+                }
+                .geumgo-tabs {
+                    display: flex;
+                    gap: 0.5rem;
+                    margin-bottom: 1.2rem;
+                    overflow-x: auto;
+                    padding-bottom: 0.3rem;
+                }
+                .geumgo-tab {
+                    flex: 1;
+                    background: rgba(255,255,255,0.04);
+                    border: 1px solid var(--border);
+                    color: var(--text-sec);
+                    padding: 0.6rem;
+                    border-radius: 10px;
+                    font-size: 0.85rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    text-align: center;
+                    white-space: nowrap;
+                    min-width: 120px;
+                }
+                .geumgo-tab.active {
+                    background: var(--accent-soft);
+                    color: #fff;
+                    border-color: var(--accent);
+                    box-shadow: 0 0 10px var(--accent-soft);
+                }
+                .geumgo-display {
+                    background: rgba(0, 0, 0, 0.25);
+                    border: 1px solid var(--border);
+                    border-radius: 16px;
+                    padding: 1.5rem;
+                    min-height: 220px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+                    animation: fadeIn 0.3s ease;
+                }
+                .geumgo-display h4 {
+                    font-size: 1.15rem;
+                    color: #fff;
+                    font-weight: 800;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+                .geumgo-display ul {
+                    margin-left: 1.2rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    font-size: 0.9rem;
+                    color: #cbd5e1;
+                }
+                .geumgo-display ul strong {
+                    color: #fff;
+                }
+            </style>
+
+            <!-- 1. 마을 공동체 Frugality & Savings Cases -->
+            <div class="cases-grid">
+                <div class="case-item">
+                    <span class="case-badge">경기 여주 목골마을</span>
+                    <h3 class="case-title">🌾 절미저축과 공동 기금을 활용한 전기 가설</h3>
+                    <p class="case-desc">호롱불 생활을 탈피하고 전기를 들여오고자 했으나, 미래 자식 세대에 빚(융자)을 넘기지 않기 위해 자부담을 결정했습니다. 이때 <strong>부녀회원들이 매끼 밥을 지을 때 쌀 한 숟가락씩 아껴 저축한 '절미저축액'</strong>과 공동 구판장 수익을 모아 180만 원의 동네 기금을 사전 축적해 두었습니다. 덕분에 자부담액이 대폭 경감되어 전기를 성공적으로 가설했고, 이후 저축을 지속해 <strong>새마을금고 자금 1,000만 원 확보</strong>라는 금융 자립의 대들보를 마련했습니다.</p>
+                </div>
+                <div class="case-item">
+                    <span class="case-badge">충북 옥천 상례곡리</span>
+                    <h3 class="case-title">📞 부녀회 '장 안보기 운동' 및 113만 원 희사</h3>
+                    <p class="case-desc">정헌애 부녀회장은 쓸데없이 장터에 자주 나가서 돈을 낭비하는 것이 가난의 지름길이라 분석하고, 읍내 장터 출입을 원천 차단하는 <strong>'장 안보기 운동'</strong>과 <strong>'절미저축'</strong>을 추진했습니다. 이렇게 억척스럽게 모은 <strong>공동 기금 113만 원</strong>을 마을 전화 개통비(60만 원)와 상수도 설치비(53만 원)로 통째로 희사해 남성 주민들의 반목을 종식시키고 마을 경제 발전의 불씨를 당겨, 결국 <strong>대한민국 최우수 부락 상금 2,000만 원</strong> 수령의 기적을 낳았습니다.</p>
+                </div>
+                <div class="case-item">
+                    <span class="case-badge">경북 안동 구담교 가설</span>
+                    <h3 class="case-title">🌉 할머니들의 평생 숙원인 '관광 회비' 전액 기부</h3>
+                    <p class="case-desc">주민 스스로의 힘으로 낙동강을 가로지르는 대교(구담교)를 놓기 위해 마을 전체가 동참할 때, 구담동 부녀노인회 유필규 회장 외 14명의 할머니들은 평생 한 번 가보기도 힘든 효도 관광여행을 가기 위해 푼푼이 모아온 <strong>여행 회비 15만 원을 전액 희사</strong>했습니다. <em>"우리가 죽기 전에 다리 놓는 데 보태야 후손들이 산다"</em>라는 할머니들의 위대한 양보와 저축 자본 기부는 전체 주민들의 참여와 헌신을 폭발적으로 재개시키는 기폭제가 되었습니다.</p>
+                </div>
+                <div class="case-item">
+                    <span class="case-badge">강원 영월 도원1리</span>
+                    <h3 class="case-title">🏡 도박·술 청산과 절미저축을 통한 절량농가 퇴치</h3>
+                    <p class="case-desc">5일장마다 기승을 부렸던 낭비적 술 문화와 화투 도박 판을 완전히 청산하고, 농한기에 쉬는 손을 활용해 새끼 꼬기와 짚공예 등 연중 부업 체계를 정착시켰습니다. 부녀회가 추진한 절미저축 자본 덕분에 <strong>마을 내 춘궁기 굶주리는 절량 농가가 0%로 완전히 청산</strong>되었으며, 모인 저축 자본으로 57평 규모의 초현대식 복지회관과 창고를 신축하며 소득을 170만 원대로 비약적으로 도약시켰습니다.</p>
+                </div>
+            </div>
+
+            <!-- 2. 새마을금고(Geumgo) Micro Cases -->
+            <div class="geumgo-section">
+                <h3 class="case-title" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">🏦 새마을금고 금융 자본축적 성공 모델</h3>
+                <div class="geumgo-tabs">
+                    <button class="geumgo-tab active" id="gTab1" onclick="showGeumgoTab(1)">전주 금암금고</button>
+                    <button class="geumgo-tab" id="gTab2" onclick="showGeumgoTab(2)">인천 부흥실업금고</button>
+                    <button class="geumgo-tab" id="gTab3" onclick="showGeumgoTab(3)">삼성전자 직장금고</button>
+                </div>
+                <div class="geumgo-display" id="geumgoDisplay">
+                    <h4>🏦 전주 금암금고 (지역 금융 통합 및 복지 모델)</h4>
+                    <p>1977년 2월 회원 128명으로 출범하여 자산 23억 원대의 대형 금고로 성장을 거둔 지역 사회 상생의 훌륭한 예시입니다.</p>
+                    <ul>
+                        <li><strong>자본의 규모화</strong>: 지역 내 흩어진 영세 금고들을 전격 통합하여 투명한 신뢰 경영 구축.</li>
+                        <li><strong>고율 배당 실현</strong>: 건실하고 정직한 운영을 통해 주민들에게 고율 배당을 제공하여 공신력 획득.</li>
+                        <li><strong>물가 안정 기여</strong>: 1980년 복지 차원의 자체 슈퍼마켓을 개장하여 생필품을 초저가로 저렴하게 조달.</li>
+                        <li><strong>서민 금융 수호</strong>: 복지회관 무료 개방 및 영세 소외 회원을 대상으로 한 <strong>고리채 청산 사업</strong> 전개.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <script>
+                function showGeumgoTab(num) {
+                    for (let i = 1; i <= 3; i++) {
+                        const tab = document.getElementById('gTab' + i);
+                        if (i === num) tab.classList.add('active');
+                        else tab.classList.remove('active');
+                    }
+                    
+                    const display = document.getElementById('geumgoDisplay');
+                    if (num === 1) {
+                        display.innerHTML = `
+                            <h4>🏦 전주 금암금고 (지역 금융 통합 및 복지 모델)</h4>
+                            <p>1977년 2월 회원 128명으로 출범하여 자산 23억 원대의 대형 금고로 성장을 거둔 지역 사회 상생의 훌륭한 예시입니다.</p>
+                            <ul>
+                                <li><strong>자본의 규모화</strong>: 지역 내 흩어진 영세 금고들을 전격 통합하여 투명한 신뢰 경영 구축.</li>
+                                <li><strong>고율 배당 실현</strong>: 건실하고 정직한 운영을 통해 주민들에게 고율 배당을 제공하여 공신력 획득.</li>
+                                <li><strong>물가 안정 기여</strong>: 1980년 복지 차원의 자체 슈퍼마켓을 개장하여 생필품을 초저가로 저렴하게 조달.</li>
+                                <li><strong>서민 금융 수호</strong>: 복지회관 무료 개방 및 영세 소외 회원을 대상으로 한 <strong>고리채 청산 사업</strong> 전개.</li>
+                            </ul>
+                        `;
+                    } else if (num === 2) {
+                        display.innerHTML = `
+                            <h4>🤝 인천 부흥실업금고 (시장 영세상인 자립 지원)</h4>
+                            <p>부평 진흥자유시장 및 농수산물도매시장 상인들의 극심한 고리채 해결과 자립 복지를 목표로 가동된 사례입니다.</p>
+                            <ul>
+                                <li><strong>사채 고리채 청산</strong>: 시장 기능 회복과 상인 수호를 위해 400여만 원을 긴급 대부하여 고리채 수렁 해결.</li>
+                                <li><strong>생활 맞춤 금융</strong>: 새벽부터 장사를 여는 시장 특성에 적극 맞추어 하절기 6:30 조기 개점 운영.</li>
+                                <li><strong>잔돈 교환 편의</strong>: 매일 발생하는 엄청난 동전 교환 업무를 금고가 직접 지원해 상인 업무 효율 격상.</li>
+                                <li><strong>이웃 상생 실천</strong>: 장학금 지급 및 취약계층 방한복 무상 배부 등 지속적인 복지 헌신.</li>
+                            </ul>
+                        `;
+                    } else if (num === 3) {
+                        display.innerHTML = `
+                            <h4>💻 삼성전자 직장금고 (사원 복지 및 전산화의 모범)</h4>
+                            <p>1977년 사원 친목회인 '성전회'를 주축으로, 공장 근로자들이 근검절약하여 구축해 낸 최고 직장 금고 사례입니다.</p>
+                            <ul>
+                                <li><strong>복지 생활화</strong>: 사내 구판장, 인쇄소, 세탁소, 이발관 등을 염가로 운영해 사원의 실질 소득을 간접 지탱.</li>
+                                <li><strong>금융 전산화 선구</strong>: 1982년 대규모 자산의 투명 관리를 위해 Altos 컴퓨터를 전격 수입하여 <strong>업무 전산화 조기 완료</strong>.</li>
+                                <li><strong>노사 화합 공헌</strong>: 동호회비 및 사원 체육대회를 금고 수익으로 직접 보조하여 사내 생산성 증진.</li>
+                                <li><strong>지역 환원 기여</strong>: 마을 우체국 청사를 직접 신축하여 기부채납하는 등 남다른 공익 실천.</li>
+                            </ul>
+                        `;
+                    }
+                }
+            </script>
+        </section>
+
     </main>
 
     <footer style="margin-top: 3rem; text-align: center; color: var(--text-sec); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 2rem; width: 100%; max-width: 1000px;">
