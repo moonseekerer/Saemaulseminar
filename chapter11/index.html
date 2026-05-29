@@ -3,16 +3,726 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>제11장 — 내생적 성장이론과 실천을 통한 학습</title>
+    <title>제11장 — 내생적 성장이론과 실천을 통한 학습: Learning-by-Doing</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- KaTeX -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Externalized Stylesheet -->
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --bg: #090d16;
+            --surface: rgba(17, 24, 39, 0.7);
+            --surface-light: rgba(30, 41, 59, 0.9);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-active: rgba(99, 102, 241, 0.4);
+            --text: #f8fafc;
+            --text-sec: #94a3b8;
+            --accent: #6366f1; /* Premium Indigo */
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --savings: #818cf8; /* Light Indigo for investment */
+            --depreciation: #ef4444; /* Red for depreciation */
+            --income: #c084fc; /* Lavender for income */
+            --capital: #fbbf24; /* Gold for capital */
+            --learning: #ec4899; /* Magenta for learning-by-doing */
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(192, 132, 252, 0.12) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1.5rem 4rem;
+            line-height: 1.6;
+        }
+        /* Nav */
+        .nav-bar { width: 100%; max-width: 1100px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+        .nav-back { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; color: var(--text-sec); font-size: 0.9rem; padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); backdrop-filter: blur(8px); transition: all 0.25s; }
+        .nav-back:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+        .chapter-badge { background: var(--accent-glow); color: var(--accent); border: 1px solid rgba(99, 102, 241, 0.3); padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        
+        /* Header */
+        header { width: 100%; max-width: 1100px; margin-bottom: 2rem; text-align: center; }
+        h1 { font-size: 2.2rem; font-weight: 800; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+        .subtitle { color: var(--text-sec); font-size: 1rem; max-width: 800px; margin: 0 auto; }
+        
+        /* Slide Navigation Bar */
+        .slide-navigation-bar {
+            width: 100%;
+            max-width: 1100px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0.6rem;
+            margin-bottom: 1.8rem;
+            backdrop-filter: blur(12px);
+            position: relative;
+        }
+        .progress-container {
+            height: 4px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 2px;
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+            width: 100%;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--accent), var(--income));
+            width: 16.66%;
+            transition: width 0.3s ease;
+        }
+        .slide-tabs {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.4rem;
+            overflow-x: auto;
+        }
+        .slide-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-sec);
+            padding: 0.5rem 0.3rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            white-space: nowrap;
+            min-width: 90px;
+        }
+        .slide-tab:hover {
+            color: var(--text);
+            background: rgba(255,255,255,0.03);
+        }
+        .slide-tab.active {
+            color: #fff;
+            background: var(--accent-glow);
+            box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.2);
+        }
+        .slide-tab span {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--savings);
+            font-weight: 700;
+            margin-bottom: 0.1rem;
+        }
+        .slide-tab.active span {
+            color: #fff;
+        }
+
+        /* Main Content Layout */
+        .main-content {
+            width: 100%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 1.12fr 1fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 950px) {
+            .main-content { grid-template-columns: 1fr; }
+        }
+        
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.8rem;
+            backdrop-filter: blur(16px);
+            display: flex;
+            flex-direction: column;
+            min-height: 520px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .full-width { grid-column: 1 / -1; min-height: auto; }
+
+        /* Left Column: Slide Text Card Styles */
+        .slide-content-wrapper {
+            flex-grow: 1;
+            position: relative;
+        }
+        .slide-content {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .slide-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-num {
+            font-size: 0.8rem;
+            color: var(--savings);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.3rem;
+        }
+        .slide-content h3 {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 0.6rem;
+        }
+        .slide-text p {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+            line-height: 1.65;
+            text-align: justify;
+        }
+        .slide-text p strong {
+            color: #fff;
+        }
+        .math-block {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .saemaul-box {
+            background: rgba(99, 102, 241, 0.06);
+            border-left: 4px solid var(--accent);
+            padding: 1rem 1.1rem;
+            border-radius: 8px;
+            margin-top: 1.2rem;
+            font-size: 0.88rem;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+        .saemaul-box strong {
+            color: var(--savings);
+            font-size: 0.92rem;
+            display: inline-block;
+            margin-bottom: 0.2rem;
+        }
+
+        /* Card Footer (Navigation) */
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .btn-nav {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.55rem 1.1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .btn-nav:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+        .btn-nav:disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+        }
+        .slide-dots {
+            display: flex;
+            gap: 0.4rem;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .dot:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .dot.active {
+            background: var(--accent);
+            width: 20px;
+            border-radius: 4px;
+        }
+
+        /* Right Column: Visualizer Card Styles */
+        .visualizer-card {
+            min-height: 520px;
+        }
+        .visualizer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 0.6rem;
+        }
+        .visualizer-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .badge {
+            background: var(--accent-glow);
+            color: var(--savings);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+        .visualizer-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .vis-panel {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        /* Slide 1 & 4 Visualizer Styles */
+        .model-comparison {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .model-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        .model-box:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+        .model-box.accent-box {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.08);
+        }
+        .model-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+        }
+        .model-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .model-tag {
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .tag-solow { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
+        .tag-endog { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+        .model-desc {
+            font-size: 0.8rem;
+            color: var(--text-sec);
+            line-height: 1.5;
+        }
+
+        /* Diagram elements */
+        .learning-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            background: rgba(0,0,0,0.15);
+            padding: 1.2rem;
+            border-radius: 16px;
+            border: 1px dashed rgba(255,255,255,0.06);
+        }
+        .flow-node {
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.7rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: all 0.3s;
+        }
+        .flow-node:hover {
+            transform: scale(1.02);
+            border-color: var(--border-active);
+        }
+        .flow-node .icon { font-size: 1.4rem; }
+        .flow-node .info { display: flex; flex-direction: column; }
+        .flow-node .label { font-size: 0.8rem; font-weight: 700; color: #fff; }
+        .flow-node .desc { font-size: 0.72rem; color: var(--text-sec); }
+        .flow-arrow {
+            text-align: center;
+            font-size: 1rem;
+            color: var(--accent);
+            line-height: 1;
+            margin: -0.2rem 0;
+        }
+
+        /* Charts & Simulators Elements */
+        .chart-wrapper {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+        
+        /* Interactive Controls Panel */
+        .controls-panel {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.9rem 1.1rem;
+            margin-top: 1rem;
+        }
+        .panel-hint {
+            font-size: 0.8rem;
+            color: var(--text-sec);
+            line-height: 1.5;
+        }
+        .sliders-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+        .slider-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .slider-item label {
+            font-size: 0.78rem;
+            color: var(--text-sec);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+        }
+        .val-badge {
+            color: var(--savings);
+            font-weight: 700;
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            margin-top: -5px;
+            box-shadow: 0 0 8px var(--accent);
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+        }
+
+        .sim-btn-wrapper {
+            display: flex;
+            gap: 0.8rem;
+        }
+        .btn-sim-play {
+            flex: 2;
+            padding: 0.6rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: linear-gradient(135deg, var(--accent), var(--savings));
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+        .btn-sim-play:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .btn-sim-play.playing {
+            background: #f59e0b;
+        }
+        .btn-sim-reset {
+            flex: 1;
+            padding: 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+        }
+        .btn-sim-reset:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        /* Stats Panel */
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.6rem;
+            margin-top: 0.8rem;
+        }
+        .stat-badge {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.4rem 0.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+        .stat-badge .label {
+            font-size: 0.68rem;
+            color: var(--text-sec);
+        }
+        .stat-badge .value {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .k-stat { border-color: rgba(251, 191, 36, 0.2); }
+        .k-stat .value { color: var(--capital); }
+        .y-stat { border-color: rgba(192, 132, 252, 0.2); }
+        .y-stat .value { color: var(--income); }
+        .a-stat { border-color: rgba(236, 72, 153, 0.2); }
+        .a-stat .value { color: var(--learning); }
+        .inv-stat { border-color: rgba(99, 102, 241, 0.2); }
+        .inv-stat .value { color: var(--savings); }
+
+        /* Slide 5 Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            position: relative;
+            padding-left: 0.5rem;
+        }
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.3s;
+        }
+        .timeline-item.active {
+            opacity: 1;
+        }
+        .timeline-marker {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .timeline-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid var(--bg);
+            z-index: 2;
+            transition: all 0.3s;
+        }
+        .timeline-item.active .timeline-dot {
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
+        .timeline-line {
+            width: 2px;
+            flex-grow: 1;
+            background: rgba(255,255,255,0.06);
+            margin-top: 4px;
+            margin-bottom: -16px;
+        }
+        .timeline-item:last-child .timeline-line {
+            display: none;
+        }
+        .timeline-content {
+            background: rgba(255,255,255,0.01);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            flex-grow: 1;
+            transition: all 0.3s;
+        }
+        .timeline-item.active .timeline-content {
+            background: rgba(99, 102, 241, 0.05);
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+        .timeline-title { font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 0.2rem; }
+        .timeline-desc { font-size: 0.72rem; color: var(--text-sec); line-height: 1.4; }
+
+        /* Slide 6 Case Tabs */
+        .case-tabs {
+            display: flex;
+            gap: 0.4rem;
+            margin-bottom: 0.8rem;
+        }
+        .case-tab {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: var(--text-sec);
+            padding: 0.5rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .case-tab.active {
+            background: var(--accent-glow);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .case-content {
+            background: rgba(0,0,0,0.25);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            animation: fadeIn 0.3s ease;
+        }
+        .case-content h4 {
+            font-size: 1.05rem;
+            color: #fff;
+            font-weight: 800;
+            border-left: 3px solid var(--accent);
+            padding-left: 0.6rem;
+        }
+        .case-content ul {
+            margin-left: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        /* Academic Source Card */
+        .citation-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.8rem;
+            margin-top: 1.5rem;
+            backdrop-filter: blur(12px);
+        }
+        .citation-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 800px) {
+            .citation-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+        }
+        .citation-title {
+            font-size: 1rem;
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .citation-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .citation-item {
+            border-left: 3px solid var(--accent);
+            padding-left: 1rem;
+        }
+        .cit-type {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+        .cit-title {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            font-style: italic;
+        }
+        .cit-author {
+            font-size: 0.82rem;
+            color: var(--text-sec);
+            margin-top: 0.1rem;
+            display: block;
+        }
+        
+        footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            color: var(--text-sec);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+            width: 100%;
+            max-width: 1100px;
+        }
+    </style>
 </head>
 <body>
 
@@ -24,8 +734,8 @@
     <header>
         <h1>제 11 장 내생적 성장이론과 실천을 통한 학습(Learning-by-Doing)</h1>
         <p class="subtitle">
-            새마을운동의 주역인 농민들이 삽과 곡괭이를 직접 들고 현장에서 부딪치며 체득한 실천적 숙련(LBD)이<br>
-            어떻게 국가 전체의 한계생산 체감 없는 내생적 경제 성장과 자립을 달성했는지 이론적으로 규명합니다.
+            주민들의 자발적인 '실천학습(Doing)'과 그 과정에서 축적된 '경험과 인적자본'이 어떻게 농촌 전체의 생산성($A$)을<br>
+            내생적으로 향상시켜 한계생산 체감의 정체를 극복하고 영구적인 동태적 지속 성장을 이루었는지 입증합니다.
         </p>
     </header>
 
@@ -35,11 +745,12 @@
             <div class="progress-bar" id="topProgressBar"></div>
         </div>
         <div class="slide-tabs">
-            <button class="slide-tab active" id="tab1" onclick="goToSlide(1)"><span>01. 개관</span>솔로우의 한계</button>
-            <button class="slide-tab" id="tab2" onclick="goToSlide(2)"><span>02. AK 모형</span>endless 성장</button>
-            <button class="slide-tab" id="tab3" onclick="goToSlide(3)"><span>03. LBD 이론</span>실천을 통한 학습</button>
-            <button class="slide-tab" id="tab4" onclick="goToSlide(4)"><span>04. 새마을 LBD</span>일하며 배우는 농민</button>
-            <button class="slide-tab" id="tab5" onclick="goToSlide(5)"><span>05. Spillover</span>지식 전파 & 도약</button>
+            <button class="slide-tab active" id="tab1" onclick="goToSlide(1)"><span>01. 개관</span>내생 성장론</button>
+            <button class="slide-tab" id="tab2" onclick="goToSlide(2)"><span>02. 실천학습</span>애로우 & 외부효과</button>
+            <button class="slide-tab" id="tab3" onclick="goToSlide(3)"><span>03. 모형 도식</span>그래프적 규명</button>
+            <button class="slide-tab" id="tab4" onclick="goToSlide(4)"><span>04. 새마을 대입</span>물적투자 ➡️ 실천</button>
+            <button class="slide-tab" id="tab5" onclick="goToSlide(5)"><span>05. 단계적 발전</span>3단계 고도화</button>
+            <button class="slide-tab" id="tab6" onclick="goToSlide(6)"><span>06. 사례연구</span>구담교 & 풍덕마을</button>
         </div>
     </div>
 
@@ -51,94 +762,109 @@
                 
                 <!-- Slide 1 -->
                 <div class="slide-content active" id="slide1">
-                    <div class="slide-num">01 / 05 — 도입부</div>
-                    <h3>🧠 외생적 성장론의 늪과 내생적 기술 진보</h3>
+                    <div class="slide-num">01 / 06 — 개관</div>
+                    <h3>🌱 내생적 성장이론의 대두와 기본 논리</h3>
                     <div class="slide-text">
-                        <p>앞서 다룬 로버트 솔로우(Robert Solow)의 신고전학파 성장모형은 자본의 축적 과정을 훌륭하게 규명했으나, 한계가 뚜렷했습니다. 바로 경제의 장기 성장을 결정하는 가장 결정적 요소인 **'기술진보(\(A\))'**를 스스로 해명하지 못하고, 모형 외부에서 주어지는 '하늘에서 뚝 떨어지는 외생적 변수'로 취급했다는 점입니다.</p>
+                        <p>앞서 다룬 <strong>로버트 솔로우(Robert Solow)</strong> 모형은 1인당 자본의 심화과정에서 발생하는 <strong>자본의 한계생산 체감</strong> 현상으로 인해 경제성장에 결정적인 역할을 하는 기술진보($A$)를 경제 밖에서 무작위로 주어지는 외생변수로 간주할 수밖에 없었습니다. 이는 기술 진보가 '왜, 어떻게' 발생하는가에 대한 근본적인 답을 남겨두는 한계를 지녔습니다.</p>
                         
-                        <p>또한 솔로우 모형에 의하면, 자본이 쌓일수록 생산 효율성이 떨어지는 **'자본의 한계생산체감 현상'**이 반드시 발생하므로, 독자적인 기술 혁신이 없는 한 모든 국가는 결국 성장이 멈추는 안정상태(Steady State)에 도달해 성장이 영구히 정체됩니다.</p>
+                        <p><strong>폴 로머(Paul Romer)</strong>를 비롯한 현대 거시경제학자들은 기술의 도약 요인을 모형 내부의 주체적 혁신과 지식의 축적 활동에 초점을 맞춘 <strong>내생적 성장이론(Endogenous Growth Theory)</strong>을 제시했습니다.</p>
                         
-                        <p>이러한 한계를 전면 극복하고 1980년대 후반에 탄생한 혁신적 이론이 바로 **'내생적 성장이론(Endogenous Growth Theory)'**입니다.</p>
+                        <p>이 이론에 따르면 기술수준은 단순히 하늘에서 주어지는 외생적 상수가 아니라 경제 내부 주체들의 행동과 축적된 지식, 경험 및 상호작용 속에서 <strong>내생적으로 스스로 발전</strong>합니다. 일정한 조건이 충족되면 기술수준이 영구히 향상되어 1인당 소득은 솔로우 모형의 '성장 정체(Steady State)' 한계를 가뿐히 넘어서서 <strong>지속적으로 장기 성장</strong>할 수 있습니다.</p>
                         
                         <div class="saemaul-box">
-                            <strong>💡 핵심 패러다임의 혁신:</strong><br>
-                            폴 로머(Paul Romer), 케네스 애로우(Kenneth Arrow) 등의 석학들은 기술과 지식, 인적 자본(Human Capital)은 외생적으로 주어지는 것이 아니라, **경제 주체들의 교육 투자, 노하우 축적, 실천적 행위 속에서 '내생적(Endogenous)'으로 개발·누적되는 것**임을 수학적으로 증명해냈습니다.
+                            <strong>💡 핵심 도약 논리:</strong><br>
+                            개별 구성원의 혁신 활동과 투자 축적은 기술의 한계를 끌어올려 경제 전반의 파급 효과를 유발합니다. 이는 생산활동의 반복에서 생기는 <strong>경험적 기술축적</strong>과 결합되어 한계생산 체감을 상쇄하며 영구적인 무한 장기 성장을 실현합니다.
                         </div>
                     </div>
                 </div>
 
                 <!-- Slide 2 -->
                 <div class="slide-content" id="slide2">
-                    <div class="slide-num">02 / 05 — Romer의 AK 모형</div>
-                    <h3>🚀 AK 모형: 한계생산체감 장벽의 파괴</h3>
+                    <div class="slide-num">02 / 06 — 핵심 이론</div>
+                    <h3>🎓 애로우의 실천학습(Learning-by-Doing)과 외부효과</h3>
                     <div class="slide-text">
-                        <p>내생적 성장이론의 가장 대표적이고 직관적인 모형은 **폴 로머(Paul Romer)의 AK 모형**입니다. 이 모형의 총생산함수는 놀랍도록 단순합니다:</p>
+                        <p>내생적 성장을 결정하는 주요 원천 중 하나는 바로 **'실천을 통한 학습' (learning-by-doing)**입니다. 이는 노벨경제학상 수상자 **케네스 애로우(Kenneth Arrow, 1962)** 교수가 정립한 개념으로, 노동자가 생산활동을 끊임없이 반복하는 과정에서 숙련도가 올라가고, 생산성이 개선되며, 공정이 고도화된다는 역사적 사실에 근거합니다.</p>
                         
-                        <div class="math-block">
-                            \[Y = A \cdot K\]
-                        </div>
+                        <p>애로우는 새로운 자본재를 계속 도입하고 투자와 실천을 추진하는 과정 그 자체가 경제 주체에게 무궁무진한 **학습과 혁신의 기회**를 실시간 제공한다고 보았습니다. 그리고 이 학습효과를 정량화하는 지표로 '누적총투자'를 제시했습니다.</p>
                         
-                        <p>여기서 \(A\)는 기술 및 소득 효율성 상수이며, 중요한 것은 **자본 \(K\)의 성격**입니다. AK 모형에서 자본은 공장의 굴뚝이나 단순한 기계 같은 물리적 자본(Physical Capital)에만 국한되지 않습니다. 경제 주체들의 머릿속에 축적된 **'지식(Knowledge)'**과 **'인적 자본(Human Capital)'**을 모두 결합한 '광의의 자본'을 의미합니다.</p>
-                        
-                        <p><strong>왜 한계생산성이 체감하지 않는가?</strong><br>
-                        지식과 아이디어는 물건이나 땅과 달리 내가 써도 남이 동시에 쓸 수 있는 **'비경합성(Non-rivalry)'**과 사용에 막대한 돈이 들지 않는 **'양의 외부성(Positive Externality)'**을 가집니다. 지식이 누적될수록 기존 지식을 딛고 더 쉽게 새 지식이 창출되므로, 자본이 쌓여도 한계생산성(\(A\))이 전혀 감소하지 않고 일정하게 유지됩니다.</p>
+                        <p>나아가 한 주체의 경험 축적은 나홀로 독점되는 것이 아니라 인근 기업이나 다른 산업으로 물 흐르듯 전파되는 **지식의 외부효과(Knowledge Externality)**를 유발합니다. 내 지식이 남의 생산성까지 끌어올리는 외부효과가 결합되면, 경제 전반의 총기술수준($A$)이 지속적으로 동반 상승하여 <strong>자본의 한계생산 체감 법칙을 극복·완화</strong>할 수 있게 됩니다.</p>
                         
                         <div class="saemaul-box">
-                            <strong>📈 끊임없는 성장(Endless Growth):</strong><br>
-                            한계생산이 무뎌지지 않기 때문에, 투자를 지속해 자본(\(K\))을 늘리면 경제는 솔로우 모형처럼 특정 균제 상태에 갇혀 정체되지 않고, **장기적으로 둔화 없이 영구히 우상향 성장**할 수 있게 됩니다.
+                            <strong>📈 성장의 연결고리:</strong><br>
+                            $$\text{생산 반복(Doing)} \implies \text{개인 숙련도 향상(Learning)} \implies \text{지식 확산(Externality)} \implies \text{한계생산성 체감 극복}$$
                         </div>
                     </div>
                 </div>
 
                 <!-- Slide 3 -->
                 <div class="slide-content" id="slide3">
-                    <div class="slide-num">03 / 05 — LBD 이론</div>
-                    <h3>🛠️ 실천을 통한 학습 (Learning by Doing)</h3>
+                    <div class="slide-num">03 / 06 — 모형 도식</div>
+                    <h3>📊 기술진보와 지속성장의 수리적·도식적 규명</h3>
                     <div class="slide-text">
-                        <p>그렇다면 지속적 성장을 견인하는 '지식'과 '숙련'은 어떻게 축적될까요? 노벨경제학상 수상자 **케네스 애로우(Kenneth Arrow, 1962)** 교수는 학교 강단에서의 이론 교육뿐만 아니라, **실제 작업 현장에서 직접 무언가를 생산하고 수행하는 '실천적 행위(Doing)'** 속에서 노하우가 축적된다고 주장했습니다.</p>
+                        <p>내생적 성장 모형을 직관적으로 보여주는 1인당 생산함수는 다음과 같습니다:</p>
                         
-                        <p>그것이 바로 **실천을 통한 학습(Learning-by-Doing, LBD)** 이론입니다. 애로우는 생산을 해본 경험(누적 조업량, \(G\))이 많아질수록 노동자들의 숙련(인적 자본, \(H\))이 올라가며 생산성이 고도로 발달한다는 점을 수학적 함수로 규명했습니다:</p>
                         <div class="math-block">
-                            \[H_t = B \cdot G_t^\theta \quad (0 < \theta < 1)\]
+                            \[y = A \cdot f(k), \quad A = g(K)\]
                         </div>
-                        <p>여기서 \(\theta\)는 학습계수(Learning Rate)이며, 경험(\(G\))이 누적될수록 인적 숙련도(\(H\))는 강력한 탄력을 받아 도약합니다. 이로 인해 동일한 노동을 투입하더라도 지식과 노하우 축적 덕분에 **추가 1단위 생산에 요구되는 소요 시간이나 비용이 기하급수적으로 감소**합니다.</p>
                         
-                        <p>이를 산업 공학 및 거시경제학에서는 **'학습 곡선(Learning Curve)'**이라고 칭합니다.</p>
+                        <p>여기서 $y$는 1인당 생산(소득), $k$는 1인당 자본이며, 핵심 차이점은 기술수준 **$A$가 경제 전체의 자본총량 $K$(누적된 경험과 학습 수준의 총합)의 함수**라는 사실입니다. 자본축적 그 자체가 지식 축적과 동일시됩니다.</p>
+                        
+                        <p><strong>우측 그래프의 동태적 성장 과정 해설 (Figure 2):</strong><br>
+                        1. 초기 일인당 자본이 $k_1$일 때, 경제는 투자가 감가상각 마모선 $\delta k$를 상회하므로 $k_2$를 향해 성장해 갑니다.<br>
+                        2. 하지만 $k_1 \to k_2$로 자본이 쌓이는 기간 동안 주민들이 생산을 반복하면서 **실천학습**과 **지식 확산**이 동시에 발생해 기술수준 $A$가 $A(K_1) \to A(K_2)$로 상승합니다.<br>
+                        3. 이에 따라 저축·투자 곡선 $s \cdot A(K) \cdot f(k)$가 전체적으로 **위쪽으로 수직 이동**하게 됩니다.<br>
+                        4. 결국 $k_2$에 도달한 시점에 투자는 마모선과 일치하지 않고, 이미 위로 도약한 새로운 투자선에 위치하므로 $k_2$는 더 이상 멈추는 안정상태가 아닙니다. 경제는 다시 $k_3$, 그리고 그 너머로 계속 쉼 없이 도약하며 <strong>영구적인 성장을 지속</strong>하게 됩니다.</p>
                     </div>
                 </div>
 
                 <!-- Slide 4 -->
                 <div class="slide-content" id="slide4">
-                    <div class="slide-num">04 / 05 — 새마을 LBD 실증</div>
-                    <h3>🌾 "일하며 배우고 배우며 일한다" : 새마을의 LBD</h3>
+                    <div class="slide-num">04 / 06 — 새마을 대입</div>
+                    <h3>🚜 새마을운동에의 대입: '직접 해보기(Doing)'와 인적 역량</h3>
                     <div class="slide-text">
-                        <p>새마을운동은 애로우의 '실천을 통한 학습(Learning-by-Doing)' 이론을 전 국가적 농촌 개발 단위에서 가장 성공적으로 입증해 낸 역사적 실증 모델입니다. 새마을운동의 구호 중 가장 과학적인 문구가 바로 **"배우면서 일하고, 일하면서 배우자"**였습니다.</p>
+                        <p>이러한 내생적 성장모형은 1970년대 대한민국 농촌의 기적인 <strong>새마을운동의 성장 과정</strong>을 완벽하고 과학적으로 뒷받침합니다. 초기 정부가 공급한 시멘트와 철근은 단순한 무상 원조가 아닌, 주민들에게 **'실천(Doing)'의 마중물**을 던져준 자본이었습니다.</p>
                         
-                        <p>정부는 농민들에게 다 완성된 전기 시설이나 교량을 무료로 지어 배급하지 않았습니다. 대신 시멘트 335포대와 설계 가이드라인만을 지원하고, **주민들이 직접 삽과 곡괭이를 들고 몸으로 부딪쳐 길을 넓히고 교량을 설계·시공(Doing)하도록** 유도했습니다.</p>
+                        <p>새마을운동 초기, 시멘트를 받아든 농촌 주민들은 토목 공사 경험이 전무하여 배합이나 조적 등에 매우 서툴렀고 수많은 시행착오를 겪었습니다.</p>
+                        
+                        <p>하지만 마을 안길을 넓히고, 소교량을 놓고, 하천을 정비하는 공사를 <strong>스스로 머리를 맞대고 반복하여 수행하는 과정(Doing)</strong> 속에서 주민들은 시멘트 배합 비율, 거푸집 제작 기법, 작업 공정 순서와 인력 배치 노하우, 그리고 조직 협동의 요령을 몸으로 직접 체득하였습니다. 이는 곧 **인적자본(Human Capital)의 축적**이자 **기술수준($A$)의 내생적 도약**이었습니다.</p>
                         
                         <div class="saemaul-box">
-                            <strong>🌉 현장에서 내생적으로 싹튼 기술 자본:</strong><br>
-                            - 주민들은 다리를 직접 가설해 보며 철근을 엮는 기술, 시멘트 물 배합의 적정 비율, 하천의 유량을 견디는 각도 계산법을 **현장 실천 속에서 체득(Learning)**했습니다.<br>
-                            - 한 번 전기 가설과 교량 시공을 성공해 본 부락은 다음 차례의 용배수로 정비, 농로 포장 사업 때 **압도적으로 적은 예산과 반으로 줄어든 노동력**만으로도 사업을 완수하는 비약적 효율성 도약을 달성했습니다.
+                            <strong>💡 새마을과 내생성장 메커니즘의 동치:</strong><br>
+                            정부의 기초 물자 지원 $\implies$ 주민 공동체 사업의 직접 수행 **(Doing)** $\implies$ 기술 및 관리 노하우 획득 **(Learning)** $\implies$ 인적자본 축적 및 생산성 도약 **($A \uparrow$)** $\implies$ 영구적 소득 증대 및 금융 자립
                         </div>
                     </div>
                 </div>
 
                 <!-- Slide 5 -->
                 <div class="slide-content" id="slide5">
-                    <div class="slide-num">05 / 05 — 지식의 넘침 (Spillover)</div>
-                    <h3>🌐 지식 외부성(Spillover)과 부락 공동체 동반 도약</h3>
+                    <div class="slide-num">05 / 06 — 단계적 발전</div>
+                    <h3>📈 새마을운동의 단계적 발전과 지식의 외부효과</h3>
                     <div class="slide-text">
-                        <p>내생적 성장이론에서 지식이 가지는 가장 위대한 사회적 성격은 담장을 넘어 흘러가는 **'지식의 넘침 효과(Knowledge Spillover, 지식 외부성)'**입니다.</p>
+                        <p>새마을운동이 단순히 가시적 환경 개선을 넘어 소득 혁신으로 이어질 수 있었던 결정적 이유는 **'경험의 단계적 고도화'**와 **'지식의 외부효과 확산'**이 완벽히 시너지를 냈기 때문입니다.</p>
                         
-                        <p>한 마을에서 실천적 노력(LBD)을 통해 교량 가설법이나 조직 운영 지식을 습득하면, 이 지식은 비경합적이므로 그 마을에만 갇혀 있지 않습니다. 이웃 마을 주민들이 와서 구경하고 대화하는 과정에서 **이웃 부락으로 급속도로 지식이 유출·전파**됩니다.</p>
+                        <p><strong>1) 학습에 기반한 단계적 발전 (Step-by-Step Evolution)</strong><br>
+                        주민들은 처음엔 지붕 개량, 담장 정비 등 비교적 단순하고 난도가 낮은 '환경개선 사업'으로 시작했습니다. 이 단계에서 얻은 성공 경험과 기술력을 마중물 삼아 점차 소교량 가설, 농로 확충 등 난도가 높은 '기반시설 인프라 구축'으로 성장했고, 종국에는 특용작물 재배, 공동 축산 등 '고부가가치 소득 사업'으로 성공적으로 고도화되었습니다. 초기 단계의 학습이 다음 단계의 복잡한 사업을 완수할 수 있는 **인적자본과 자신감**을 키워준 결과였습니다.</p>
                         
-                        <p>이로 인해 개별 주민이나 부락의 학습 노하우가 사회 전체의 인적 자본을 동반 상승시키며 전체의 생산성을 고도로 끌어올리는 강력한 <strong>양의 외부성(Positive Externality)</strong>을 창출합니다.</p>
+                        <p><strong>2) 벤치마킹을 통한 지식 외부효과의 폭발</strong><br>
+                        특정 마을이 비닐하우스 공법이나 특용작물 재배에 성공하면 그 성공 경험과 노하우는 이웃 마을 주민들이 견학을 와서 벤치마킹하는 방식을 통해 지역 전체로 광속으로 확산되었습니다. 이로 인해 한 마을의 경험 축적이 지역 경제 전체의 **기술수준($A$)과 자본총량($K$)의 동반 도약**으로 이어졌습니다.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 6 -->
+                <div class="slide-content" id="slide6">
+                    <div class="slide-num">06 / 06 — 사례연구</div>
+                    <h3>💎 역사적 실제 증거: 주민 스스로 축적한 인적자본</h3>
+                    <div class="slide-text">
+                        <p>역사적 기록에 보존된 새마을운동의 성공담은 주민들이 실천을 통해 얻은 인적자본이 얼마나 막강한 거시경제적 도약을 일구어 냈는지 여실히 증명합니다.</p>
                         
-                        <div class="saemaul-box">
-                            <strong>📢 새마을지도자 양성소와 전국 전파 네트워크:</strong><br>
-                            성공한 우수 부락의 새마을지도자(예: 경기 여주 목골마을, 충북 옥천 상례곡리 등)들이 농민교육원에 모여 전국의 농민들에게 자신들의 실천 성공담과 노하우를 강의하도록 시스템화했습니다. 이 교육 제도는 지식의 넘침 속도를 국가 차원에서 극대화하여, 대한민국 전체의 인적 자본 수준이 도미노처럼 동반 도약하게 만든 최적의 지식 허브였습니다.
-                        </div>
+                        <p><strong>1) 경북 안동 구담교 가설의 기적 (자체 기술로 완성한 대교)</strong><br>
+                        주민들의 힘으로 낙동강 구담교(400m)를 놓을 당시, 토건회사의 견적은 3억 원이었으나 자본이 턱없이 부족했습니다. 주민들은 외주를 포기하고, 기술이 없는 자는 있는 자에게 현장에서 배워가며 <strong>주민들 스스로 거푸집을 제작하고 콘크리트를 배합해 타설하는 초고난도 기술 공정</strong>을 직접 완수하여 단 9,000만 원으로 다리를 준공했습니다. 주민들은 "5년 전엔 엄두도 못 냈던 무서운 일들을 스스로 해낼 수 있는 기술과 용기를 배웠다"며 역량의 극적 성장을 고백했습니다.</p>
+                        
+                        <p><strong>2) 충북 충주 풍덕마을 (현대적 협동조합 경영 지식 체득)</strong><br>
+                        주민들이 공동 정미소와 공동 구판장을 직접 자립 운영하며 **전표제 기반의 투명한 장부 기록과 회계 관리 기술**을 체득하였고, 결산 후 잉여금을 현금과 현물로 자율 배분하는 금융 지식과 고도의 조직 관리 역량을 스스로 함양해 냈습니다.</p>
+                        
+                        <p><strong>3) 경기 용인 동막마을 (비육우 영농 기술 개척)</strong><br>
+                        부가가치가 높은 비육우 사업을 추진하고자 주민들이 부산, 광주, 전주, 천안 등 전국의 대형 목장을 직접 전전하며 사육 기술을 습득하고, 가격이 저렴한 안성에서 소 43두를 직접 검수·도입해 농가 수익을 도약시켰습니다.</p>
                     </div>
                 </div>
 
@@ -153,6 +879,7 @@
                     <span class="dot" onclick="goToSlide(3)"></span>
                     <span class="dot" onclick="goToSlide(4)"></span>
                     <span class="dot" onclick="goToSlide(5)"></span>
+                    <span class="dot" onclick="goToSlide(6)"></span>
                 </div>
                 <button class="btn-nav" id="nextBtn" onclick="nextSlide()">다음 단계 →</button>
             </div>
@@ -161,128 +888,190 @@
         <!-- Right Panel: Synced Interactive Visualizer -->
         <section class="card visualizer-card">
             <div class="visualizer-header">
-                <h2 id="visTitle">🔄 성장의 두 갈래 길: Solow vs AK</h2>
-                <span class="badge" id="visBadge">이론 구조도</span>
+                <h2 id="visTitle">🔄 성장 패러다임의 혁신 비교</h2>
+                <span class="badge" id="visBadge">성장이론 비교</span>
             </div>
             
             <div class="visualizer-body">
                 
-                <!-- Page 1 Visualizer: Glassmorphic Concept VS Map -->
+                <!-- Page 1 Visualizer: Glassmorphic Concept Flow Grid -->
                 <div class="vis-panel" id="visPanel1">
-                    <div class="concept-map">
-                        <div class="concept-side">
-                            <div class="concept-box-node solow-side">
-                                <h4>🔴 Solow 모형</h4>
-                                <p><strong>외생적 성장</strong></p>
-                                <p style="margin-top: 0.3rem;">자본의 한계생산성 체감<br>\(f''(k) < 0\)</p>
-                                <p style="margin-top: 0.3rem; font-size: 0.72rem; color: #ef4444;">결국 장기 성장이 멈추는 안정상태(Steady State) 도달</p>
+                    <div class="model-comparison">
+                        <div class="model-box">
+                            <div class="model-title-row">
+                                <span class="model-title">🎈 솔로우(Solow) 외생적 성장 모형</span>
+                                <span class="model-tag tag-solow">외생적</span>
                             </div>
+                            <p class="model-desc">
+                                기술수준($A$)은 경제 외부에서 하늘이 준 선물처럼 독립적으로 결정됩니다. 자본 한계생산이 체감하기 때문에, 저축을 강하게 유도하더라도 결국에는 투자가 낡아 손실되는 감가상각과 일치해 성장이 멈추는 <strong>안정상태(Steady State)에 봉착</strong>하게 됩니다.
+                            </p>
                         </div>
                         
-                        <div class="map-vs-arrow">VS</div>
-                        
-                        <div class="concept-side">
-                            <div class="concept-box-node romer-side">
-                                <h4>🟢 AK 내생적 모형</h4>
-                                <p><strong>지식 & 인적자본</strong></p>
-                                <p style="margin-top: 0.3rem;">한계생산성 일정 유지<br>\(Y = A \cdot K\)</p>
-                                <p style="margin-top: 0.3rem; font-size: 0.72rem; color: #10b981;">지식의 비경합성으로 한계생산체감 극복, 영구 성장</p>
+                        <div class="model-box accent-box">
+                            <div class="model-title-row">
+                                <span class="model-title" style="color: #a5b4fc;">⚡ 로머/애로우 내생적 성장 모형</span>
+                                <span class="model-tag tag-endog">내생적</span>
                             </div>
+                            <p class="model-desc" style="color: #cbd5e1;">
+                                기술수준($A$)은 생산활동의 반복을 통한 <strong>실천학습(Learning-by-doing)</strong>과 <strong>지식의 외부효과</strong>에 의해 경제 내부에서 자발적으로 도약합니다. 축적된 자본이 기술 도약을 낳고, 기술 도약이 자본을 추가 축적하게 하여 안정상태 정체를 극복하고 <strong>장기 지속적인 무한 성장을 실현</strong>합니다.
+                            </p>
                         </div>
-                    </div>
-                    
-                    <div class="flow-explanation">
-                        <strong>♻️ 솔로우 장벽을 파괴하는 내생적 성장의 힘:</strong><br>
-                        솔로우 모형은 물적 자본의 한계생산체감으로 인해 기술 외에 장기 성장이 불가능하다고 보았지만, 로머의 내생적 성장이론(AK 모형)은 **인적 자본과 아이디어(지식)의 지속 누적**을 통해 자본 생산성을 영구히 일정하게 유지시켜 끊임없는 자립적 도약을 완성할 수 있음을 증명합니다.
                     </div>
                 </div>
 
-                <!-- Page 2 to 5 Chart Canvas Area -->
-                <div class="vis-panel hidden" id="visChartArea">
-                    <!-- Standard main chart -->
-                    <div class="chart-wrapper" id="mainChartWrapper">
-                        <canvas id="growthChart"></canvas>
-                    </div>
-
-                    <!-- Slide 5 Network Simulator (Spillover Grid Animation) -->
-                    <div class="network-container hidden" id="villageNetwork">
-                        <div class="grid-villages" id="villageGrid">
-                            <!-- JS will inject 16 village nodes here -->
+                <!-- Page 2 Visualizer: Learning Flow Chart -->
+                <div class="vis-panel hidden" id="visPanel2">
+                    <div class="learning-flow">
+                        <div class="flow-node">
+                            <span class="icon">🛠️</span>
+                            <div class="info">
+                                <span class="label">1. 공동체 투자 및 생산 실행 (Doing)</span>
+                                <span class="desc">정부의 기초 물자 공급 및 자발적 노동력 투입</span>
+                            </div>
                         </div>
+                        <div class="flow-arrow">⬇</div>
+                        <div class="flow-node" style="border-color: rgba(236,72,153,0.3);">
+                            <span class="icon" style="color: var(--learning);">💡</span>
+                            <div class="info">
+                                <span class="label" style="color: #fbcfe8;">2. 반복 실천을 통한 노하우 학습 (Learning)</span>
+                                <span class="desc">시행착오를 통한 공정 개선, 장부 및 기획 지식 체득</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">⬇</div>
+                        <div class="flow-node" style="border-color: rgba(99,102,241,0.3);">
+                            <span class="icon" style="color: var(--savings);">📡</span>
+                            <div class="info">
+                                <span class="label" style="color: #c7d2fe;">3. 이웃 마을 벤치마킹 전파 (Externality)</span>
+                                <span class="desc">성공 사례가 인근 부락으로 빠르게 확산, 공유 자산화</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">⬇</div>
+                        <div class="flow-node" style="border-color: rgba(16,185,129,0.3);">
+                            <span class="icon" style="color: #34d399;">💎</span>
+                            <div class="info">
+                                <span class="label" style="color: #a7f3d0;">4. 한계생산 체감 극복 및 생산성 도약 (Growth)</span>
+                                <span class="desc">지역 총지식 및 인적자본 격상으로 한계생산성 복구</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page 3 to 4: Interactive Chart Canvas Area -->
+                <div class="vis-panel hidden" id="visChartArea">
+                    <div class="chart-wrapper">
+                        <canvas id="endogChart"></canvas>
                     </div>
 
                     <!-- Slide Controls Area -->
                     <div class="controls-panel">
                         
-                        <!-- Slide 2: AK vs Solow Dynamic comparison -->
-                        <div id="controlPanel2" class="hidden">
-                            <div class="sliders-grid">
-                                <div class="slider-item" style="grid-column: 1 / -1;">
-                                    <label>인적 자본 및 지식 축적 속도 (\(A\)) <span class="val-badge" id="sliderValA">1.8</span></label>
-                                    <input type="range" id="inputA" min="1.0" max="3.0" step="0.1" value="1.8">
-                                </div>
-                            </div>
-                            <p class="panel-hint" style="margin-top: 0.6rem;">
-                                슬라이더를 흔들어 **지식 축적의 강도(\(A\))**를 높여 보십시오. Solow 모형은 한계가 체감되어 평평해지는 반면, AK 모형은 지식 자본 축적에 반응해 **성장률의 기울기 자체가 영구히 가팔라지는 끝없는 도약**을 시각화합니다.
-                            </p>
-                        </div>
-
-                        <!-- Slide 3: Learning by Doing (Arrow Learning Curve) -->
+                        <!-- Slide 3: Interactive Sliders (Learning by doing simulation) -->
                         <div id="controlPanel3" class="hidden">
                             <div class="sliders-grid">
                                 <div class="slider-item">
-                                    <label>학습 속도 계수 (\(\theta\)) <span class="val-badge" id="sliderValTheta">0.45</span></label>
-                                    <input type="range" id="inputTheta" min="0.1" max="0.8" step="0.05" value="0.45">
+                                    <label>학습/경험 축적 (\(K\)) <span class="val-badge" id="sliderValK">0</span></label>
+                                    <input type="range" id="inputK" min="0" max="20" step="1" value="0">
                                 </div>
                                 <div class="slider-item">
-                                    <label>초기 필요 공수 (\(B\)) <span class="val-badge" id="sliderValB">100시간</span></label>
-                                    <input type="range" id="inputB" min="40" max="150" step="5" value="100">
+                                    <label>실천학습 효율 (\(\gamma\)) <span class="val-badge" id="sliderValGamma">15%</span></label>
+                                    <input type="range" id="inputGamma" min="0.0" max="0.3" step="0.01" value="0.15">
                                 </div>
                             </div>
+                            <div class="sim-btn-wrapper" style="margin-top: 0.8rem;">
+                                <button class="btn-sim-reset" style="flex: 1;" onclick="resetTransition3()">🔄 초기화</button>
+                            </div>
                             <p class="panel-hint" style="margin-top: 0.6rem;">
-                                실천(\(Doing\)) 횟수가 거듭될수록 **생산 1단위당 소요되는 노동 시간(시간비용)이 학습 효과로 인해 급격히 감소**하는 학습 곡선(Learning Curve)입니다. 학습 속도 \(\theta\)를 높이면 감소 속도가 비약적으로 빨라집니다.
+                                슬라이더를 통해 <strong>경험 자본 $K$를 늘려 보십시오.</strong> 실천학습 효율이 존재할 때, 경험이 쌓임에 따라 기술수준 $A$가 동반 도약해 <strong>투자 곡선(indigo)이 실시간으로 위쪽으로 수직 이동</strong>하여 수렴 한계를 극복하는 극적인 장면을 보실 수 있습니다.
                             </p>
                         </div>
 
-                        <!-- Slide 4: Saemaul Bridge construction simulator -->
+                        <!-- Slide 4: Saemaul Interactive Run Button -->
                         <div id="controlPanel4" class="hidden">
                             <div class="sim-btn-wrapper">
-                                <button class="btn-sim-play" id="btnPlay4" onclick="playSaemaulLBD()">▶ 새마을 교량가설 프로젝트 반복 실행</button>
-                                <button class="btn-sim-reset" onclick="resetSaemaulLBD()">🔄 초기화</button>
+                                <button class="btn-sim-play" id="btnPlay4" onclick="playTransition4()">▶ 새마을 내생성장 시뮬레이션 가동</button>
+                                <button class="btn-sim-reset" onclick="resetTransition4()">🔄 초기화</button>
                             </div>
                             <p class="panel-hint" style="margin-top: 0.6rem;">
-                                주민들이 교량 가설 사업을 1회, 2회, 5회 반복 시도하며 **토목 지식과 노하우(인적자본)를 스스로 몸소 습득(Learning-by-Doing)**하는 시뮬레이션입니다. 매 시행마다 필요한 노동 공수가 기하급수적으로 단축되어 감을 실감나게 재현합니다.
-                            </p>
-                        </div>
-
-                        <!-- Slide 5: Knowledge Spillover Dominos -->
-                        <div id="controlPanel5" class="hidden">
-                            <div class="sim-btn-wrapper">
-                                <button class="btn-sim-play" id="btnPlay5" onclick="playSpillover()">▶ 새마을지도자 양성소 지식 전파 실행</button>
-                                <button class="btn-sim-reset" onclick="resetSpillover()">🔄 초기화</button>
-                            </div>
-                            <p class="panel-hint" style="margin-top: 0.6rem;">
-                                한 모범 우수 부락(선구자)의 기술 지식이 **새마을지도자 교류 교육을 타고 이웃 마을들로 흘러 넘쳐(Spillover)** 지역 경제권 전체가 동반 자립 숙련을 달성해내는 도미노식 넷워크 지식 전파를 재생합니다.
+                                주민들의 공동 사업 참여(Doing)로 인해 **농촌 인적자본과 기술력($A$)이 내생적으로 자동 누적 성장**하는 고유 동학 시뮬레이션입니다. 솔로우 안정상태의 성장 고착을 주민들의 실천학습이 어떻게 격파하고 무한 장기 번영을 일구어 가는지 관찰해 보십시오.
                             </p>
                         </div>
                     </div>
 
-                    <!-- Dynamic Live Stats badges -->
+                    <!-- Live Stats Dashboard Badges -->
                     <div class="stats-panel" id="badgePanel">
-                        <div class="stat-badge l-stat">
-                            <span class="label" id="statLabel1">조업/시간 (t)</span>
-                            <span class="value" id="statBadgeVal1">-</span>
+                        <div class="stat-badge k-stat">
+                            <span class="label">1인당 자본 (\(k\))</span>
+                            <span class="value" id="statBadgeK">-</span>
                         </div>
-                        <div class="stat-badge hc-stat">
-                            <span class="label" id="statLabel2">인적 자본 (H)</span>
-                            <span class="value" id="statBadgeVal2">-</span>
+                        <div class="stat-badge y-stat">
+                            <span class="label">1인당 소득 (\(y\))</span>
+                            <span class="value" id="statBadgeY">-</span>
                         </div>
-                        <div class="stat-badge eff-stat">
-                            <span class="label" id="statLabel3">소요 노동 공수</span>
-                            <span class="value" id="statBadgeVal3">-</span>
+                        <div class="stat-badge a-stat">
+                            <span class="label">기술력 (\(A\))</span>
+                            <span class="value" id="statBadgeA">-</span>
+                        </div>
+                        <div class="stat-badge inv-stat">
+                            <span class="label">1인당 투자 (\(sf(k)\))</span>
+                            <span class="value" id="statBadgeInv">-</span>
                         </div>
                     </div>
+                </div>
 
+                <!-- Page 5 Visualizer: Saemaul Step Timeline -->
+                <div class="vis-panel hidden" id="visPanel5">
+                    <div class="timeline">
+                        <div class="timeline-item active" onclick="showStep(1)">
+                            <div class="timeline-marker">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-line"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">🌱 1단계: 단순 환경개선 사업 (1970~1972)</div>
+                                <div class="timeline-desc">지붕 개량, 담장 정비, 마을 청소 등 단순 주거 개선을 통한 주민 참여 독려 및 <strong>최초의 성공 경험 및 자조 협동의식 학습</strong>.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item" onclick="showStep(2)">
+                            <div class="timeline-marker">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-line"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">🏗️ 2단계: 복잡 인프라 구축 사업 (1973~1975)</div>
+                                <div class="timeline-desc">마을 안길 확장, 교량 가설, 마을회관 신축 등 전문 기술이 요구되는 거대 자산 형성. 주민들의 **토목 기술, 인력 운영 및 관리 지식 급속 축적**.</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item" onclick="showStep(3)">
+                            <div class="timeline-marker">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-line"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">💰 3단계: 고부가가치 소득 증대 사업 (1976년 이후)</div>
+                                <div class="timeline-desc">특용작물 단지화, 비닐하우스 복차 영농, 공동 상설 구판장 운영 등 고도 경제 활동. **경영, 회계 지식 습득 및 자본금과 인적역량의 완성**.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page 6 Visualizer: Case Study Tabs -->
+                <div class="vis-panel hidden" id="visPanel6">
+                    <div class="case-tabs">
+                        <button class="case-tab active" onclick="showCase(1)">🌉 안동 구담교</button>
+                        <button class="case-tab" onclick="showCase(2)">🏬 충주 풍덕마을</button>
+                        <button class="case-tab" onclick="showCase(3)">🐄 용인 동막마을</button>
+                    </div>
+                    <div class="case-content" id="caseContent">
+                        <h4>🌉 경북 안동 구담교 가설 (자조 토목 기술의 정점)</h4>
+                        <p>3억 원의 다리 가설 공정을 주민들 스스로 단 9,000만 원으로 성공시켰습니다.</p>
+                        <ul>
+                            <li><strong>기술적 자립</strong>: 주민들이 기술자에게 직접 거푸집 짜는 법과 콘크리트 배합법을 배워 현장에서 상호 교수함.</li>
+                            <li><strong>자산화 성공</strong>: 자체 노동력 및 모래 자재 채취로 다리를 준공해 지역 경제 교통 허브 조성.</li>
+                            <li><strong>인적 역량 고백</strong>: "우리 스스로 무섭고 엄청난 일을 해낼 수 있다는 무형의 용기와 고급 토목 기술을 남겼다."</li>
+                        </ul>
+                    </div>
                 </div>
 
             </div>
@@ -292,66 +1081,485 @@
         <section class="card full-width citation-card">
             <div class="citation-grid">
                 <div>
-                    <h3 class="citation-title">📚 내생적 성장론 및 실천을 통한 학습 거시경제 해설</h3>
+                    <h3 class="citation-title">📚 내생적 성장이론과 실천학습의 학술적 의의</h3>
                     <p style="font-size: 0.92rem; color: var(--text-sec); line-height: 1.65; text-align: justify; margin-bottom: 0px;">
-                        케네스 애로우(Kenneth J. Arrow) 교수가 1962년 창안한 **'실천을 통한 학습(Learning by Doing)'** 이론과 폴 로머(Paul M. Romer) 교수의 **'내생적 기술 진보'** 모형은 현대 거시경제학에서 지속적인 경제 성장을 담보하는 유일한 원동력으로 '인적 지적 자본의 비경합성과 외부성'을 설정했습니다. <br>
-                        새마을운동은 주민들에게 물품과 완제품 인프라를 수동적으로 시혜하지 않고, 스스로의 실천 노동(Doing)을 통한 학습을 유도함으로써 감가상각과 솔로우 장벽을 영구히 파쇄하여, 가난한 소외 부락들이 일제히 고부가가치 현대식 경제 공동체로 동반 도약하는 놀라운 내생적 자립 메커니즘을 역사적으로 완벽히 완수한 기념비적인 실증 궤적입니다.
+                        미국의 경제학 석학 <strong>폴 로머(Paul Romer)</strong> 교수는 지식의 비경합성과 내생적 기술 축적이 경제의 한계생산성 체감을 영구히 상쇄하여 무한 성장을 촉진할 수 있음을 규명하여 2018년 노벨경제학상의 영예를 안았습니다. 또한 <strong>케네스 애로우(Kenneth Arrow)</strong>의 <strong>실천을 통한 학습(Learning-by-Doing)</strong> 모델은 자본 투자가 단순한 자산 누적에 머물지 않고 경험을 매개로 무형의 기술 도약을 낳는 동태적 기폭제가 됨을 수리적으로 입증했습니다.<br>
+                        새마을운동은 이러한 거시경제적 성장 법칙이 낙후된 개발도상국 현장에서 주민들의 직접 참여와 지식 외부효과를 통해 실제로 어떻게 작동되고 성공할 수 있는지를 완벽하게 보여준 역사상 가장 성공적인 정책 실증 교과서입니다.
                     </p>
                 </div>
                 <div class="citation-box">
                     <div class="citation-item">
-                        <span class="cit-type">Arrow LBD Seminal Paper</span>
+                        <span class="cit-type">Original Arrow Citation</span>
                         <span class="cit-title">"The Economic Implications of Learning by Doing"</span>
                         <span class="cit-author">Arrow, Kenneth J. (1962). <strong>Review of Economic Studies</strong>, Vol. 29, No. 3, pp. 155–173.</span>
                     </div>
-                    <div class="citation-item">
-                        <span class="cit-type">Romer Endogenous Growth Paper</span>
-                        <span class="cit-title">"Endogenous Technological Change"</span>
-                        <span class="cit-author">Romer, Paul M. (1990). <strong>Journal of Political Economy</strong>, Vol. 98, No. 5, Part 2, pp. S71–S102. (2018 노벨경제학상 수상 근거 논문)</span>
-                    </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- 아래쪽: 새마을운동 현장에서의 실천을 통한 학습 역사적 실증 사례 (Full Width) -->
-        <section class="card full-width" style="margin-top: 2rem;">
-            <h2>💎 새마을운동 현장의 '실천을 통한 학습'과 지식 전파 실증 사례</h2>
-            <div class="cases-grid">
-                
-                <div class="case-item">
-                    <span class="case-badge">경북 안동 구담마을</span>
-                    <h3 class="case-title">🌉 삽 하나로 이룩한 구담교 설계·시공과 토목 지식 획득</h3>
-                    <p class="case-desc">낙동강을 가로지르는 200m 대교(구담교) 가설을 위해 주민들은 설계 가이드만을 확보한 채 직접 강바닥에 우물을 파고 지지대를 세우는 **직접적인 토목 공사(Doing)**를 개시했습니다. 이 과정에서 시멘트 압착 기술과 수중 지지 공법 등 고난도의 토목 지식을 **현장 실천을 통해 내생적으로 체득(Learning-by-Doing)**했습니다. 시공 횟수가 증가하며 시행착오가 극소화되어 후반부 교각 공사는 초반 대비 3배 이상의 초고속 공기로 돌파하여 자립적 완성을 달성했습니다.</p>
-                </div>
-
-                <div class="case-item">
-                    <span class="case-badge">지식 넘침(Spillover) 실증</span>
-                    <h3 class="case-title">📢 새마을지도자 연수원의 지식 외부성 극대화 제도</h3>
-                    <p class="case-desc">한 모범 마을의 성공 지식을 전국적으로 빠르게 전파시키기 위해 정부는 **새마을지도자 연수원**을 개설하여 우수 마을 지도자가 직접 강단에 올라 자신들이 LBD로 획득한 시공 노하우와 주민 갈등 해결법을 강의하도록 구축했습니다. 강의를 들은 타지 부락 지도자들이 자신들의 마을로 복귀해 이를 이식함으로써 **지식의 거대한 넘침 효과(Knowledge Spillover)**를 창출해냈으며, 이는 전국의 인적 자본을 동시에 수직 상승시키는 결정적 촉매가 되었습니다.</p>
-                </div>
-
-                <div class="case-item">
-                    <span class="case-badge">경기 평택 상리마을</span>
-                    <h3 class="case-title">🚜 공동 영농단 조직과 신식 농기계 작동법 공동 학습</h3>
-                    <p class="case-desc">이앙기, 경운기 등 신형 대형 농기계를 최초 도입 시 사용법 미숙으로 잦은 고장과 비효율에 부딪쳤으나, 마을 청년들이 주축이 되어 직접 분해·조립하고 현장에서 흙을 파며 조작법을 익히는 **실천적 공동 학습(LBD)**을 실시했습니다. 이렇게 얻은 인적 기계 지식을 바탕으로 공동 구판장과 수리 센터를 가동하여, 농기계 가동 효율성을 초창기 대비 4배 격상시키고 쌀 생산력을 비약적으로 도약시켜 전형적인 춘궁기 빈곤을 극적으로 완전 퇴치했습니다.</p>
-                </div>
-
-                <div class="case-item">
-                    <span class="case-badge">경북 칠곡 지천면</span>
-                    <h3 class="case-title">🧶 부녀회 한지/양잠 부업 가내 가공 기술의 도미노 전파</h3>
-                    <p class="case-desc">한지 및 섬유 가공 공업을 농가 한쪽에서 양잠업과 연계하여 개발하기 위해 부녀회장들이 먼저 시범 농가에서 누에 치기와 섬유 자재 가공(Doing)을 실천했습니다. 이 과정에서 습득한 품질 향상 기술 숙련도는 이웃 부락 부녀회원들에게 전수되어 약 3개월 만에 지천면 내 12개 부락으로 **지식 유출(Spillover)**이 이루어졌습니다. 이는 가내 양잠 공업 협동조합 결성으로 결실을 맺어 농한기 유휴 노동력을 활용한 고부가가치 농외 소득 확보의 이정표를 썼습니다.</p>
-                </div>
-
             </div>
         </section>
 
     </main>
 
     <footer>
-        © 2026 Saemaul Seminar Interactive Library - Endogenous Growth presentation Module
+        © 2026 Saemaul Seminar Interactive Library - Theoretical Presentation Module (Chapter 11)
     </footer>
 
-    <!-- Externalized JavaScript Logic -->
-    <script defer src="script.js"></script>
+    <script>
+        // 전역 상태 변수
+        let currentSlide = 1;
+        const totalSlides = 6;
+
+        // 거시 생산 모델 파라미터 (y = A * k^alpha)
+        const alpha = 0.5; // Cobb-Douglas 분배율
+        const maxK = 40; // 가로축 최대 범위
+        let baseS = 0.20; // 기본 저축률
+        let baseD = 0.08; // 감가상각률
+
+        // 차트 인스턴스
+        let endogChartInstance = null;
+
+        // 시뮬레이터 타이머 및 데이터
+        let simInterval = null;
+        let simK = 0.5;      // 1인당 자본 k
+        let simCapitalK = 0; // 누적 경험 자본 K
+        let simEfficiency = 0.15; // 실천학습 효율 gamma
+
+        window.onload = () => {
+            initCharts();
+            setupEventListeners();
+            goToSlide(1);
+        };
+
+        function setupEventListeners() {
+            // 슬라이드 3 실시간 슬라이더 리스너
+            document.getElementById('inputK').addEventListener('input', (e) => {
+                const kVal = parseInt(e.target.value);
+                document.getElementById('sliderValK').textContent = kVal;
+                simCapitalK = kVal;
+                updateSlide3Chart();
+            });
+            document.getElementById('inputGamma').addEventListener('input', (e) => {
+                const gammaVal = parseFloat(e.target.value);
+                document.getElementById('sliderValGamma').textContent = (gammaVal * 100).toFixed(0) + '%';
+                simEfficiency = gammaVal;
+                updateSlide3Chart();
+            });
+        }
+
+        // 슬라이드 이동 핵심 컨트롤러
+        function goToSlide(slideNum) {
+            // 실행 중인 모든 타이머 정지
+            clearInterval(simInterval);
+            simInterval = null;
+            document.getElementById('btnPlay4').classList.remove('playing');
+            document.getElementById('btnPlay4').textContent = '▶ 새마을 내생성장 시뮬레이션 가동';
+
+            // 슬라이드 활성화 토글
+            for (let i = 1; i <= totalSlides; i++) {
+                const content = document.getElementById('slide' + i);
+                const tab = document.getElementById('tab' + i);
+                const dot = document.querySelector(`.slide-dots .dot:nth-child(${i})`);
+                
+                if (i === slideNum) {
+                    content.classList.add('active');
+                    tab.classList.add('active');
+                    if (dot) dot.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                    tab.classList.remove('active');
+                    if (dot) dot.classList.remove('active');
+                }
+            }
+
+            currentSlide = slideNum;
+
+            // 상단 진행률 프로그레스 바 제어
+            document.getElementById('topProgressBar').style.width = (slideNum / totalSlides) * 100 + '%';
+
+            // 하단 내비게이션 버튼 제어
+            document.getElementById('prevBtn').disabled = (slideNum === 1);
+            document.getElementById('nextBtn').disabled = (slideNum === totalSlides);
+
+            // 동적 LaTeX 렌더링 보완 실행
+            if (window.renderMathInElement) {
+                renderMathInElement(document.getElementById('slide' + slideNum), {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ],
+                    throwOnError: false
+                });
+            }
+
+            // 슬라이드 번호에 따라 우측 인터랙티브 패널 매핑
+            renderRightPanel(slideNum);
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) goToSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) goToSlide(currentSlide - 1);
+        }
+
+        // 슬라이드별 우측 비주얼라이저 구성 전환기
+        function renderRightPanel(slideNum) {
+            const visPanel1 = document.getElementById('visPanel1');
+            const visPanel2 = document.getElementById('visPanel2');
+            const visChartArea = document.getElementById('visChartArea');
+            const visPanel5 = document.getElementById('visPanel5');
+            const visPanel6 = document.getElementById('visPanel6');
+            
+            const visTitle = document.getElementById('visTitle');
+            const visBadge = document.getElementById('visBadge');
+
+            // 제어 서브패널들 토글
+            document.getElementById('controlPanel3').classList.add('hidden');
+            document.getElementById('controlPanel4').classList.add('hidden');
+
+            // 모든 패널 숨김 처리
+            visPanel1.classList.add('hidden');
+            visPanel2.classList.add('hidden');
+            visChartArea.classList.add('hidden');
+            visPanel5.classList.add('hidden');
+            visPanel6.classList.add('hidden');
+
+            if (slideNum === 1) {
+                visPanel1.classList.remove('hidden');
+                visTitle.innerHTML = '🔄 성장 패러다임의 혁신 비교';
+                visBadge.textContent = '성장이론 비교';
+            } else if (slideNum === 2) {
+                visPanel2.classList.remove('hidden');
+                visTitle.innerHTML = '🎓 실천을 통한 학습 성장 순환 체계';
+                visBadge.textContent = '메커니즘 흐름도';
+            } else if (slideNum === 5) {
+                visPanel5.classList.remove('hidden');
+                visTitle.innerHTML = '📈 새마을사업 경험의 3단계 발전 타임라인';
+                visBadge.textContent = '단계적 고도화';
+                showStep(1); // 초기 스텝 활성화
+            } else if (slideNum === 6) {
+                visPanel6.classList.remove('hidden');
+                visTitle.innerHTML = '💎 새마을사업 경험과 인적자본 축적 실증 사례';
+                visBadge.textContent = '사례 분석';
+                showCase(1);
+            } else {
+                // 차트가 렌더링되는 슬라이드 3 & 4
+                visChartArea.classList.remove('hidden');
+                
+                if (slideNum === 3) {
+                    visTitle.innerHTML = '📊 기술진보와 지속성장의 내생적 도약 그래프';
+                    visBadge.textContent = '내생성장 그래프';
+                    document.getElementById('controlPanel3').classList.remove('hidden');
+                    setupSlide3Visuals();
+                } else if (slideNum === 4) {
+                    visTitle.innerHTML = '🚜 새마을 실천학습 동적 성장 시뮬레이터';
+                    visBadge.textContent = '새마을 ODA 시뮬레이터';
+                    document.getElementById('controlPanel4').classList.remove('hidden');
+                    setupSlide4Visuals();
+                }
+            }
+        }
+
+        // --- Chart.js 초기화 함수 ---
+        function initCharts() {
+            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.font.family = "'Pretendard', sans-serif";
+
+            const ctxMain = document.getElementById('endogChart').getContext('2d');
+            endogChartInstance = new Chart(ctxMain, {
+                type: 'line',
+                data: { labels: [], datasets: [] },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: { duration: 0 },
+                    elements: { point: { radius: 0 } },
+                    interaction: { intersect: false, mode: 'index' },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            min: 0,
+                            max: maxK,
+                            title: { display: true, text: '일인당 자본 (k)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.04)' }
+                        },
+                        y: {
+                            min: 0,
+                            max: 18,
+                            title: { display: true, text: '산출량 / 투자 / 마모 수준' },
+                            grid: { color: 'rgba(255, 255, 255, 0.04)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'top', labels: { boxWidth: 12, padding: 8 } },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+        }
+
+        // --- 생산성 계수 계산 (A = g(K) = A0 + gamma * K) ---
+        function calculateTechLevel(K, gamma) {
+            const A0 = 1.6;
+            return A0 + gamma * K;
+        }
+
+        // --- 슬라이드 3: 그래프 렌더링 ---
+        function setupSlide3Visuals() {
+            const K_val = simCapitalK;
+            const gamma_val = simEfficiency;
+            const techA = calculateTechLevel(K_val, gamma_val);
+
+            let kPoints = [];
+            let yPoints = [];
+            let invPoints = [];
+            let depPoints = [];
+
+            for (let k = 0; k <= maxK; k += 0.5) {
+                kPoints.push(k);
+                const yVal = techA * Math.pow(k, alpha);
+                yPoints.push(yVal);
+                invPoints.push(baseS * yVal);
+                depPoints.push(baseD * k);
+            }
+
+            endogChartInstance.data = {
+                labels: kPoints,
+                datasets: [
+                    {
+                        label: '일인당 생산성 y = A f(k)',
+                        data: yPoints,
+                        borderColor: '#c084fc',
+                        borderWidth: 2.5,
+                        fill: false
+                    },
+                    {
+                        label: '일인당 투자 i = s A f(k)',
+                        data: invPoints,
+                        borderColor: '#6366f1',
+                        borderWidth: 2.5,
+                        fill: false
+                    },
+                    {
+                        label: '감가상각 마모선 δ k',
+                        data: depPoints,
+                        borderColor: '#ef4444',
+                        borderWidth: 1.5,
+                        borderDash: [4, 4],
+                        fill: false
+                    }
+                ]
+            };
+            endogChartInstance.update();
+
+            // 뱃지 상태 업데이트
+            updateBadges(15, techA, K_val);
+        }
+
+        function updateSlide3Chart() {
+            setupSlide3Visuals();
+        }
+
+        function resetTransition3() {
+            simCapitalK = 0;
+            simEfficiency = 0.15;
+            document.getElementById('inputK').value = 0;
+            document.getElementById('sliderValK').textContent = 0;
+            document.getElementById('inputGamma').value = 0.15;
+            document.getElementById('sliderValGamma').textContent = '15%';
+            setupSlide3Visuals();
+        }
+
+        // --- 슬라이드 4: 새마을 내생성장 시뮬레이터 가동 ---
+        function setupSlide4Visuals() {
+            simK = 1.0;
+            simCapitalK = 0;
+            simEfficiency = 0.16;
+            
+            drawTransitionFrame();
+        }
+
+        function drawTransitionFrame() {
+            const techA = calculateTechLevel(simCapitalK, simEfficiency);
+
+            let kPoints = [];
+            let yPoints = [];
+            let invPoints = [];
+            let depPoints = [];
+
+            for (let k = 0; k <= maxK; k += 0.5) {
+                kPoints.push(k);
+                const yVal = techA * Math.pow(k, alpha);
+                yPoints.push(yVal);
+                invPoints.push(baseS * yVal);
+                depPoints.push(baseD * k);
+            }
+
+            // 실시간 k 위치 수직 보조선용 데이터셋 추가
+            const activeY = techA * Math.pow(simK, alpha);
+            const activeInv = baseS * activeY;
+            const activeDep = baseD * simK;
+
+            endogChartInstance.data = {
+                labels: kPoints,
+                datasets: [
+                    {
+                        label: '생산곡선 y = A f(k)',
+                        data: yPoints,
+                        borderColor: 'rgba(192, 132, 252, 0.4)',
+                        borderWidth: 1.5,
+                        fill: false
+                    },
+                    {
+                        label: '투자곡선 i = s A f(k)',
+                        data: invPoints,
+                        borderColor: '#6366f1',
+                        borderWidth: 2.5,
+                        fill: false
+                    },
+                    {
+                        label: '감가상각 마모선 δ k',
+                        data: depPoints,
+                        borderColor: '#ef4444',
+                        borderWidth: 1.5,
+                        borderDash: [4, 4],
+                        fill: false
+                    },
+                    {
+                        label: '현재 1인당 자본 위치',
+                        data: [
+                            { x: simK, y: 0 },
+                            { x: simK, y: activeY }
+                        ],
+                        borderColor: '#fbbf24',
+                        borderWidth: 2,
+                        showLine: true,
+                        fill: false
+                    }
+                ]
+            };
+            endogChartInstance.update();
+            updateBadges(simK, techA, simCapitalK);
+        }
+
+        function playTransition4() {
+            const btn = document.getElementById('btnPlay4');
+            if (simInterval) {
+                clearInterval(simInterval);
+                simInterval = null;
+                btn.classList.remove('playing');
+                btn.textContent = '▶ 새마을 내생성장 시뮬레이션 가동';
+                return;
+            }
+
+            btn.classList.add('playing');
+            btn.textContent = '⏸️ 시뮬레이션 일시정지';
+
+            simInterval = setInterval(() => {
+                const techA = calculateTechLevel(simCapitalK, simEfficiency);
+                const yVal = techA * Math.pow(simK, alpha);
+                const invVal = baseS * yVal;
+                const depVal = baseD * simK;
+                
+                // 자본 변동방정식: dk = i - d * k
+                const dk = invVal - depVal;
+                
+                // 자본 증가
+                simK += dk * 0.15; 
+                
+                // 내생적 지식 축적 모델: 자본 k가 증가함에 따라 누적 학습 자본 K도 축적됨
+                // 주민들이 '실천(Doing)'하면서 기술력이 지속 향상되는 과정 표현
+                if (simCapitalK < 20) {
+                    simCapitalK += 0.08;
+                }
+
+                if (simK >= maxK) {
+                    simK = maxK;
+                    clearInterval(simInterval);
+                    simInterval = null;
+                    btn.classList.remove('playing');
+                    btn.textContent = '▶ 새마을 내생성장 시뮬레이션 가동';
+                }
+
+                drawTransitionFrame();
+            }, 60);
+        }
+
+        function resetTransition4() {
+            clearInterval(simInterval);
+            simInterval = null;
+            const btn = document.getElementById('btnPlay4');
+            btn.classList.remove('playing');
+            btn.textContent = '▶ 새마을 내생성장 시뮬레이션 가동';
+            
+            simK = 1.0;
+            simCapitalK = 0;
+            drawTransitionFrame();
+        }
+
+        // --- 실시간 뱃지 수치 업데이트 ---
+        function updateBadges(kVal, techA, K_val) {
+            const yVal = techA * Math.pow(kVal, alpha);
+            const invVal = baseS * yVal;
+
+            document.getElementById('statBadgeK').textContent = kVal.toFixed(1) + 'pt';
+            document.getElementById('statBadgeY').textContent = yVal.toFixed(1) + 'pt';
+            document.getElementById('statBadgeA').textContent = techA.toFixed(2);
+            document.getElementById('statBadgeInv').textContent = invVal.toFixed(1) + 'pt';
+        }
+
+        // --- 슬라이드 5: 인터랙티브 타임라인 스텝 제어 ---
+        function showStep(stepNum) {
+            const items = document.querySelectorAll('.timeline-item');
+            items.forEach((item, idx) => {
+                if (idx + 1 === stepNum) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+        }
+
+        // --- 슬라이드 6: 사례 연구 탭 제어 ---
+        function showCase(caseNum) {
+            const tabs = document.querySelectorAll('.case-tab');
+            tabs.forEach((tab, idx) => {
+                if (idx + 1 === caseNum) tab.classList.add('active');
+                else tab.classList.remove('active');
+            });
+
+            const content = document.getElementById('caseContent');
+            if (caseNum === 1) {
+                content.innerHTML = `
+                    <h4>🌉 경북 안동 구담교 가설 (자조 토목 기술의 정점)</h4>
+                    <p>3억 원의 대형 다리 가설 공정을 주민들 스스로 단 9,000만 원으로 완벽 준공해 낸 기적입니다.</p>
+                    <ul>
+                        <li><strong>기술적 자립</strong>: 주민들이 전문 기술자에게 직접 거푸집 제작법과 콘크리트 배합법을 전수받아 현장에서 서로 가르치며 수행.</li>
+                        <li><strong>인적 역량의 비약</strong>: "5년 전엔 감히 생각지도 못했던 엄청난 교량 건설을 우리 손으로 해내며 엄청난 기술과 자신감을 얻었다"고 회고.</li>
+                        <li><strong>외부효과의 증명</strong>: 구담리의 다리 가설 기법과 주민 협동 노하우는 인근 수십 개 농촌 부락의 도로 확충 사업에 마중물이 됨.</li>
+                    </ul>
+                `;
+            } else if (caseNum === 2) {
+                content.innerHTML = `
+                    <h4>🏬 충북 충주 풍덕마을 (현대적 협동조합 경영 지식 체득)</h4>
+                    <p>정미소와 공동 구판장을 주민들 스스로 자립 운영하며 무형의 경영 인프라를 축적한 우수 사례입니다.</p>
+                    <ul>
+                        <li><strong>금융 및 경영 학습</strong>: 전표제를 직접 수립해 누가 언제 무엇을 구매했고 이익금이 얼마인지 매일 장부로 투명 기록하는 기술 습득.</li>
+                        <li><strong>조직적 신뢰 구축</strong>: 장부 회계의 투명화를 통해 공동체 주민들 간의 강력한 협동 신뢰와 자원 배분의 투명성 획득.</li>
+                        <li><strong>인적 자본 전파</strong>: 무형의 기업가적 경영 관리 기술이 다른 농가 소득 증대 작물 영농법 지도로 이어져 다차원 자립 성공.</li>
+                    </ul>
+                `;
+            } else if (caseNum === 3) {
+                content.innerHTML = `
+                    <h4>🐄 경기 용인 동막마을 (비육우 영농 기술 개척)</h4>
+                    <p>부가가치가 높은 새로운 영농 기술을 배우기 위해 전국을 발로 뛴 지식 개척의 성공담입니다.</p>
+                    <ul>
+                        <li><strong>현장 지식 탐색</strong>: 비육우 영농 기술을 얻기 위해 부산, 광주, 전주, 천안 등 전국의 선진 목장들을 전전하며 직접 사육 기법 견학.</li>
+                        <li><strong>벤치마킹 기술 적용</strong>: 안성, 광주 등에서 직접 우량 소 43두를 엄선하고 가격 협상을 벌여 최저가로 안전하게 도입 완료.</li>
+                        <li><strong>실천의 누적 결과</strong>: 소 사육 및 판매 유통 노하우가 이웃 축산 농가로 빠르게 공유되어 마을 전체가 부유한 축산 단지로 격상.</li>
+                    </ul>
+                `;
+            }
+        }
+    </script>
 </body>
 </html>
