@@ -28,6 +28,10 @@
             --learning: #ec4899; /* Magenta for learning-by-doing */
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
         body {
             font-family: 'Pretendard', sans-serif;
             background-color: var(--bg);
@@ -36,23 +40,24 @@
                 radial-gradient(at 100% 100%, rgba(192, 132, 252, 0.12) 0px, transparent 50%);
             background-attachment: fixed;
             color: var(--text);
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 2rem 1.5rem 4rem;
             line-height: 1.6;
+            /* 16:9 캡처 최적화: 1920×1080 기준 패딩 조정 */
+            padding: 1rem 1.2rem 1.2rem;
+            min-height: 100vh;
         }
         /* Nav */
-        .nav-bar { width: 100%; max-width: 1100px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
-        .nav-back { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; color: var(--text-sec); font-size: 0.9rem; padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); backdrop-filter: blur(8px); transition: all 0.25s; }
+        .nav-bar { width: 100%; max-width: 1100px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem; }
+        .nav-back { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; color: var(--text-sec); font-size: 0.85rem; padding: 0.4rem 0.9rem; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); backdrop-filter: blur(8px); transition: all 0.25s; }
         .nav-back:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
-        .chapter-badge { background: var(--accent-glow); color: var(--accent); border: 1px solid rgba(99, 102, 241, 0.3); padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .chapter-badge { background: var(--accent-glow); color: var(--accent); border: 1px solid rgba(99, 102, 241, 0.3); padding: 0.35rem 0.8rem; border-radius: 20px; font-size: 0.82rem; font-weight: 600; }
         
         /* Header */
-        header { width: 100%; max-width: 1100px; margin-bottom: 2rem; text-align: center; }
-        h1 { font-size: 2.2rem; font-weight: 800; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
-        .subtitle { color: var(--text-sec); font-size: 1rem; max-width: 800px; margin: 0 auto; }
+        header { width: 100%; max-width: 1100px; margin-bottom: 0.8rem; text-align: center; }
+        h1 { font-size: 1.7rem; font-weight: 800; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.3rem; }
+        .subtitle { color: var(--text-sec); font-size: 0.88rem; max-width: 800px; margin: 0 auto; }
         
         /* Slide Navigation Bar */
         .slide-navigation-bar {
@@ -61,8 +66,8 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 0.6rem;
-            margin-bottom: 1.8rem;
+            padding: 0.5rem 0.6rem;
+            margin-bottom: 0.8rem;
             backdrop-filter: blur(12px);
             position: relative;
         }
@@ -121,13 +126,15 @@
             color: #fff;
         }
 
-        /* Main Content Layout */
+        /* Main Content Layout — 16:9 캡처 최적화 */
         .main-content {
             width: 100%;
             max-width: 1100px;
             display: grid;
             grid-template-columns: 1.12fr 1fr;
-            gap: 1.5rem;
+            gap: 1rem;
+            /* 캡처 시 높이를 화면에 맞게 유동 배치 */
+            align-items: start;
         }
         @media (max-width: 950px) {
             .main-content { grid-template-columns: 1fr; }
@@ -136,13 +143,13 @@
         .card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 1.8rem;
+            border-radius: 16px;
+            padding: 1.4rem 1.6rem;
             backdrop-filter: blur(16px);
             display: flex;
             flex-direction: column;
-            min-height: 520px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            min-height: 430px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
             position: relative;
         }
         .full-width { grid-column: 1 / -1; min-height: auto; }
@@ -172,18 +179,18 @@
             margin-bottom: 0.3rem;
         }
         .slide-content h3 {
-            font-size: 1.45rem;
+            font-size: 1.2rem;
             font-weight: 800;
             color: #fff;
-            margin-bottom: 1.2rem;
+            margin-bottom: 0.9rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            padding-bottom: 0.6rem;
+            padding-bottom: 0.5rem;
         }
         .slide-text p {
-            font-size: 0.95rem;
+            font-size: 0.87rem;
             color: #cbd5e1;
-            margin-bottom: 1rem;
-            line-height: 1.65;
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
             text-align: justify;
         }
         .slide-text p strong {
@@ -193,26 +200,26 @@
             background: rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.04);
             border-radius: 10px;
-            padding: 0.8rem;
-            margin: 1rem 0;
+            padding: 0.6rem;
+            margin: 0.7rem 0;
             text-align: center;
             overflow-x: auto;
         }
         .saemaul-box {
             background: rgba(99, 102, 241, 0.06);
             border-left: 4px solid var(--accent);
-            padding: 1rem 1.1rem;
+            padding: 0.75rem 1rem;
             border-radius: 8px;
-            margin-top: 1.2rem;
-            font-size: 0.88rem;
+            margin-top: 0.9rem;
+            font-size: 0.82rem;
             color: #e2e8f0;
-            line-height: 1.6;
+            line-height: 1.55;
         }
         .saemaul-box strong {
             color: var(--savings);
-            font-size: 0.92rem;
+            font-size: 0.86rem;
             display: inline-block;
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.15rem;
         }
 
         /* Card Footer (Navigation) */
@@ -713,12 +720,12 @@
         }
         
         footer {
-            margin-top: 2.5rem;
+            margin-top: 1rem;
             text-align: center;
             color: var(--text-sec);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             border-top: 1px solid var(--border);
-            padding-top: 1.5rem;
+            padding-top: 0.75rem;
             width: 100%;
             max-width: 1100px;
         }
@@ -783,11 +790,11 @@
                     <div class="slide-num">02 / 06 — 핵심 이론</div>
                     <h3>🎓 애로우의 실천학습(Learning-by-Doing)과 외부효과</h3>
                     <div class="slide-text">
-                        <p>내생적 성장을 결정하는 주요 원천 중 하나는 바로 **'실천을 통한 학습' (learning-by-doing)**입니다. 이는 노벨경제학상 수상자 **케네스 애로우(Kenneth Arrow, 1962)** 교수가 정립한 개념으로, 노동자가 생산활동을 끊임없이 반복하는 과정에서 숙련도가 올라가고, 생산성이 개선되며, 공정이 고도화된다는 역사적 사실에 근거합니다.</p>
+                        <p>내생적 성장을 결정하는 주요 원천 중 하나는 바로 <strong>'실천을 통한 학습' (learning-by-doing)</strong>입니다. 이는 노벨경제학상 수상자 <strong>케네스 애로우(Kenneth Arrow, 1962)</strong> 교수가 정립한 개념으로, 노동자가 생산활동을 끊임없이 반복하는 과정에서 숙련도가 올라가고, 생산성이 개선되며, 공정이 고도화된다는 역사적 사실에 근거합니다.</p>
                         
-                        <p>애로우는 새로운 자본재를 계속 도입하고 투자와 실천을 추진하는 과정 그 자체가 경제 주체에게 무궁무진한 **학습과 혁신의 기회**를 실시간 제공한다고 보았습니다. 그리고 이 학습효과를 정량화하는 지표로 '누적총투자'를 제시했습니다.</p>
+                        <p>애로우는 새로운 자본재를 계속 도입하고 투자와 실천을 추진하는 과정 그 자체가 경제 주체에게 무궁무진한 <strong>학습과 혁신의 기회</strong>를 실시간 제공한다고 보았습니다. 그리고 이 학습효과를 정량화하는 지표로 '누적총투자'를 제시했습니다.</p>
                         
-                        <p>나아가 한 주체의 경험 축적은 나홀로 독점되는 것이 아니라 인근 기업이나 다른 산업으로 물 흐르듯 전파되는 **지식의 외부효과(Knowledge Externality)**를 유발합니다. 내 지식이 남의 생산성까지 끌어올리는 외부효과가 결합되면, 경제 전반의 총기술수준($A$)이 지속적으로 동반 상승하여 <strong>자본의 한계생산 체감 법칙을 극복·완화</strong>할 수 있게 됩니다.</p>
+                        <p>나아가 한 주체의 경험 축적은 나홀로 독점되는 것이 아니라 인근 기업이나 다른 산업으로 물 흐르듯 전파되는 <strong>지식의 외부효과(Knowledge Externality)</strong>를 유발합니다. 내 지식이 남의 생산성까지 끌어올리는 외부효과가 결합되면, 경제 전반의 총기술수준($A$)이 지속적으로 동반 상승하여 <strong>자본의 한계생산 체감 법칙을 극복·완화</strong>할 수 있게 됩니다.</p>
                         
                         <div class="saemaul-box">
                             <strong>📈 성장의 연결고리:</strong><br>
@@ -807,12 +814,12 @@
                             \[y = A \cdot f(k), \quad A = g(K)\]
                         </div>
                         
-                        <p>여기서 $y$는 1인당 생산(소득), $k$는 1인당 자본이며, 핵심 차이점은 기술수준 **$A$가 경제 전체의 자본총량 $K$(누적된 경험과 학습 수준의 총합)의 함수**라는 사실입니다. 자본축적 그 자체가 지식 축적과 동일시됩니다.</p>
+                        <p>여기서 $y$는 1인당 생산(소득), $k$는 1인당 자본이며, 핵심 차이점은 기술수준 <strong>$A$가 경제 전체의 자본총량 $K$(누적된 경험과 학습 수준의 총합)의 함수</strong>라는 사실입니다. 자본축적 그 자체가 지식 축적과 동일시됩니다.</p>
                         
                         <p><strong>우측 그래프의 동태적 성장 과정 해설 (Figure 2):</strong><br>
                         1. 초기 일인당 자본이 $k_1$일 때, 경제는 투자가 감가상각 마모선 $\delta k$를 상회하므로 $k_2$를 향해 성장해 갑니다.<br>
-                        2. 하지만 $k_1 \to k_2$로 자본이 쌓이는 기간 동안 주민들이 생산을 반복하면서 **실천학습**과 **지식 확산**이 동시에 발생해 기술수준 $A$가 $A(K_1) \to A(K_2)$로 상승합니다.<br>
-                        3. 이에 따라 저축·투자 곡선 $s \cdot A(K) \cdot f(k)$가 전체적으로 **위쪽으로 수직 이동**하게 됩니다.<br>
+                        2. 하지만 $k_1 \to k_2$로 자본이 쌓이는 기간 동안 주민들이 생산을 반복하면서 <strong>실천학습</strong>과 <strong>지식 확산</strong>이 동시에 발생해 기술수준 $A$가 $A(K_1) \to A(K_2)$로 상승합니다.<br>
+                        3. 이에 따라 저축·투자 곡선 $s \cdot A(K) \cdot f(k)$가 전체적으로 <strong>위쪽으로 수직 이동</strong>하게 됩니다.<br>
                         4. 결국 $k_2$에 도달한 시점에 투자는 마모선과 일치하지 않고, 이미 위로 도약한 새로운 투자선에 위치하므로 $k_2$는 더 이상 멈추는 안정상태가 아닙니다. 경제는 다시 $k_3$, 그리고 그 너머로 계속 쉼 없이 도약하며 <strong>영구적인 성장을 지속</strong>하게 됩니다.</p>
                     </div>
                 </div>
@@ -822,15 +829,15 @@
                     <div class="slide-num">04 / 06 — 새마을 대입</div>
                     <h3>🚜 새마을운동에의 대입: '직접 해보기(Doing)'와 인적 역량</h3>
                     <div class="slide-text">
-                        <p>이러한 내생적 성장모형은 1970년대 대한민국 농촌의 기적인 <strong>새마을운동의 성장 과정</strong>을 완벽하고 과학적으로 뒷받침합니다. 초기 정부가 공급한 시멘트와 철근은 단순한 무상 원조가 아닌, 주민들에게 **'실천(Doing)'의 마중물**을 던져준 자본이었습니다.</p>
+                        <p>이러한 내생적 성장모형은 1970년대 대한민국 농촌의 기적인 <strong>새마을운동의 성장 과정</strong>을 완벽하고 과학적으로 뒷받침합니다. 초기 정부가 공급한 시멘트와 철근은 단순한 무상 원조가 아닌, 주민들에게 <strong>'실천(Doing)'의 마중물</strong>을 던져준 자본이었습니다.</p>
                         
                         <p>새마을운동 초기, 시멘트를 받아든 농촌 주민들은 토목 공사 경험이 전무하여 배합이나 조적 등에 매우 서툴렀고 수많은 시행착오를 겪었습니다.</p>
                         
-                        <p>하지만 마을 안길을 넓히고, 소교량을 놓고, 하천을 정비하는 공사를 <strong>스스로 머리를 맞대고 반복하여 수행하는 과정(Doing)</strong> 속에서 주민들은 시멘트 배합 비율, 거푸집 제작 기법, 작업 공정 순서와 인력 배치 노하우, 그리고 조직 협동의 요령을 몸으로 직접 체득하였습니다. 이는 곧 **인적자본(Human Capital)의 축적**이자 **기술수준($A$)의 내생적 도약**이었습니다.</p>
+                        <p>하지만 마을 안길을 넓히고, 소교량을 놓고, 하천을 정비하는 공사를 <strong>스스로 머리를 맞대고 반복하여 수행하는 과정(Doing)</strong> 속에서 주민들은 시멘트 배합 비율, 거푸집 제작 기법, 작업 공정 순서와 인력 배치 노하우, 그리고 조직 협동의 요령을 몸으로 직접 체득하였습니다. 이는 곧 <strong>인적자본(Human Capital)의 축적</strong>이자 <strong>기술수준($A$)의 내생적 도약</strong>이었습니다.</p>
                         
                         <div class="saemaul-box">
                             <strong>💡 새마을과 내생성장 메커니즘의 동치:</strong><br>
-                            정부의 기초 물자 지원 $\implies$ 주민 공동체 사업의 직접 수행 **(Doing)** $\implies$ 기술 및 관리 노하우 획득 **(Learning)** $\implies$ 인적자본 축적 및 생산성 도약 **($A \uparrow$)** $\implies$ 영구적 소득 증대 및 금융 자립
+                            정부의 기초 물자 지원 $\implies$ 주민 공동체 사업의 직접 수행 <strong>(Doing)</strong> $\implies$ 기술 및 관리 노하우 획득 <strong>(Learning)</strong> $\implies$ 인적자본 축적 및 생산성 도약 <strong>($A \uparrow$)</strong> $\implies$ 영구적 소득 증대 및 금융 자립
                         </div>
                     </div>
                 </div>
@@ -840,13 +847,13 @@
                     <div class="slide-num">05 / 06 — 단계적 발전</div>
                     <h3>📈 새마을운동의 단계적 발전과 지식의 외부효과</h3>
                     <div class="slide-text">
-                        <p>새마을운동이 단순히 가시적 환경 개선을 넘어 소득 혁신으로 이어질 수 있었던 결정적 이유는 **'경험의 단계적 고도화'**와 **'지식의 외부효과 확산'**이 완벽히 시너지를 냈기 때문입니다.</p>
+                        <p>새마을운동이 단순히 가시적 환경 개선을 넘어 소득 혁신으로 이어질 수 있었던 결정적 이유는 <strong>'경험의 단계적 고도화'</strong>와 <strong>'지식의 외부효과 확산'</strong>이 완벽히 시너지를 냈기 때문입니다.</p>
                         
                         <p><strong>1) 학습에 기반한 단계적 발전 (Step-by-Step Evolution)</strong><br>
-                        주민들은 처음엔 지붕 개량, 담장 정비 등 비교적 단순하고 난도가 낮은 '환경개선 사업'으로 시작했습니다. 이 단계에서 얻은 성공 경험과 기술력을 마중물 삼아 점차 소교량 가설, 농로 확충 등 난도가 높은 '기반시설 인프라 구축'으로 성장했고, 종국에는 특용작물 재배, 공동 축산 등 '고부가가치 소득 사업'으로 성공적으로 고도화되었습니다. 초기 단계의 학습이 다음 단계의 복잡한 사업을 완수할 수 있는 **인적자본과 자신감**을 키워준 결과였습니다.</p>
+                        주민들은 처음엔 지붕 개량, 담장 정비 등 비교적 단순하고 난도가 낮은 '환경개선 사업'으로 시작했습니다. 이 단계에서 얻은 성공 경험과 기술력을 마중물 삼아 점차 소교량 가설, 농로 확충 등 난도가 높은 '기반시설 인프라 구축'으로 성장했고, 종국에는 특용작물 재배, 공동 축산 등 '고부가가치 소득 사업'으로 성공적으로 고도화되었습니다. 초기 단계의 학습이 다음 단계의 복잡한 사업을 완수할 수 있는 <strong>인적자본과 자신감</strong>을 키워준 결과였습니다.</p>
                         
                         <p><strong>2) 벤치마킹을 통한 지식 외부효과의 폭발</strong><br>
-                        특정 마을이 비닐하우스 공법이나 특용작물 재배에 성공하면 그 성공 경험과 노하우는 이웃 마을 주민들이 견학을 와서 벤치마킹하는 방식을 통해 지역 전체로 광속으로 확산되었습니다. 이로 인해 한 마을의 경험 축적이 지역 경제 전체의 **기술수준($A$)과 자본총량($K$)의 동반 도약**으로 이어졌습니다.</p>
+                        특정 마을이 비닐하우스 공법이나 특용작물 재배에 성공하면 그 성공 경험과 노하우는 이웃 마을 주민들이 견학을 와서 벤치마킹하는 방식을 통해 지역 전체로 광속으로 확산되었습니다. 이로 인해 한 마을의 경험 축적이 지역 경제 전체의 <strong>기술수준($A$)과 자본총량($K$)의 동반 도약</strong>으로 이어졌습니다.</p>
                     </div>
                 </div>
 
@@ -861,7 +868,7 @@
                         주민들의 힘으로 낙동강 구담교(400m)를 놓을 당시, 토건회사의 견적은 3억 원이었으나 자본이 턱없이 부족했습니다. 주민들은 외주를 포기하고, 기술이 없는 자는 있는 자에게 현장에서 배워가며 <strong>주민들 스스로 거푸집을 제작하고 콘크리트를 배합해 타설하는 초고난도 기술 공정</strong>을 직접 완수하여 단 9,000만 원으로 다리를 준공했습니다. 주민들은 "5년 전엔 엄두도 못 냈던 무서운 일들을 스스로 해낼 수 있는 기술과 용기를 배웠다"며 역량의 극적 성장을 고백했습니다.</p>
                         
                         <p><strong>2) 충북 충주 풍덕마을 (현대적 협동조합 경영 지식 체득)</strong><br>
-                        주민들이 공동 정미소와 공동 구판장을 직접 자립 운영하며 **전표제 기반의 투명한 장부 기록과 회계 관리 기술**을 체득하였고, 결산 후 잉여금을 현금과 현물로 자율 배분하는 금융 지식과 고도의 조직 관리 역량을 스스로 함양해 냈습니다.</p>
+                        주민들이 공동 정미소와 공동 구판장을 직접 자립 운영하며 <strong>전표제 기반의 투명한 장부 기록과 회계 관리 기술</strong>을 체득하였고, 결산 후 잉여금을 현금과 현물로 자율 배분하는 금융 지식과 고도의 조직 관리 역량을 스스로 함양해 냈습니다.</p>
                         
                         <p><strong>3) 경기 용인 동막마을 (비육우 영농 기술 개척)</strong><br>
                         부가가치가 높은 비육우 사업을 추진하고자 주민들이 부산, 광주, 전주, 천안 등 전국의 대형 목장을 직접 전전하며 사육 기술을 습득하고, 가격이 저렴한 안성에서 소 43두를 직접 검수·도입해 농가 수익을 도약시켰습니다.</p>
@@ -992,7 +999,7 @@
                                 <button class="btn-sim-reset" onclick="resetTransition4()">🔄 초기화</button>
                             </div>
                             <p class="panel-hint" style="margin-top: 0.6rem;">
-                                주민들의 공동 사업 참여(Doing)로 인해 **농촌 인적자본과 기술력($A$)이 내생적으로 자동 누적 성장**하는 고유 동학 시뮬레이션입니다. 솔로우 안정상태의 성장 고착을 주민들의 실천학습이 어떻게 격파하고 무한 장기 번영을 일구어 가는지 관찰해 보십시오.
+                                주민들의 공동 사업 참여(Doing)로 인해 <strong>농촌 인적자본과 기술력($A$)이 내생적으로 자동 누적 성장</strong>하는 고유 동학 시뮬레이션입니다. 솔로우 안정상태의 성장 고착을 주민들의 실천학습이 어떻게 격파하고 무한 장기 번영을 일구어 가는지 관찰해 보십시오.
                             </p>
                         </div>
                     </div>
@@ -1039,7 +1046,7 @@
                             </div>
                             <div class="timeline-content">
                                 <div class="timeline-title">🏗️ 2단계: 복잡 인프라 구축 사업 (1973~1975)</div>
-                                <div class="timeline-desc">마을 안길 확장, 교량 가설, 마을회관 신축 등 전문 기술이 요구되는 거대 자산 형성. 주민들의 **토목 기술, 인력 운영 및 관리 지식 급속 축적**.</div>
+                                <div class="timeline-desc">마을 안길 확장, 교량 가설, 마을회관 신축 등 전문 기술이 요구되는 거대 자산 형성. 주민들의 <strong>토목 기술, 인력 운영 및 관리 지식 급속 축적</strong>.</div>
                             </div>
                         </div>
 
@@ -1050,7 +1057,7 @@
                             </div>
                             <div class="timeline-content">
                                 <div class="timeline-title">💰 3단계: 고부가가치 소득 증대 사업 (1976년 이후)</div>
-                                <div class="timeline-desc">특용작물 단지화, 비닐하우스 복차 영농, 공동 상설 구판장 운영 등 고도 경제 활동. **경영, 회계 지식 습득 및 자본금과 인적역량의 완성**.</div>
+                                <div class="timeline-desc">특용작물 단지화, 비닐하우스 복차 영농, 공동 상설 구판장 운영 등 고도 경제 활동. <strong>경영, 회계 지식 습득 및 자본금과 인적역량의 완성</strong>.</div>
                             </div>
                         </div>
                     </div>
