@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제12-13장 — 복차사업과 여성의 역량개발: 경제적 자립과 성장의 선순환</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #090d16;
+            --surface: rgba(17, 24, 39, 0.7);
+            --surface-light: rgba(30, 41, 59, 0.9);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-active: rgba(99, 102, 241, 0.4);
+            --text: #f8fafc;
+            --text-sec: #94a3b8;
+            --accent: #6366f1; /* Premium Indigo */
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --savings: #10b981; /* Emerald for Savings/Education */
+            --depreciation: #ef4444; /* Red */
+            --income: #c084fc; /* Lavender for income */
+            --capital: #fbbf24; /* Gold */
+            --husband: #3b82f6; /* Blue for husband */
+            --wife: #ec4899; /* Pink for wife */
+            --consumption: #f97316; /* Orange for consumption */
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(192, 132, 252, 0.12) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+            padding: 1rem 1.2rem 1.2rem;
+            min-height: 100vh;
+        }
+        /* Nav */
+        .nav-bar { width: 100%; max-width: 1100px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem; }
+        .nav-back { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; color: var(--text-sec); font-size: 0.85rem; padding: 0.4rem 0.9rem; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); backdrop-filter: blur(8px); transition: all 0.25s; }
+        .nav-back:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+        .chapter-badge { background: var(--accent-glow); color: var(--accent); border: 1px solid rgba(99, 102, 241, 0.3); padding: 0.35rem 0.8rem; border-radius: 20px; font-size: 0.82rem; font-weight: 600; }
+        
+        /* Header */
+        header { width: 100%; max-width: 1100px; margin-bottom: 0.8rem; text-align: center; }
+        h1 { font-size: 1.6rem; font-weight: 800; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.3rem; }
+        .subtitle { color: var(--text-sec); font-size: 0.86rem; max-width: 850px; margin: 0 auto; }
+        
+        /* Slide Navigation Bar */
+        .slide-navigation-bar {
+            width: 100%;
+            max-width: 1100px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0.5rem 0.6rem;
+            margin-bottom: 0.8rem;
+            backdrop-filter: blur(12px);
+            position: relative;
+        }
+        .progress-container {
+            height: 4px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 2px;
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+            width: 100%;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--accent), var(--income));
+            width: 16.66%;
+            transition: width 0.3s ease;
+        }
+        .slide-tabs {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.4rem;
+            overflow-x: auto;
+        }
+        .slide-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-sec);
+            padding: 0.5rem 0.3rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            white-space: nowrap;
+            min-width: 90px;
+        }
+        .slide-tab:hover {
+            color: var(--text);
+            background: rgba(255,255,255,0.03);
+        }
+        .slide-tab.active {
+            color: #fff;
+            background: var(--accent-glow);
+            box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.2);
+        }
+        .slide-tab span {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--savings);
+            font-weight: 700;
+            margin-bottom: 0.1rem;
+        }
+        .slide-tab.active span {
+            color: #fff;
+        }
+
+        /* Main Content Layout */
+        .main-content {
+            width: 100%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 1.12fr 1fr;
+            gap: 1rem;
+            align-items: start;
+        }
+        @media (max-width: 950px) {
+            .main-content { grid-template-columns: 1fr; }
+        }
+        
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.4rem 1.6rem;
+            backdrop-filter: blur(16px);
+            display: flex;
+            flex-direction: column;
+            min-height: 470px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .full-width { grid-column: 1 / -1; min-height: auto; }
+        
+        .slide-content-wrapper {
+            flex-grow: 1;
+            position: relative;
+        }
+        .slide-content {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .slide-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-num {
+            font-size: 0.8rem;
+            color: var(--savings);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.3rem;
+        }
+        .slide-content h3 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.9rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 0.5rem;
+        }
+        .slide-text p {
+            font-size: 0.87rem;
+            color: #cbd5e1;
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+            text-align: justify;
+        }
+        .slide-text p strong {
+            color: #fff;
+        }
+        .math-block {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            padding: 0.6rem;
+            margin: 0.7rem 0;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .saemaul-box {
+            background: rgba(99, 102, 241, 0.06);
+            border-left: 4px solid var(--accent);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-top: 0.9rem;
+            font-size: 0.82rem;
+            color: #e2e8f0;
+            line-height: 1.55;
+        }
+        .saemaul-box strong {
+            color: var(--savings);
+            font-size: 0.86rem;
+            display: inline-block;
+            margin-bottom: 0.15rem;
+        }
+
+        /* Card Footer (Navigation) */
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .btn-nav {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.55rem 1.1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .btn-nav:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+        .btn-nav:disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+        }
+        .slide-dots {
+            display: flex;
+            gap: 0.4rem;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .dot:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .dot.active {
+            background: var(--accent);
+            width: 20px;
+            border-radius: 4px;
+        }
+
+        /* Right Column: Visualizer Card Styles */
+        .visualizer-card {
+            min-height: 470px;
+        }
+        .visualizer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 0.6rem;
+        }
+        .visualizer-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .badge {
+            background: var(--accent-glow);
+            color: var(--savings);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+        .visualizer-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .vis-panel {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        /* Diagrams Elements */
+        .diagram-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: rgba(0,0,0,0.15);
+            padding: 1.2rem;
+            border-radius: 16px;
+            border: 1px dashed rgba(255,255,255,0.06);
+        }
+        .diagram-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+        }
+        .diag-box {
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.8rem;
+            flex: 1;
+            text-align: center;
+            font-size: 0.82rem;
+            transition: all 0.3s;
+        }
+        .diag-box:hover {
+            border-color: var(--border-active);
+            transform: scale(1.02);
+        }
+        .diag-box.highlight {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.08);
+        }
+        .diag-box-title {
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.3rem;
+            font-size: 0.88rem;
+        }
+        .diag-box-desc {
+            color: var(--text-sec);
+            font-size: 0.74rem;
+        }
+        .diag-arrow-down {
+            text-align: center;
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin: -0.4rem 0;
+        }
+        .diag-arrow-right {
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        /* Interactive Controls */
+        .controls-panel {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            margin-top: 0.8rem;
+        }
+        .sliders-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .slider-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .slider-item label {
+            font-size: 0.78rem;
+            color: var(--text-sec);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+        }
+        .val-badge {
+            color: var(--savings);
+            font-weight: 700;
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            margin-top: -4px;
+            box-shadow: 0 0 6px var(--accent);
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+        }
+
+        /* Results Grid */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+            margin-top: 0.8rem;
+        }
+        .result-badge {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.4rem 0.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+        .result-badge .label {
+            font-size: 0.68rem;
+            color: var(--text-sec);
+        }
+        .result-badge .value {
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+        .q-stat { border-color: rgba(99, 102, 241, 0.2); }
+        .q-stat .value { color: var(--accent); }
+        .success-stat { border-color: rgba(16, 185, 129, 0.2); }
+        .success-stat .value { color: var(--savings); }
+
+        /* Nash Visualizer specific elements */
+        .nash-bar-wrapper {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            position: relative;
+            margin-bottom: 0.8rem;
+        }
+        .nash-line {
+            height: 12px;
+            background: #1e293b;
+            border-radius: 6px;
+            position: relative;
+            margin: 2.5rem 0 1rem 0;
+            display: flex;
+        }
+        .nash-threat-h {
+            height: 100%;
+            background: var(--husband);
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
+            position: relative;
+        }
+        .nash-threat-w {
+            height: 100%;
+            background: var(--wife);
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+            position: absolute;
+            right: 0;
+        }
+        .nash-surplus {
+            flex-grow: 1;
+            height: 100%;
+            background: var(--accent-glow);
+            border-left: 1px dashed rgba(255,255,255,0.3);
+            border-right: 1px dashed rgba(255,255,255,0.3);
+        }
+        .nash-solution-marker {
+            position: absolute;
+            top: -12px;
+            width: 4px;
+            height: 36px;
+            background: #fff;
+            box-shadow: 0 0 10px #fff;
+            transform: translateX(-50%);
+        }
+        .nash-marker-label {
+            position: absolute;
+            font-size: 0.72rem;
+            color: #fff;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+        .nash-label-th { top: -2.2rem; left: 0; }
+        .nash-label-tw { top: -2.2rem; right: 0; }
+        .nash-label-sol { top: 2.4rem; left: 50%; transform: translateX(-50%); }
+
+        .portfolio-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        .port-bar-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+        }
+        .port-label {
+            width: 80px;
+            font-weight: 600;
+            color: var(--text-sec);
+        }
+        .port-progress-container {
+            flex-grow: 1;
+            height: 14px;
+            background: #1e293b;
+            border-radius: 7px;
+            overflow: hidden;
+            margin: 0 0.8rem;
+            position: relative;
+        }
+        .port-progress {
+            height: 100%;
+            border-radius: 7px;
+            transition: width 0.3s ease;
+        }
+        .port-val {
+            width: 45px;
+            text-align: right;
+            font-weight: 700;
+        }
+
+        /* Slide 5 Interactive Flowchart */
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            padding: 0.5rem;
+        }
+        .flow-node {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.7rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .flow-node:hover {
+            background: rgba(99, 102, 241, 0.05);
+            border-color: var(--border-active);
+            transform: translateX(4px);
+        }
+        .flow-node.active {
+            background: rgba(99, 102, 241, 0.08);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.15);
+        }
+        .flow-node-num {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.8rem;
+            color: var(--accent);
+            transition: all 0.3s;
+        }
+        .flow-node.active .flow-node-num {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .flow-node-text {
+            font-weight: 700;
+            font-size: 0.84rem;
+            color: var(--text);
+        }
+        .flow-arrow-indicator {
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.15);
+            line-height: 1;
+            margin: -0.2rem 0;
+        }
+        .flow-node.active ~ .flow-arrow-indicator {
+            color: var(--accent);
+        }
+        .flow-detail-box {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            padding: 0.9rem 1.1rem;
+            font-size: 0.8rem;
+            color: #e2e8f0;
+            line-height: 1.5;
+            min-height: 90px;
+            margin-top: 0.5rem;
+            animation: fadeIn 0.3s;
+        }
+
+        /* Slide 6 Case Viewer */
+        .case-tabs {
+            display: flex;
+            gap: 0.4rem;
+            margin-bottom: 0.8rem;
+        }
+        .case-tab {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: var(--text-sec);
+            padding: 0.55rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .case-tab.active {
+            background: var(--accent-glow);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .case-content-box {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            font-size: 0.84rem;
+            color: #cbd5e1;
+            min-height: 230px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            animation: fadeIn 0.3s ease;
+        }
+        .case-content-box h4 {
+            font-size: 1rem;
+            color: #fff;
+            font-weight: 800;
+            border-left: 3px solid var(--accent);
+            padding-left: 0.6rem;
+            margin-bottom: 0.3rem;
+        }
+        .case-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+            font-size: 0.78rem;
+        }
+        .case-table th, .case-table td {
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 0.4rem;
+            text-align: center;
+        }
+        .case-table th {
+            background: rgba(255,255,255,0.03);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        footer {
+            margin-top: 1rem;
+            text-align: center;
+            color: var(--text-sec);
+            font-size: 0.75rem;
+            border-top: 1px solid var(--border);
+            padding-top: 0.75rem;
+            width: 100%;
+            max-width: 1100px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav-bar">
+        <a href="../index.html" class="nav-back">← 목차</a>
+        <span class="chapter-badge">제 12-13장 시뮬레이터</span>
+    </nav>
+
+    <header>
+        <h1>제12-13장 — 복차사업과 여성의 역량개발: 경제적 자립과 성장의 선순환</h1>
+        <p class="subtitle">
+            정부가 농촌 주민조직을 하나의 '준기업(Quasi-firm)'으로 간주해 효율성을 발휘하게 한 <strong>복차사업</strong>의 이론과,
+            소득 증대를 기점으로 가계 내 <strong>여성의 협상력</strong>이 제고되어 교육 및 저축으로의 인적/물적 자본 형성 경로를 실시간 시뮬레이션으로 규명합니다.
+        </p>
+    </header>
+
+    <!-- Slide Navigation Top Bar -->
+    <div class="slide-navigation-bar">
+        <div class="progress-container">
+            <div class="progress-bar" id="topProgressBar"></div>
+        </div>
+        <div class="slide-tabs">
+            <button class="slide-tab active" id="tab1" onclick="goToSlide(1)"><span>01. 거래비용</span>코즈 기업이론</button>
+            <button class="slide-tab" id="tab2" onclick="goToSlide(2)"><span>02. 복차사업</span>비용모형 시뮬</button>
+            <button class="slide-tab" id="tab3" onclick="goToSlide(3)"><span>03. 내쉬협상</span>가계 자원 배분</button>
+            <button class="slide-tab" id="tab4" onclick="goToSlide(4)"><span>04. 인구학전환</span>Q-Q 대체 모형</button>
+            <button class="slide-tab" id="tab5" onclick="goToSlide(5)"><span>05. 성장경로</span>선순환 메커니즘</button>
+            <button class="slide-tab" id="tab6" onclick="goToSlide(6)"><span>06. 역사사례</span>실증적 팩트 시트</button>
+        </div>
+    </div>
+
+    <main class="main-content">
+        
+        <!-- Left Panel: Slide Explanations -->
+        <section class="card">
+            <div class="slide-content-wrapper" id="slideContainer">
+                
+                <!-- Slide 1 -->
+                <div class="slide-content active" id="slide1">
+                    <div class="slide-num">01 / 06 — 거래비용과 준기업</div>
+                    <h3>📦 복차사업의 개요와 코즈의 기업이론</h3>
+                    <div class="slide-text">
+                        <p>새마을운동의 <strong>복차사업(複次사업)</strong>은 정부가 농촌 주민단체(마을회)를 하나의 <strong>준기업(Quasi-firm)</strong>으로 간주하여 공사 및 수매 계약을 직접 맺고 추진한 독창적인 사업방식입니다.</p>
+                        
+                        <p>정부발주 사업에서 발생한 인건비(자기고용 임금)와 기업이윤(외부 업자에게 돌아갈 마진)을 마을회에 내부화하여 <strong>종자돈(Seed Money)</strong>을 축적하게 하고, 이를 다음 단계의 공동 양축, 양묘, 가공공장 등에 순차적으로 재투자하도록 유도했습니다.</p>
+                        
+                        <p>이것이 외부 계약업체를 통하는 것보다 효율적인 이유는 <strong>로널드 코즈(Ronald Coase, 1937)</strong>의 거래비용이론으로 설명됩니다. 시장 기구를 이용할 때 발생하는 <strong>(1) 탐색비용, (2) 계약 협상비용, (3) 불확실성에 따른 재계약/분쟁비용</strong>을 주민회 조직 내부로 수직 통합함으로써 획기적으로 낮출 수 있었습니다.</p>
+                        
+                        <p>특히 전통 사회에 두껍게 쌓인 <strong>사회적 자본(신뢰와 면식 관계)</strong>은 계약 위반을 방지하는 모니터링 비용을 사실상 0으로 수렴시켜 효율성을 대폭 끌어올렸습니다.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="slide-content" id="slide2">
+                    <div class="slide-num">02 / 06 — 복차사업 비용모형</div>
+                    <h3>📉 복차사업의 비용 구조와 타당한 사업규모</h3>
+                    <div class="slide-text">
+                        <p>정부발주 사업의 규모를 $Q$라고 할 때, 시장거래 방식과 주민조직 방식의 총비용 함수는 다음과 같이 설정됩니다.</p>
+                        
+                        <div class="math-block">
+                            \(C_M = aQ^2 + bQ \quad \text{(시장거래 총비용)}\)
+                            \(C_I = dQ^3 + cQ + F \quad \text{(주민조직 총비용)}\)
+                        </div>
+                        
+                        <p>시장 거래비용은 사업규모의 제곱($Q^2$)으로 증가하며, 주민조직의 관리 비용은 조직이 거대해짐에 따라 발생하는 <strong>관료제적 비효율 및 정보 왜곡, 통제상실</strong>을 반영해 세제곱($Q^3$)으로 가파르게 증가합니다.</p>
+                        
+                        <p>양자의 한계비용을 유도하면 다음과 같습니다.</p>
+                        <div class="math-block">
+                            \(MC_M = 2aQ + b \quad / \quad MC_I = 3dQ^2 + c\)
+                        </div>
+                        
+                        <p>초기 관리비용은 주민조직이 불리하지만($c > b$), 사회적 자본 덕분에 일정한 소규모 구간($Q_1 < Q < Q_2$)에서는 주민조직의 한계비용이 더 낮아집니다. 고정비용 $F$를 극복하고 총비용 측면에서도 주민조직이 더 저렴해지는 타당성 범위는 <strong>\(Q^* < Q < Q_2\)</strong> 입니다.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="slide-content" id="slide3">
+                    <div class="slide-num">03 / 06 — 내쉬협상모형</div>
+                    <h3>⚖️ 내쉬협상모형과 가계 내 의사결정</h3>
+                    <div class="slide-text">
+                        <p>새마을운동을 통한 여성의 경제활동(부녀회 소득사업, 수공업) 참여는 단순히 가계소득 증대를 넘어, 가계 내부 의사결정의 <strong>협상력 구조</strong>를 근본적으로 변화시켰습니다.</p>
+                        
+                        <p>내쉬협상모형(Nash Bargaining Model)에서 협상 결렬 시 각자가 보존할 수 있는 경제적·사회적 최저한선을 <strong>위협점(Threat Point, \(t_h, t_w\))</strong>이라 합니다. 협상 결과 도출되는 경기자들의 최종 보수 몫은 다음과 같이 계산됩니다.</p>
+                        <div class="math-block">
+                            \(u_h^* = t_h + \frac{Y - t_h - t_w}{2} , \quad u_w^* = t_w + \frac{Y - t_h - t_w}{2}\)
+                        </div>
+                        
+                        <p>여성이 직접 현금 소득을 벌고, 네트워크(부녀회)의 사회적 지지를 받으며, 자신의 명의 통장을 가질 때 <strong>아내의 위협점(\(t_w\))</strong>은 수직 상승합니다.</p>
+                        
+                        <p>가계경제학적 연구에 따르면, 남성은 술이나 사교 등 현재 비생산적 소비에 높은 선호를 갖는 반면, 여성은 <strong>자녀 교육과 미래를 위한 가계저축</strong>에 더 높은 선호를 보입니다. 따라서 여성의 위협점 제고는 가계 예산 포트폴리오를 미래 생산적 자본 축적으로 직접 이동시키는 지렛대가 되었습니다.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 4 -->
+                <div class="slide-content" id="slide4">
+                    <div class="slide-num">04 / 06 — 인구학적 전환</div>
+                    <h3>👨‍👩‍👦 자녀의 양(Quantity)과 질(Quality) 대체 모형</h3>
+                    <div class="slide-text">
+                        <p>여성의 임금(시간가치) 상승은 자녀 출산 및 인적자본 투자에 결정적인 인구학적 전환을 유발합니다. 이는 <strong>베커-루이스(Becker-Lewis, 1973)</strong>의 모형으로 설명됩니다.</p>
+                        
+                        <p>가계의 효용이 자녀 수($n$), 교육의 질($q$), 그리고 기타 재화 소비($z$)에서 발생하고, 여성만 노동 소득을 올린다면 가계의 예산제약식은 다음과 같이 표현됩니다.</p>
+                        <div class="math-block">
+                            \(w + R = z + n(pq + wt)\)
+                        </div>
+                        
+                        <p>여기서 $w$는 여성 임금, $t$는 아이 한 명에 소요되는 시간, $p$는 교육 질의 단위비용, $R$은 비근로소득입니다. 여성 임금($w$)이 상승하면 자녀 양육의 암묵적 기회비용($wt$)이 상승합니다.</p>
+                        
+                        <p>이에 따라 자녀의 수($n^*$)를 줄이고, 자녀 1인당 교육 수준($q^*$)을 높이려는 강력한 <strong>대체효과(Substitution Effect)</strong>가 작용하여 가계는 **'양에서 질'**로 자원을 대폭 전환하게 됩니다. 이는 다산-저숙련 구조에서 벗어나 고인적자본(Human Capital) 기반의 내생성장 기틀을 마련했습니다.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 5 -->
+                <div class="slide-content" id="slide5">
+                    <div class="slide-num">05 / 06 — 성장 메커니즘</div>
+                    <h3>🔄 물적·인적 자본 축적과 경제성장의 선순환</h3>
+                    <div class="slide-text">
+                        <p>제12장(복차사업)의 물적 자본 형성과 제13장(여성 역량개발)의 인적 자본 투자는 서로 상승작용을 일으키며 장기 내생 성장의 선순환 메커니즘을 구체화합니다.</p>
+                        
+                        <p><strong>1. 복차사업의 이윤 내부화</strong>를 통해 마을 단위의 도로, 상수도 등 기초 SOC 및 공동 기금(물적 자본)이 형성됩니다.</p>
+                        <p><strong>2. 여성의 경제 참여 기회 확대</strong>로 이어져 여성의 현금 창출 능력이 강화됩니다.</p>
+                        <p><strong>3. 가계 내 협상력 구조(위협점 $t_w$) 제고</strong>와 임금($w$)의 상승으로 인해 가계 소비 구조가 교육 및 저축 위주로 변화합니다.</p>
+                        <p><strong>4. 인구학적 전환</strong>(출산율 감소, 교육 집중화)을 통해 자녀 세대의 인적 자본 수준이 비약적으로 증가합니다.</p>
+                        <p><strong>5. 축적된 인적·물적 자본</strong>은 내생적 성장이론에서 말하는 한계생산 체감 법칙을 상쇄하고 지속가능한 장기 도약을 가능케 합니다. 오른쪽 관계망 노드를 클릭하여 구체적인 역학을 확인하세요.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 6 -->
+                <div class="slide-content" id="slide6">
+                    <div class="slide-num">06 / 06 — 역사적 증거</div>
+                    <h3>📜 역사적 실증 사례 및 통계</h3>
+                    <div class="slide-text">
+                        <p>이론적 시뮬레이션 모델들은 실제 1970년대에 남겨진 공문서와 수기, 국가 통계를 통해 사실로 검증됩니다.</p>
+                        
+                        <p><strong>충남 당진 안말천 정비사업(1973)</strong>은 주민들이 하자 보수 책임까지 지며 자체 도급을 받아 노임의 25%를 저축하고, 그 기금을 굴 양식 사업에 재투자한 복차사업의 실증적 증거입니다.</p>
+                        
+                        <p><strong>여성 주도의 절미운동과 부녀지도자 김영순의 수기(1973)</strong>를 보면, 주부들이 양잠 및 맥간공장 부업을 통해 기금을 마련하고 마을 탁아소와 상수도를 직접 설치하는 등 의사결정의 주역으로 활약한 기록이 뚜렷이 드러납니다.</p>
+                        
+                        <p>또한, 가족계획 사업의 확산으로 <strong>한국인의 이상적 자녀수</strong>는 1960년대 4~5명에서 1985년 2~3명으로 급감했으며, 그 시기 가계의 교육비 지출과 중등·고등 교육 등록률은 세계적으로 가장 가파르게 급상승했습니다.</p>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <div class="card-footer">
+                <button class="btn-nav" id="prevBtn" onclick="changeSlide(-1)" disabled>
+                    ← 이전 슬라이드
+                </button>
+                <div class="slide-dots">
+                    <div class="dot active" onclick="goToSlide(1)"></div>
+                    <div class="dot" onclick="goToSlide(2)"></div>
+                    <div class="dot" onclick="goToSlide(3)"></div>
+                    <div class="dot" onclick="goToSlide(4)"></div>
+                    <div class="dot" onclick="goToSlide(5)"></div>
+                    <div class="dot" onclick="goToSlide(6)"></div>
+                </div>
+                <button class="btn-nav" id="nextBtn" onclick="changeSlide(1)">
+                    다음 슬라이드 →
+                </button>
+            </div>
+        </section>
+        
+        <!-- Right Panel: Visualizer Cards -->
+        <section class="card visualizer-card">
+            <div class="visualizer-header">
+                <h2 id="visTitle">거래비용 구조도</h2>
+                <span class="badge" id="visBadge">개념 분석</span>
+            </div>
+            <div class="visualizer-body">
+                
+                <!-- Vis Panel 1 -->
+                <div class="vis-panel" id="panel1">
+                    <div class="diagram-container">
+                        <div class="diag-box highlight">
+                            <div class="diag-box-title">시장 거래 방식 (Market Transaction)</div>
+                            <div class="diag-box-desc">매 공정마다 외부 업자와 개별 계약</div>
+                        </div>
+                        <div class="diag-arrow-down">↓</div>
+                        <div class="diagram-row">
+                            <div class="diag-box">
+                                <div class="diag-box-title">탐색 비용</div>
+                                <div class="diag-box-desc">최적 가격 및 업자 조사</div>
+                            </div>
+                            <div class="diag-box">
+                                <div class="diag-box-title">계약 비용</div>
+                                <div class="diag-box-desc">개별 협상 및 서류 작성</div>
+                            </div>
+                            <div class="diag-box">
+                                <div class="diag-box-title">불확실성 비용</div>
+                                <div class="diag-box-desc">돌발 상황 시 분쟁/재계약</div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; font-size: 0.8rem; color: var(--depreciation); font-weight: 700; margin: 0.2rem 0;">
+                            시장 거래비용 누적으로 소규모 공사의 비효율성 초래
+                        </div>
+                        <div class="diag-box highlight" style="border-color: var(--savings); background: rgba(16,185,129,0.05)">
+                            <div class="diag-box-title" style="color: var(--savings)">복차사업 주민공동체 (Quasi-firm)</div>
+                            <div class="diag-box-desc" style="color: #cbd5e1">주민회가 직접 시공하여 이윤을 축적하고, 사회적 자본(신뢰)으로 거래비용을 원천 차단</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vis Panel 2 -->
+                <div class="vis-panel hidden" id="panel2">
+                    <div class="chart-wrapper">
+                        <canvas id="costChart"></canvas>
+                    </div>
+                    
+                    <div class="results-grid">
+                        <div class="result-badge q-stat">
+                            <span class="label">최초 효율점 Q1</span>
+                            <span class="value" id="q1Val">0.0</span>
+                        </div>
+                        <div class="result-badge success-stat">
+                            <span class="label">총비용 우위점 Q*</span>
+                            <span class="value" id="qStarVal">0.0</span>
+                        </div>
+                        <div class="result-badge q-stat">
+                            <span class="label">최대 효율점 Q2</span>
+                            <span class="value" id="q2Val">0.0</span>
+                        </div>
+                    </div>
+
+                    <div class="controls-panel">
+                        <div class="sliders-grid">
+                            <div class="slider-item">
+                                <label>시장 거래계수 (a): <span class="val-badge" id="aSliderVal">0.40</span></label>
+                                <input type="range" id="paramA" min="0.2" max="0.8" step="0.05" value="0.4">
+                            </div>
+                            <div class="slider-item">
+                                <label>주민조직 세제곱계수 (d): <span class="val-badge" id="dSliderVal">0.010</span></label>
+                                <input type="range" id="paramD" min="0.002" max="0.020" step="0.002" value="0.01">
+                            </div>
+                            <div class="slider-item">
+                                <label>주민조직 초기관리 (c): <span class="val-badge" id="cSliderVal">4.0</span></label>
+                                <input type="range" id="paramC" min="2.5" max="7.0" step="0.5" value="4.0">
+                            </div>
+                            <div class="slider-item">
+                                <label>조직화 고정비용 (F): <span class="val-badge" id="fSliderVal">30</span></label>
+                                <input type="range" id="paramF" min="15" max="60" step="5" value="30">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vis Panel 3 -->
+                <div class="vis-panel hidden" id="panel3">
+                    <div class="nash-bar-wrapper">
+                        <div class="nash-line">
+                            <div class="nash-threat-h" id="nashBarH" style="width: 25%;"></div>
+                            <div class="nash-surplus" id="nashBarS"></div>
+                            <div class="nash-threat-w" id="nashBarW" style="width: 10%;"></div>
+                            <div class="nash-solution-marker" id="nashSolMarker" style="left: 57.5%;">
+                                <div class="nash-marker-label nash-label-sol" id="nashSolVal">해 u*=(57.5, 42.5)</div>
+                            </div>
+                            <div class="nash-marker-label nash-label-th" id="nashThH">남편 위협점 (t_h: 25)</div>
+                            <div class="nash-marker-label nash-label-tw" id="nashThW">아내 위협점 (t_w: 10)</div>
+                        </div>
+                    </div>
+
+                    <div class="portfolio-bars">
+                        <div class="port-bar-item">
+                            <span class="port-label">현재소비</span>
+                            <div class="port-progress-container">
+                                <div class="port-progress" id="portConsumption" style="width: 50.3%; background: var(--consumption)"></div>
+                            </div>
+                            <span class="port-val" id="portConsumptionVal">50.3%</span>
+                        </div>
+                        <div class="port-bar-item">
+                            <span class="port-label" style="color: var(--savings)">교육 & 저축</span>
+                            <div class="port-progress-container">
+                                <div class="port-progress" id="portEducation" style="width: 49.7%; background: var(--savings)"></div>
+                            </div>
+                            <span class="port-val" id="portEducationVal" style="color: var(--savings)">49.7%</span>
+                        </div>
+                    </div>
+
+                    <div class="controls-panel">
+                        <div class="sliders-grid">
+                            <div class="slider-item">
+                                <label>가계 총자원 (Y): <span class="val-badge" id="ySliderVal">100</span></label>
+                                <input type="range" id="paramY" min="80" max="150" step="5" value="100">
+                            </div>
+                            <div class="slider-item">
+                                <label>남편 위협점 (t_h): <span class="val-badge" id="thSliderVal">25</span></label>
+                                <input type="range" id="paramTH" min="10" max="45" step="1" value="25">
+                            </div>
+                            <div class="slider-item">
+                                <label>아내 위협점 (t_w): <span class="val-badge" id="twSliderVal">10</span></label>
+                                <input type="range" id="paramTW" min="5" max="45" step="1" value="10">
+                            </div>
+                            <div class="slider-item" style="grid-column: span 2; display: flex; flex-direction: row; align-items: center; gap: 0.5rem; justify-content: center; margin-top: 0.3rem;">
+                                <input type="checkbox" id="empowerCheck" style="width: 16px; height: 16px; cursor: pointer;">
+                                <label for="empowerCheck" style="cursor: pointer; color: #fff; font-size: 0.82rem;">여성 경제활동 참여 (아내 위협점 tw을 즉시 35로 격상)</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vis Panel 4 -->
+                <div class="vis-panel hidden" id="panel4">
+                    <div style="display: flex; justify-content: center; margin-bottom: 0.4rem;">
+                        <svg id="qqSvg" width="280" height="190" style="background: rgba(0,0,0,0.2); border-radius: 12px; border: 1px solid var(--border);"></svg>
+                    </div>
+
+                    <div class="results-grid" style="grid-template-columns: 1fr 1fr;">
+                        <div class="result-badge success-stat" style="border-color: rgba(192, 132, 252, 0.2);">
+                            <span class="label">최적 자녀 수 (n*)</span>
+                            <span class="value" id="optNVal" style="color: var(--income)">0.91 명</span>
+                        </div>
+                        <div class="result-badge success-stat" style="border-color: rgba(16, 185, 129, 0.2);">
+                            <span class="label">최적 자녀 교육의 질 (q*)</span>
+                            <span class="value" id="optQVal" style="color: var(--savings)">3.20 단위</span>
+                        </div>
+                    </div>
+
+                    <div class="controls-panel">
+                        <div class="sliders-grid">
+                            <div class="slider-item">
+                                <label>여성 임금 (w): <span class="val-badge" id="wSliderVal">2.0</span></label>
+                                <input type="range" id="paramW" min="1.0" max="5.0" step="0.2" value="2.0">
+                            </div>
+                            <div class="slider-item">
+                                <label>남편/비근로소득 (R): <span class="val-badge" id="rSliderVal">2.0</span></label>
+                                <input type="range" id="paramR" min="0.5" max="4.0" step="0.2" value="2.0">
+                            </div>
+                            <div class="slider-item">
+                                <label>양육 소요시간 (t): <span class="val-badge" id="tSliderVal">0.40</span></label>
+                                <input type="range" id="paramT" min="0.2" max="0.8" step="0.05" value="0.4">
+                            </div>
+                            <div class="slider-item">
+                                <label>교육의 단위비용 (p): <span class="val-badge" id="pSliderVal">0.5</span></label>
+                                <input type="range" id="paramP" min="0.3" max="1.5" step="0.1" value="0.5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vis Panel 5 -->
+                <div class="vis-panel hidden" id="panel5">
+                    <div class="flow-container">
+                        <div class="flow-node active" id="node1" onclick="showFlowDetail(1)">
+                            <div class="flow-node-num">1</div>
+                            <div class="flow-node-text">정부의 소규모 복차사업 발주 (거래비용 절감)</div>
+                        </div>
+                        <div class="flow-arrow-indicator">↓</div>
+                        <div class="flow-node" id="node2" onclick="showFlowDetail(2)">
+                            <div class="flow-node-num">2</div>
+                            <div class="flow-node-text">주민 이윤 내부화 및 가계 현금 소득 증대</div>
+                        </div>
+                        <div class="flow-arrow-indicator">↓</div>
+                        <div class="flow-node" id="node3" onclick="showFlowDetail(3)">
+                            <div class="flow-node-num">3</div>
+                            <div class="flow-node-text">여성 경제참여와 가계 내 협상력(tw) 제고</div>
+                        </div>
+                        <div class="flow-arrow-indicator">↓</div>
+                        <div class="flow-node" id="node4" onclick="showFlowDetail(4)">
+                            <div class="flow-node-num">4</div>
+                            <div class="flow-node-text">자녀 '양에서 질'로의 전환 및 저축/인적자본 급증</div>
+                        </div>
+                        
+                        <div class="flow-detail-box" id="flowDetailContent">
+                            노드를 클릭하면 경제학적 상호 인과관계와 동태적 장기 성장으로의 연계 과정을 확인할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vis Panel 6 -->
+                <div class="vis-panel hidden" id="panel6">
+                    <div class="case-tabs">
+                        <button class="case-tab active" id="caseTab1" onclick="switchCase(1)">당진 안말천</button>
+                        <button class="case-tab" id="caseTab2" onclick="switchCase(2)">전국 양묘사업</button>
+                        <button class="case-tab" id="caseTab3" onclick="switchCase(3)">옥산리 김영순</button>
+                        <button class="case-tab" id="caseTab4" onclick="switchCase(4)">오류리 가족계획</button>
+                    </div>
+                    
+                    <div class="case-content-box" id="caseContentBox">
+                        <h4 id="caseTitle">충남 당진 안말천 정비사업 (1973)</h4>
+                        <p id="caseDesc" style="font-size: 0.8rem; line-height: 1.5; color: #cbd5e1;"></p>
+                        <table class="case-table" id="caseTable"></table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        
+    </main>
+
+    <footer>
+        <p>새마을국제개발학과 박사 1기 | 학번: 22650117 | 성명: 박문식</p>
+        <p style="margin-top: 0.4rem; opacity: 0.5;">© 2026 Saemaul Seminar Project. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // State
+        let currentSlide = 1;
+        const totalSlides = 6;
+        let chart = null;
+
+        const slideTitles = {
+            1: "거래비용 구조도",
+            2: "복차사업 비용곡선 시뮬레이터",
+            3: "내쉬협상 가계 예산배분 시뮬레이터",
+            4: "Becker-Lewis Q-Q 의사결정 그래프",
+            5: "장기 내생적 성장 선순환 모델",
+            6: "새마을운동 실증 사례 비교"
+        };
+
+        const slideBadges = {
+            1: "개념 분석",
+            2: "제12장 모형",
+            3: "제13장 모형 1",
+            4: "제13장 모형 2",
+            5: "성장론 융합",
+            6: "역사적 팩트"
+        };
+
+        // Navigation
+        function updateSlideUI() {
+            // Update tabs
+            for (let i = 1; i <= totalSlides; i++) {
+                const tab = document.getElementById('tab' + i);
+                if (i === currentSlide) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            }
+
+            // Update progress bar
+            const progressBar = document.getElementById('topProgressBar');
+            progressBar.style.width = (currentSlide / totalSlides) * 100 + '%';
+
+            // Show active slide content and visualizer panel
+            for (let i = 1; i <= totalSlides; i++) {
+                const content = document.getElementById('slide' + i);
+                const panel = document.getElementById('panel' + i);
+                const dot = document.getElementsByClassName('dot')[i - 1];
+
+                if (i === currentSlide) {
+                    content.classList.add('active');
+                    panel.classList.remove('hidden');
+                    dot.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                    panel.classList.add('hidden');
+                    dot.classList.remove('active');
+                }
+            }
+
+            // Header titles update
+            document.getElementById('visTitle').innerText = slideTitles[currentSlide];
+            document.getElementById('visBadge').innerText = slideBadges[currentSlide];
+
+            // Nav buttons disable check
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+
+            // Trigger specific simulator initializations
+            if (currentSlide === 2) {
+                initCostChart();
+            } else if (currentSlide === 3) {
+                updateNashSimulation();
+            } else if (currentSlide === 4) {
+                updateQQSvg();
+            } else if (currentSlide === 6) {
+                switchCase(1);
+            }
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 1) currentSlide = 1;
+            if (currentSlide > totalSlides) currentSlide = totalSlides;
+            updateSlideUI();
+        }
+
+        function goToSlide(slideNum) {
+            currentSlide = slideNum;
+            updateSlideUI();
+        }
+
+        // Slide 2: Cost curves Simulator
+        function initCostChart() {
+            const ctx = document.getElementById('costChart').getContext('2d');
+            
+            // Initial data points
+            const data = calculateCostData();
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [
+                        {
+                            label: 'MC_M (시장 한계비용)',
+                            data: data.MC_M,
+                            borderColor: '#3b82f6',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            fill: false,
+                            yAxisID: 'y_mc'
+                        },
+                        {
+                            label: 'MC_I (주민 한계비용)',
+                            data: data.MC_I,
+                            borderColor: '#ec4899',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            fill: false,
+                            yAxisID: 'y_mc'
+                        },
+                        {
+                            label: 'C_M / 10 (시장 총비용)',
+                            data: data.C_M_div10,
+                            borderColor: '#818cf8',
+                            borderDash: [5, 5],
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            fill: false,
+                            yAxisID: 'y_c'
+                        },
+                        {
+                            label: 'C_I / 10 (주민 총비용)',
+                            data: data.C_I_div10,
+                            borderColor: '#fbbf24',
+                            borderDash: [5, 5],
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            fill: false,
+                            yAxisID: 'y_c'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: { display: true, text: '사업 규모 (Q)', color: '#94a3b8', font: { size: 10 } },
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#94a3b8', font: { size: 9 } }
+                        },
+                        y_mc: {
+                            position: 'left',
+                            title: { display: true, text: '한계 비용 (MC)', color: '#94a3b8', font: { size: 10 } },
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#94a3b8', font: { size: 9 } }
+                        },
+                        y_c: {
+                            position: 'right',
+                            title: { display: true, text: '총 비용 / 10 (C)', color: '#94a3b8', font: { size: 10 } },
+                            grid: { drawOnChartArea: false },
+                            ticks: { color: '#94a3b8', font: { size: 9 } }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: '#e2e8f0', boxWidth: 12, font: { size: 9 } },
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+        }
+
+        function calculateCostData() {
+            const a = parseFloat(document.getElementById('paramA').value);
+            const d = parseFloat(document.getElementById('paramD').value);
+            const c = parseFloat(document.getElementById('paramC').value);
+            const F = parseFloat(document.getElementById('paramF').value);
+            const b = 2.0; // Fixed baseline
+
+            const labels = [];
+            const MC_M = [];
+            const MC_I = [];
+            const C_M_div10 = [];
+            const C_I_div10 = [];
+
+            for (let Q = 0; Q <= 30; Q += 1) {
+                labels.push(Q);
+                MC_M.push(2 * a * Q + b);
+                MC_I.push(3 * d * Q * Q + c);
+                C_M_div10.push((a * Q * Q + b * Q) / 10);
+                C_I_div10.push((d * Math.pow(Q, 3) + c * Q + F) / 10);
+            }
+
+            // Roots calculations
+            // Solve 3d Q^2 - 2a Q + (c-b) = 0
+            const disc = 4 * a * a - 12 * d * (c - b);
+            let Q1 = 0;
+            let Q2 = 0;
+            let QStar = 0;
+
+            if (disc >= 0) {
+                Q1 = (2 * a - Math.sqrt(disc)) / (6 * d);
+                Q2 = (2 * a + Math.sqrt(disc)) / (6 * d);
+                
+                // Solve cubic intersection
+                // f(Q) = dQ^3 - aQ^2 + (c-b)Q + F = 0
+                const f = (q) => d * Math.pow(q, 3) - a * q * q + (c - b) * q + F;
+                // Solve via bisection since f(Q) changes sign between Q1 and Q2 in valid scenarios
+                let low = 0;
+                let high = 30;
+                let found = false;
+                // Grid check for sign change
+                for (let q = 0.1; q <= 30; q += 0.1) {
+                    if (f(q - 0.1) * f(q) <= 0) {
+                        low = q - 0.1;
+                        high = q;
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    for (let k = 0; k < 25; k++) {
+                        let mid = (low + high) / 2;
+                        if (f(low) * f(mid) <= 0) {
+                            high = mid;
+                        } else {
+                            low = mid;
+                        }
+                    }
+                    QStar = (low + high) / 2;
+                }
+            }
+
+            document.getElementById('q1Val').innerText = disc >= 0 ? Q1.toFixed(1) + '단위' : '없음';
+            document.getElementById('q2Val').innerText = disc >= 0 ? Q2.toFixed(1) + '단위' : '없음';
+            document.getElementById('qStarVal').innerText = QStar > 0 ? QStar.toFixed(1) + '단위' : '범위초과';
+
+            return { labels, MC_M, MC_I, C_M_div10, C_I_div10 };
+        }
+
+        function updateCostSimulation() {
+            document.getElementById('aSliderVal').innerText = parseFloat(document.getElementById('paramA').value).toFixed(2);
+            document.getElementById('dSliderVal').innerText = parseFloat(document.getElementById('paramD').value).toFixed(3);
+            document.getElementById('cSliderVal').innerText = parseFloat(document.getElementById('paramC').value).toFixed(1);
+            document.getElementById('fSliderVal').innerText = parseInt(document.getElementById('paramF').value);
+
+            if (chart) {
+                const data = calculateCostData();
+                chart.data.datasets[0].data = data.MC_M;
+                chart.data.datasets[1].data = data.MC_I;
+                chart.data.datasets[2].data = data.C_M_div10;
+                chart.data.datasets[3].data = data.C_I_div10;
+                chart.update();
+            }
+        }
+
+        // Slide 3: Nash Bargaining
+        function updateNashSimulation() {
+            const Y = parseInt(document.getElementById('paramY').value);
+            const th = parseInt(document.getElementById('paramTH').value);
+            let tw = parseInt(document.getElementById('paramTW').value);
+
+            const checkbox = document.getElementById('empowerCheck');
+            if (checkbox.checked) {
+                document.getElementById('paramTW').disabled = true;
+                tw = 35;
+                document.getElementById('twSliderVal').innerText = '35 (고정)';
+            } else {
+                document.getElementById('paramTW').disabled = false;
+                document.getElementById('twSliderVal').innerText = tw;
+            }
+
+            document.getElementById('ySliderVal').innerText = Y;
+            document.getElementById('thSliderVal').innerText = th;
+
+            // Enforce constraint th + tw < Y
+            if (th + tw >= Y) {
+                // Adjust to fit
+                const difference = (th + tw) - Y + 5;
+                // Reduce both proportionally
+                document.getElementById('nashSolVal').innerText = "보정필요 (Y 초과)";
+                document.getElementById('portConsumptionVal').innerText = "-";
+                document.getElementById('portEducationVal').innerText = "-";
+                return;
+            }
+
+            // Calculate Nash Bargaining Solution
+            const surplus = Y - th - tw;
+            const uh = th + surplus / 2;
+            const uw = tw + surplus / 2;
+
+            // Update Text Solution
+            document.getElementById('nashSolVal').innerText = `해 u* = (남편:${uh.toFixed(1)}, 아내:${uw.toFixed(1)})`;
+            document.getElementById('nashThH').innerText = `남편 위협점 (t_h: ${th})`;
+            document.getElementById('nashThW').innerText = `아내 위협점 (t_w: ${tw})`;
+
+            // Draw line widths
+            const thPercent = (th / Y) * 100;
+            const twPercent = (tw / Y) * 100;
+            const surplusPercent = 100 - thPercent - twPercent;
+
+            document.getElementById('nashBarH').style.width = thPercent + '%';
+            document.getElementById('nashBarW').style.width = twPercent + '%';
+            document.getElementById('nashBarS').style.width = surplusPercent + '%';
+
+            // Solution marker position
+            const solPercent = (uh / Y) * 100;
+            document.getElementById('nashSolMarker').style.left = solPercent + '%';
+
+            // Expenditure Portfolio
+            // Husband spending: 80% consumption, 20% education
+            // Wife spending: 20% consumption, 80% education
+            const consumption = 0.8 * uh + 0.2 * uw;
+            const education = 0.2 * uh + 0.8 * uw;
+
+            const consPercent = (consumption / Y) * 100;
+            const eduPercent = (education / Y) * 100;
+
+            document.getElementById('portConsumption').style.width = consPercent + '%';
+            document.getElementById('portEducation').style.width = eduPercent + '%';
+
+            document.getElementById('portConsumptionVal').innerText = consPercent.toFixed(1) + '%';
+            document.getElementById('portEducationVal').innerText = eduPercent.toFixed(1) + '%';
+        }
+
+        // Slide 4: Becker-Lewis Q-Q Trade-off
+        function updateQQSvg() {
+            const w = parseFloat(document.getElementById('paramW').value);
+            const R = parseFloat(document.getElementById('paramR').value);
+            const t = parseFloat(document.getElementById('paramT').value);
+            const p = parseFloat(document.getElementById('paramP').value);
+
+            document.getElementById('wSliderVal').innerText = w.toFixed(1);
+            document.getElementById('rSliderVal').innerText = R.toFixed(1);
+            document.getElementById('tSliderVal').innerText = t.toFixed(2);
+            document.getElementById('pSliderVal').innerText = p.toFixed(1);
+
+            // Preferences
+            const alpha = 0.6;
+            const beta = 0.4;
+            const gamma = 0.5;
+
+            // Optimal points
+            const optN = ((alpha - beta) / (alpha + gamma)) * ((w + R) / (w * t));
+            const optQ = (beta / (alpha - beta)) * ((w * t) / p);
+
+            document.getElementById('optNVal').innerText = optN.toFixed(2) + ' 명';
+            document.getElementById('optQVal').innerText = optQ.toFixed(2) + ' 단위';
+
+            // Draw SVG
+            const svg = document.getElementById('qqSvg');
+            svg.innerHTML = ''; // Clear
+
+            const width = 280;
+            const height = 190;
+            const margin = { top: 15, right: 15, bottom: 25, left: 30 };
+
+            // Math to Pixel functions
+            const nMax = 2.5;
+            const qMax = 10.0;
+
+            const getX = (n) => margin.left + (n / nMax) * (width - margin.left - margin.right);
+            const getY = (q) => height - margin.bottom - (q / qMax) * (height - margin.top - margin.bottom);
+
+            // Draw Grid Lines & Axes
+            const xAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            xAxis.setAttribute("x1", margin.left);
+            xAxis.setAttribute("y1", height - margin.bottom);
+            xAxis.setAttribute("x2", width - margin.right);
+            xAxis.setAttribute("y2", height - margin.bottom);
+            xAxis.setAttribute("stroke", "#475569");
+            xAxis.setAttribute("stroke-width", "2");
+            svg.appendChild(xAxis);
+
+            const yAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            yAxis.setAttribute("x1", margin.left);
+            yAxis.setAttribute("y1", margin.top);
+            yAxis.setAttribute("x2", margin.left);
+            yAxis.setAttribute("y2", height - margin.bottom);
+            yAxis.setAttribute("stroke", "#475569");
+            yAxis.setAttribute("stroke-width", "2");
+            svg.appendChild(yAxis);
+
+            // Axis labels
+            const xLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            xLabel.setAttribute("x", width - margin.right);
+            xLabel.setAttribute("y", height - 6);
+            xLabel.setAttribute("fill", "#94a3b8");
+            xLabel.setAttribute("font-size", "9px");
+            xLabel.setAttribute("text-anchor", "end");
+            xLabel.textContent = "자녀 수 (n)";
+            svg.appendChild(xLabel);
+
+            const yLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            yLabel.setAttribute("x", 6);
+            yLabel.setAttribute("y", margin.top + 5);
+            yLabel.setAttribute("fill", "#94a3b8");
+            yLabel.setAttribute("font-size", "9px");
+            yLabel.textContent = "교육 (q)";
+            svg.appendChild(yLabel);
+
+            // Children budget Ic = alpha/(alpha+gamma)*(w+R)
+            const Ic = (alpha / (alpha + gamma)) * (w + R);
+            
+            // Draw Budget Curve: q = Ic / (p * n) - wt / p
+            const points = [];
+            for (let n = 0.1; n <= 2.5; n += 0.05) {
+                const q = Ic / (p * n) - (w * t) / p;
+                if (q >= 0 && q <= qMax) {
+                    points.push(`${getX(n).toFixed(1)},${getY(q).toFixed(1)}`);
+                }
+            }
+
+            if (points.length > 1) {
+                const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+                polyline.setAttribute("points", points.join(" "));
+                polyline.setAttribute("fill", "none");
+                polyline.setAttribute("stroke", "#fbbf24");
+                polyline.setAttribute("stroke-width", "2");
+                svg.appendChild(polyline);
+            }
+
+            // Draw Indifference Curve: q = q* * (n* / n)^1.5
+            const indPoints = [];
+            for (let n = 0.1; n <= 2.5; n += 0.05) {
+                const q = optQ * Math.pow(optN / n, alpha / beta);
+                if (q >= 0 && q <= qMax) {
+                    indPoints.push(`${getX(n).toFixed(1)},${getY(q).toFixed(1)}`);
+                }
+            }
+
+            if (indPoints.length > 1) {
+                const indPolyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+                indPolyline.setAttribute("points", indPoints.join(" "));
+                indPolyline.setAttribute("fill", "none");
+                indPolyline.setAttribute("stroke", "#ec4899");
+                indPolyline.setAttribute("stroke-dasharray", "4,4");
+                indPolyline.setAttribute("stroke-width", "1.5");
+                svg.appendChild(indPolyline);
+            }
+
+            // Draw Optimal Point Dot
+            if (optN <= nMax && optQ <= qMax) {
+                const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                dot.setAttribute("cx", getX(optN).toFixed(1));
+                dot.setAttribute("cy", getY(optQ).toFixed(1));
+                dot.setAttribute("r", "5");
+                dot.setAttribute("fill", "#6366f1");
+                dot.setAttribute("stroke", "#fff");
+                dot.setAttribute("stroke-width", "1.5");
+                svg.appendChild(dot);
+            }
+        }
+
+        // Slide 5: Flowchart detail panel logic
+        const flowDetails = {
+            1: "<strong>1단계: 정부의 소규모 복차사업 발주</strong><br>도로, 교량, 소하천 정비와 같은 소규모 기반시설 공사를 시장 입찰 대신 주민공동체(마을회)에 위탁 도급하여 계약비용, 불확실성 재계약비용 등의 <strong>거래비용</strong>을 획기적으로 절감합니다. 주민들은 자신의 자원을 스스로 모니터링하여 무임승차를 억제합니다.",
+            2: "<strong>2단계: 주민 이윤 내부화 및 소득 증대</strong><br>외지 하도급 업자에게 유출되었을 중간 마진과 관리비를 마을의 <strong>'준기업 이윤'</strong>으로 내부 확보하여 공동 기금을 형성합니다. 공사에 직접 투입된 주민은 '자기 고용 임금'을 벌어 가계의 총소득을 실질적으로 끌어올리는 기반을 형성합니다.",
+            3: "<strong>3단계: 여성의 가계 내 협상력(tw) 제고</strong><br>부녀회 공동 작목, 구판장 부업 등을 통해 여성이 가계 내 <strong>직접적인 현금 창출 주체</strong>로 올라섭니다. 이는 내쉬협상모형에서 여성의 '위협점(threat point)'을 상승시켜 가계 내 발언권을 강화합니다. 또한 부녀회 연대 세력을 통해 지지를 확보합니다.",
+            4: "<strong>4단계: 자녀의 '양에서 질' 전환 및 내생적 성장</strong><br>시간 가치(임금 w)가 비싸진 여성은 다산 대신 소수 자녀에게 양질의 교육(q)을 제공하는 인적자본 투자 집중 전략을 취합니다(Q-Q 대체). 가계 저축과 교육 투자의 급증은 솔로우 정체기를 넘어서게 하는 <strong>장기 내생 성장의 선순환 동력</strong>으로 작용합니다."
+        };
+
+        function showFlowDetail(nodeNum) {
+            for (let i = 1; i <= 4; i++) {
+                const node = document.getElementById('node' + i);
+                if (i === nodeNum) {
+                    node.classList.add('active');
+                } else {
+                    node.classList.remove('active');
+                }
+            }
+            document.getElementById('flowDetailContent').innerHTML = flowDetails[nodeNum];
+        }
+
+        // Slide 6: Case Studies Switching
+        const casesData = {
+            1: {
+                title: "충남 당진 안말천 정비사업 (1973)",
+                desc: "주민 공동체가 지방정부와 직접 계약을 맺고 공사 전반을 수행한 복차사업의 효시입니다. 주민들이 스스로 땅을 기부하고, 노임의 일정 액수를 공용 적립하여 후속 소득사업인 석화(굴) 양식장에 재투자하였습니다.",
+                headers: ["구분", "내용"],
+                rows: [
+                    ["계약 일자", "1973년 4월 27일"],
+                    ["총 공사규모", "227,000 원 (당시 금액)"],
+                    ["하자 보수 책임", "마을 지도자가 2년간 연대 책임 명문화"],
+                    ["토지 기부 실적", "주민 6명이 전답 총 305평 무상 기부"],
+                    ["복차기금 적립률", "공사 참여 노임의 25% 의무 적립 및 양식장 재투자"]
+                ]
+            },
+            2: {
+                title: "새마을 양묘 계약재배 실적 (1973~1979)",
+                desc: "국가 산림녹화 정책과 농촌 소득을 융합한 사업으로, 정부의 묘목 자재 융자와 전량 수매 보증으로 안정적 소득을 제공한 대규모 국가-마을 복차소득 구조의 모범적 예시입니다.",
+                headers: ["지표", "7년 총계 / 연평균"],
+                rows: [
+                    ["참여 마을수", "총 32,722개 마을 (연평균 7,645개)"],
+                    ["묘목 생산량", "총 1,016백만 본 (마을당 약 3.1만 본)"],
+                    ["총 시장 가치", "12,285백만 원 (마을당 평균 37.5만 원 소득)"],
+                    ["기금 환류 방식", "이익금의 50%를 복차기금으로 적립, 한우/양돈에 재투자"],
+                    ["생산 묘목 종류", "이탈리아 포플러, 아카시아, 밤나무 등"]
+                ]
+            },
+            3: {
+                title: "경북 월성군 옥산4리 김영순 지도자 수기",
+                desc: "집안에만 갇혀 살던 평범한 여성 주부들이 부녀회를 구성하여 뒷산 5,000평을 개간하고 뽕나무 1만 그루 양잠 사업, 군사 예비군 국수 장사, 송충이 포획 등을 통해 공동 자금을 기획하고 집행한 여성 협상력 증가의 구체적 증거입니다.",
+                headers: ["활동 분야", "창출 성과 및 자원 배분"],
+                rows: [
+                    ["양잠 뽕나무 사업", "뽕밭 600평 경작 및 첫해 누에 쳐서 9만 원 수입 달성"],
+                    ["뒷산 개간 노동", "추위 속 부녀회 80명이 공동 삽질하여 5,000평 개간"],
+                    ["공동작업장 건립", "국수 판매 2.7만 원 + 송충이 22가마 벌이 17만 원으로 20평 작업장 완공"],
+                    ["자원 배분 혁신", "농한기엔 밀짚모자 맥간공장으로, 농번기엔 '탁아소'로 공간 활용"],
+                    ["여성 발언권 제고", "마을 기금 70만 원 주도 및 간이상수도 전격 유치 계획 수립"]
+                ]
+            },
+            4: {
+                title: "전북 임실군 오류리 가족계획 및 교육 (1980s)",
+                desc: "여성의 시간 가치 상승이 자녀 수 감소와 교육 고도화로 이어진 인구학적 전환 실증 사례입니다. 여성들의 자발적인 불임시술 참여와 자녀 세대 장학비 공동 집행 기록이 전해집니다.",
+                headers: ["구분", "실제 변화 및 공동체 조치"],
+                rows: [
+                    ["자발적 시술 사례", "보건 교육 후 하루 만에 오류리 마을 여성 17명이 불임 수술 자원"],
+                    ["인식 전환", "이상 자녀 수 1960년대 4.5명에서 1985년 2.3명으로 감소"],
+                    ["피임 보급 실적", "1972년 전국 루프 보급 28만 건 등 가족계획 69만 건 집행"],
+                    ["인적자본 집중", "자녀 수 감소 후 경기도 용인 동막마을 등 고교 장학비 전액을 기금 부담"],
+                    ["성장 기여", "저숙련 다산 가계에서 고인적자본 저산 가계로 대한민국 인구 구조 전환"]
+                ]
+            }
+        };
+
+        function switchCase(caseNum) {
+            for (let i = 1; i <= 4; i++) {
+                const tab = document.getElementById('caseTab' + i);
+                if (i === caseNum) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            }
+
+            const data = casesData[caseNum];
+            document.getElementById('caseTitle').innerText = data.title;
+            document.getElementById('caseDesc').innerHTML = data.desc;
+
+            // Render table
+            const table = document.getElementById('caseTable');
+            table.innerHTML = '';
+
+            // Header
+            const thead = document.createElement('thead');
+            const trHead = document.createElement('tr');
+            data.headers.forEach(h => {
+                const th = document.createElement('th');
+                th.innerText = h;
+                trHead.appendChild(th);
+            });
+            thead.appendChild(trHead);
+            table.appendChild(thead);
+
+            // Body
+            const tbody = document.createElement('tbody');
+            data.rows.forEach(r => {
+                const tr = document.createElement('tr');
+                const td1 = document.createElement('td');
+                td1.style.fontWeight = '700';
+                td1.style.color = '#fff';
+                td1.innerText = r[0];
+                const td2 = document.createElement('td');
+                td2.style.textAlign = 'left';
+                td2.innerText = r[1];
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+        }
+
+        // Initialize event listeners for sliders
+        // Slide 2 Sliders
+        document.getElementById('paramA').addEventListener('input', updateCostSimulation);
+        document.getElementById('paramD').addEventListener('input', updateCostSimulation);
+        document.getElementById('paramC').addEventListener('input', updateCostSimulation);
+        document.getElementById('paramF').addEventListener('input', updateCostSimulation);
+
+        // Slide 3 Sliders
+        document.getElementById('paramY').addEventListener('input', updateNashSimulation);
+        document.getElementById('paramTH').addEventListener('input', updateNashSimulation);
+        document.getElementById('paramTW').addEventListener('input', updateNashSimulation);
+        document.getElementById('empowerCheck').addEventListener('change', updateNashSimulation);
+
+        // Slide 4 Sliders
+        document.getElementById('paramW').addEventListener('input', updateQQSvg);
+        document.getElementById('paramR').addEventListener('input', updateQQSvg);
+        document.getElementById('paramT').addEventListener('input', updateQQSvg);
+        document.getElementById('paramP').addEventListener('input', updateQQSvg);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                if (currentSlide > 1) changeSlide(-1);
+            } else if (event.key === 'ArrowRight') {
+                if (currentSlide < totalSlides) changeSlide(1);
+            }
+        });
+
+        // Check hash on load to open specific slide
+        window.addEventListener('load', () => {
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#slide')) {
+                const slideNum = parseInt(hash.replace('#slide', ''));
+                if (slideNum >= 1 && slideNum <= totalSlides) {
+                    currentSlide = slideNum;
+                }
+            }
+            updateSlideUI();
+        });
+    </script>
+</body>
+</html>
