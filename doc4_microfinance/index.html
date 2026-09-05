@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>소액금융과 새마을운동 (0681-01) | 영남대학교 대학원</title>
+    <meta name="description" content="영남대학교 대학원 새마을국제개발학과 소액금융과 새마을운동 교과목 종합 안내 및 15주차 강의 로드맵">
+    
+    <style>
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-3Light.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-4Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-6SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-7Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-sub: #475569;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --primary: #b45309; /* 온화한 앰버/브라운 학술 톤 */
+            --navy: #1e3a8a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Presentation', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 3rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .top-nav a {
+            color: var(--text-sub);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .top-nav a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        header {
+            border-bottom: 2px solid var(--text-main);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .course-meta {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.02em;
+        }
+
+        .course-desc {
+            font-size: 1.02rem;
+            color: var(--text-sub);
+            line-height: 1.7;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .status-box {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.2rem;
+            border-radius: 6px;
+            font-size: 0.93rem;
+            margin-bottom: 2rem;
+            color: #78350f;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.4rem;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .card-week {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-title {
+            font-size: 1.08rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .card-desc {
+            font-size: 0.88rem;
+            color: var(--text-sub);
+            line-height: 1.55;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--navy);
+            border-top: 1px solid var(--border-color);
+            padding-top: 0.6rem;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <nav class="top-nav">
+            <a href="../index.html">← 연구 포털 메인으로 돌아가기</a>
+            <span>영남대학교 대학원 새마을국제개발학과 | 소액금융과 새마을운동 (0681-01)</span>
+        </nav>
+
+        <header>
+            <div class="course-meta">2026학년도 2학기 박사과정 개설과목</div>
+            <h1>소액금융과 새마을운동 (0681-01)</h1>
+            <p class="course-desc">
+                마이크로파이낸스(Microfinance)의 경제학적·사회학적 메커니즘과 한국 새마을금고의 자본 축적 및 금융 포용성(Financial Inclusion) 연구 교과목 포털입니다.
+            </p>
+        </header>
+
+        <div class="status-box">
+            <strong>📋 수강 안내 사항:</strong> 2026학년도 2학기 공식 강의계획서(Syllabus)가 확정 진행 중입니다. 1주차 수업은 과목 운영 개요와 함께 '경제학 vs 사회학'의 분석 관점 및 '투자(Investment)와 미래 가치(Value)'의 경제학적 프레임워크를 수록하고 있습니다.
+        </div>
+
+        <section>
+            <h2>주차별 강의안 및 아카이브</h2>
+            <div class="grid-container">
+                
+                <!-- 1주차 카드 -->
+                <a href="lecture1.html" class="card">
+                    <div class="card-week">제1주차 강의안</div>
+                    <div class="card-title">소액금융 개론: 경제학 vs 사회학과 투자의 경제학</div>
+                    <div class="card-desc">
+                        경제학과 사회학의 시각 차이, 투자의 정의(현재 자원 투입을 통한 미래 가치 획득), 투자의 2대 프레임워크(Expected Return & Risk) 및 기회 창출 기제 분석.
+                    </div>
+                    <div class="card-footer">
+                        <span>1강 강의안 열람하기 →</span>
+                    </div>
+                </a>
+
+                <!-- Canvas LMS 연동 카드 -->
+                <a href="https://canvas.yu.ac.kr/courses/34597" target="_blank" class="card">
+                    <div class="card-week">Canvas LMS</div>
+                    <div class="card-title">영남대 Canvas 공식 강의실</div>
+                    <div class="card-desc">
+                        과제 제출, 출석 관리 및 공식 공지사항 확인을 위한 영남대학교 Canvas LMS 시스템 연동 링크.
+                    </div>
+                    <div class="card-footer">
+                        <span>Canvas 바로가기 ↗</span>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        영남대학교 대학원 새마을국제개발학과 | 소액금융과 새마을운동 (0681-01)
+    </footer>
+
+</body>
+</html>
