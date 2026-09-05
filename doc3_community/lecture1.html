@@ -292,6 +292,43 @@
             font-size: 0.85rem;
             color: var(--text-muted);
         }
+
+        /* 강의 현장 설명 토글 스타일 (고대비 및 명확한 버튼 디자인) */
+        details.lecture-toggle {
+            margin-top: 1.5rem;
+            background: #eff6ff;
+            border: 2px solid #bfdbfe;
+            border-left: 5px solid var(--navy);
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        details.lecture-toggle summary {
+            font-weight: 700;
+            color: var(--navy);
+            cursor: pointer;
+            outline: none;
+            padding: 0.6rem 1rem;
+            background: #dbeafe;
+            border-radius: 6px;
+            user-select: none;
+            font-size: 0.96rem;
+        }
+
+        details.lecture-toggle summary:hover {
+            background: #bfdbfe;
+            color: #1e40af;
+        }
+
+        details.lecture-toggle .toggle-content {
+            margin-top: 0.8rem;
+            padding: 0.8rem 0.5rem 0.4rem 0.5rem;
+            border-top: 1px dashed #93c5fd;
+            color: var(--text-main);
+            line-height: 1.65;
+        }
     </style>
 </head>
 <body>
@@ -357,6 +394,15 @@
             <div class="callout">
                 <strong>핵심 관점:</strong> 지역개발의 성과는 자본이나 시설 투입만으로 결정되지 않으며, 지역사회의 구조와 주민 간 관계, 제도 및 거버넌스가 외부 자원을 수용하고 활용하는 방식에 따라 좌우됩니다.
             </div>
+
+            <details class="lecture-toggle">
+                <summary>🔍 1주차 현장 강의 설명 및 사례 보기 (클릭하면 내용이 펼쳐집니다)</summary>
+                <div class="toggle-content">
+                    <p><strong>공간과 로컬리티의 변천:</strong> 과거 씨족 사회 중심의 농촌은 장례·품앗이·당제 등 대면 공유 경험으로 공동체가 단단히 유지되었으나, 현대에는 KTX·SRT 등 교통망 확충으로 면 단위 상권이 붕괴되고 인접 대도시 및 수도권으로 인구와 자원이 쏠리는 현상이 심화됨.</p>
+                    <p style="margin-top:0.5rem;"><strong>공동체 해체와 파편화:</strong> 농기계 보급에 따른 노동 협업 필요성 감소, 아파트 평수 및 수능/승진 중심의 서열화, 디지털/카카오톡 중심의 비대면 단절로 인해 전통적 유대감이 해체됨.</p>
+                    <p style="margin-top:0.5rem;"><strong>지역사회구조와 수용 역량:</strong> 데이터센터 유치처럼 고용·전후방 효과가 적은 시설 투입은 지역 발전에 기여하지 못함. 1인 가구 및 독거노인 증가에 대응하는 '마을 단위 돌봄 체계' 등 지역 내부의 수용 구조 및 거버넌스가 개발 성패의 핵심임.</p>
+                </div>
+            </details>
         </section>
 
         <!-- 2. 연구 이유 -->
@@ -387,6 +433,15 @@
                 <li>지도자와 주민 간 관계 및 지역 리더십 분석</li>
                 <li>근면·자조·협동 정신이 집단행동으로 전환되는 조건 탐색</li>
             </ul>
+
+            <details class="lecture-toggle">
+                <summary>🔍 1주차 현장 강의 설명 및 사례 보기 (클릭하면 내용이 펼쳐집니다)</summary>
+                <div class="toggle-content">
+                    <p><strong>개발 사업 평가 패러다임 전환:</strong> 인프라 건립 등 단순 산출물(Output) 중심에서 벗어나 주민의 사회적 자본 축적과 삶의 질 향상을 도출하는 '변화 이론(Theory of Change)' 기반의 구조적 접근이 필요함.</p>
+                    <p style="margin-top:0.5rem;"><strong>권력구조와 비공식 행정 실태:</strong> 시골 지역에서는 공식 의회보다 지역 유지 간 비공식 인맥(새벽 목욕탕 모임 등)에서 주요 의사결정이 이루어지며, 선거 결과에 따른 공무원 보직 이동 및 라인 서기 문화가 행정 생산성을 저해하는 구조적 문제를 지적함.</p>
+                    <p style="margin-top:0.5rem;"><strong>주거 계층 분화 및 이해관계 갈등:</strong> 아파트 동·평수에 따른 서열화 및 임대 단지 입주 갈등 사례를 분석하며, 개발 사업 시 지역 내부의 계층 분화와 불평등 구조를 사전에 파악해야 함을 강조함.</p>
+                </div>
+            </details>
         </section>
 
         <!-- 3. 주요 이론 -->
