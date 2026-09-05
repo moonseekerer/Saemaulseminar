@@ -329,6 +329,45 @@
             color: var(--text-main);
             line-height: 1.65;
         }
+
+        /* 사담 발언 하위 서브 토글 스타일 */
+        details.sub-toggle {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            background: #ffffff;
+            border: 1px solid #fef08a;
+            border-left: 4px solid #f59e0b;
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        details.sub-toggle summary {
+            font-weight: 700;
+            color: #b45309;
+            cursor: pointer;
+            outline: none;
+            padding: 0.25rem 0.4rem;
+            background: #fefce8;
+            border-radius: 4px;
+            font-size: 0.91rem;
+        }
+
+        details.sub-toggle summary:hover {
+            background: #fef9c3;
+            color: #92400e;
+        }
+
+        details.sub-toggle blockquote {
+            margin-top: 0.4rem;
+            padding: 0.6rem 0.8rem;
+            background: #fffbe6;
+            border-left: 3px solid #f59e0b;
+            font-style: italic;
+            color: #78350f;
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
@@ -404,11 +443,27 @@
                     <p style="margin-top:0.4rem;"><strong>· 전통 공동체 해체와 파편화:</strong> 농기계 보급에 따른 품앗이 감소, 경쟁·서열 문화, 디지털 단톡방 중심의 비대면 단절로 전통적 유대 해체.</p>
                     <p style="margin-top:0.4rem;"><strong>· 지역사회구조와 복지:</strong> 고용/전후방 효과가 적은 시설(데이터센터 등) 유치의 한계, 1인 가구(34%) 및 독거노인 증가에 대응하는 '마을 단위 돌봄 체계' 필요성.</p>
 
-                    <h4 style="font-size:0.98rem; color:var(--primary); margin-top:1rem; margin-bottom:0.4rem; border-bottom:1px solid #fef08a; padding-bottom:0.2rem;">💬 [현장 언급 사례 및 에피소드 (교수 사담)]</h4>
-                    <p><strong>· 소개팅과 전공 이야기:</strong> 대학 시절 농업경제학 전공으로 소개팅 갔을 때 서로 할 말이 없어 고구마 이야기 나누던 에피소드.</p>
-                    <p style="margin-top:0.4rem;"><strong>· 월요일 KTX와 서울 쏠림:</strong> 월요일 새벽 5시 5분 KTX 탑승 경험 및 서울역 5대 병원 셔틀버스 대기열 관찰담.</p>
-                    <p style="margin-top:0.4rem;"><strong>· 경상도 사투리와 자막 시스템:</strong> 본인의 경상도 발음도 찰떡같이 알아듣는 TransLive AI 자막 시스템 성능 자랑.</p>
-                    <p style="margin-top:0.4rem;"><strong>· 어머니 복지 에피소드:</strong> 아버지가 일찍 돌아가셔서 오히려 본인 건강과 복지 상태가 최고라는 어머니에 관한 개인 이야기.</p>
+                    <h4 style="font-size:0.98rem; color:var(--primary); margin-top:1rem; margin-bottom:0.4rem; border-bottom:1px solid #fef08a; padding-bottom:0.2rem;">💬 [현장 언급 사례 및 에피소드 (교수 사담 & 원문)]</h4>
+                    
+                    <details class="sub-toggle">
+                        <summary>📌 전공 및 대학교 소개팅 에피소드 (자막 원문 보기)</summary>
+                        <blockquote>"저도 대학교 때 소개팅을 가면 서로 할 얘기가 없잖아요. 무슨 얘기를 하겠습니까. 그거 몇 마디 보고 좀 하고 끝나면 상대가 '근데 전공은 뭐예요?'라고 묻는 거지." <small style="display:block; margin-top:0.3rem; color:#92400e; font-style:normal;">(※ 자막 '우리 고구마 있습니다'는 교수의 '우리 학교에도 있습니다' 경상도 발음을 AI가 오인식한 문장임)</small></blockquote>
+                    </details>
+
+                    <details class="sub-toggle">
+                        <summary>📌 월요일 KTX 탑승 및 서울 쏠림 실태 (자막 원문 보기)</summary>
+                        <blockquote>"옛날에는 서울 갔다 오는 게 기차 타고 4시간 이렇게 걸릴 때니까... 근데 지금은 월요일 5시 5분 첫차 타고 올라가서 서울 가도 7시가 안 되죠... SRT 내려서 버스 타는 데 나가봤더니 서울 5대 병원 셔틀 버스 타는 줄이... 다 서울 병원으로 가는 거죠."</blockquote>
+                    </details>
+
+                    <details class="sub-toggle">
+                        <summary>📌 경상도 사투리와 AI 자막 성능 자랑 (자막 원문 보기)</summary>
+                        <blockquote>"그리고 저의 개떡 같은 경상도 발음도 제가 찰떡같이 알아듣고 한국말도 고정해서 영어로 가는 것 같아요... 발음이 좋지 않은 사람들도 사용할 수 있도록 그런 시스템이 된 것 같습니다."</blockquote>
+                    </details>
+
+                    <details class="sub-toggle">
+                        <summary>📌 어머니 건강과 복지 상태에 관한 개인사 (자막 원문 보기)</summary>
+                        <blockquote>"건강하신 할머니는 복지 최고야. 속 썩이는 남편이 없잖아. 우리나라에서 제일 행복해. 내가 이걸 자신 있게 얘기하는 이유가 우리 아버지가 일찍 돌아가셨는데, 우리 어머니가 본인 건강하시니까 속 썩일 남편도 없고 우리 모친이 제일 행복한 거야."</blockquote>
+                    </details>
                 </div>
             </details>
         </section>
@@ -451,11 +506,27 @@
                     <p style="margin-top:0.4rem;"><strong>· 조세 및 통계 개편 논의:</strong> 농업인 소득세 무세 혜택으로 인한 소득 통계 미비 한계 및 농촌 기본소득(월 15~20만 원) 예산 구조 언급.</p>
                     <p style="margin-top:0.4rem;"><strong>· 주거 계층 분화 진단:</strong> 아파트 동·평수 차별 및 임대 단지 갈등 사례를 통한 지역 내부의 계층 분화 및 소외 구조 사전 파악 필요성.</p>
 
-                    <h4 style="font-size:0.98rem; color:var(--primary); margin-top:1rem; margin-bottom:0.4rem; border-bottom:1px solid #fef08a; padding-bottom:0.2rem;">💬 [현장 언급 사례 및 에피소드 (교수 사담)]</h4>
-                    <p><strong>· 중앙부처 과장 선배 해외여행:</strong> 국장 보고를 앞두고 부인과 베트남 여행을 다녀온 무적의 마음 비우기 사담.</p>
-                    <p style="margin-top:0.4rem;"><strong>· 새벽 6시 목욕탕 정치:</strong> 청송 군수 및 유지들이 새벽 6시 목욕탕에 모여 형님 동생 하며 군정을 협의한다는 시골 정치 이야기.</p>
-                    <p style="margin-top:0.4rem;"><strong>· 영양군 공무원 700명 사정:</strong> 인구 1만 6천 명 동네에서 선거 후 공무원들이 오지 면사무소나 상수도 사업소로 발령 나는 현장 실태.</p>
-                    <p style="margin-top:0.4rem;"><strong>· 초등학생 아파트 동 차별:</strong> 20년 전 초등학생들이 목욕탕에서 아파트 동과 평수로 친구를 차별하던 씁쓸한 이야기.</p>
+                    <h4 style="font-size:0.98rem; color:var(--primary); margin-top:1rem; margin-bottom:0.4rem; border-bottom:1px solid #fef08a; padding-bottom:0.2rem;">💬 [현장 언급 사례 및 에피소드 (교수 사담 & 원문)]</h4>
+
+                    <details class="sub-toggle">
+                        <summary>📌 농식품부 과장 선배의 해외여행 사담 (자막 원문 보기)</summary>
+                        <blockquote>"중앙부처 과장이 있는데 얼굴이 너무 좋은 거야. 왜 이렇게 좋냐 했더니 베트남 여행을 갔다 왔다는 거야... 보고가 잡혀 있었는데 '죄송합니다. 갈 건데요. 찍어서 지방으로 보내라' 하는 마음 키운 자세로 출근하는 거야. 마음만 비우면 천하무적이 될 수 있어."</blockquote>
+                    </details>
+
+                    <details class="sub-toggle">
+                        <summary>📌 새벽 6시 청송 목욕탕 정치 (자막 원문 보기)</summary>
+                        <blockquote>"모든 시골의 의사결정은 새벽 6시 목욕탕에 하나 있으니까 거기 앉아서 형님 동생 하면서 군의 주요 의사결정은 청송 목욕탕에서 이루어지는 거죠. 군수님이 맨날 여길 가요. 거기에 지역 유지들이 다 6시에 오겠죠. 거기서 자기들끼리 의사결정을 하는 거예요."</blockquote>
+                    </details>
+
+                    <details class="sub-toggle">
+                        <summary>📌 영양군 공무원 700명 보직 이동 실태 (자막 원문 보기)</summary>
+                        <blockquote>"영양 같은 데는 만 6천 명 살고 공무원이 700명씩 있다고. 공무원들이 원하든 원치 않든 라인에 설 수밖에 없잖아요. 떨어지면 그 동네에서 최고 오지 면사무소로 날아가든지 상수도 소장으로 날아가든지... 어제까지 기획통이고 농정통이고 없어요."</blockquote>
+                    </details>
+
+                    <details class="sub-toggle">
+                        <summary>📌 초등학생 아파트 동·평수 차별 (자막 원문 보기)</summary>
+                        <blockquote>"무려 20년 전에 초등학생들이 목욕탕에서 '야 너 몇 동에 살아? 나는 몇 동에 살아. 그래 그게 작은 평수네.'... 누구한테 들은 이야기일까요? 엄마 아빠가 밥 먹으면서 맨날 하는 얘기가 '몇 동은 몇 평인데 부자고 어쩌고' 하니까 아이 머릿속에 '몇 동은 못 사는 사람이구나' 하는 생각이 드는 거죠."</blockquote>
+                    </details>
                 </div>
             </details>
         </section>
