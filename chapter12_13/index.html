@@ -8,7 +8,7 @@
     <!-- KaTeX -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}, {left: '\\[', right: '\\]', display: true}] });"></script>
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -810,7 +810,7 @@
                         
                         <p>여기서 $w$는 여성 임금, $t$는 아이 한 명에 소요되는 시간, $p$는 교육 질의 단위비용, $R$은 비근로소득입니다. 여성 임금($w$)이 상승하면 자녀 양육의 암묵적 기회비용($wt$)이 상승합니다.</p>
                         
-                        <p>이에 따라 자녀의 수($n^*$)를 줄이고, 자녀 1인당 교육 수준($q^*$)을 높이려는 강력한 <strong>대체효과(Substitution Effect)</strong>가 작용하여 가계는 **'양에서 질'**로 자원을 대폭 전환하게 됩니다. 이는 다산-저숙련 구조에서 벗어나 고인적자본(Human Capital) 기반의 내생성장 기틀을 마련했습니다.</p>
+                        <p>이에 따라 자녀의 수($n^*$)를 줄이고, 자녀 1인당 교육 수준($q^*$)을 높이려는 강력한 <strong>대체효과(Substitution Effect)</strong>가 작용하여 가계는 <strong>'양에서 질'</strong>로 자원을 대폭 전환하게 됩니다. 이는 다산-저숙련 구조에서 벗어나 고인적자본(Human Capital) 기반의 내생성장 기틀을 마련했습니다.</p>
                     </div>
                 </div>
 

@@ -9,7 +9,7 @@
     <!-- KaTeX for premium math rendering -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}, {left: '\\[', right: '\\]', display: true}] });"></script>
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -487,7 +487,7 @@
                 </div>
 
                 <p style="margin-bottom: 1rem;">
-                    규약을 어기고 공동체 이익을 착취하는 개체는 <strong>'품앗이(이웃 연결선) 일체 차단'</strong>을 당합니다. 이는 공간 모델링에서 배신자 노드의 연결 수(\(k\))를 0으로 수렴시켜 고립(Isolation)시키는 행위였으며, 이를 통해 협력자들끼리만 강력하게 뭉친 **'협력 방어 클러스터'**를 만들어 내 무너져 가던 부락을 최우수 자립 마을로 일구어냈습니다.
+                    규약을 어기고 공동체 이익을 착취하는 개체는 <strong>'품앗이(이웃 연결선) 일체 차단'</strong>을 당합니다. 이는 공간 모델링에서 배신자 노드의 연결 수(\(k\))를 0으로 수렴시켜 고립(Isolation)시키는 행위였으며, 이를 통해 협력자들끼리만 강력하게 뭉친 <strong>'협력 방어 클러스터'</strong>를 만들어 내 무너져 가던 부락을 최우수 자립 마을로 일구어냈습니다.
                 </p>
 
                 <!-- Clickable Evidence Viewer Link -->
