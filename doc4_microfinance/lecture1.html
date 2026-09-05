@@ -358,15 +358,34 @@
             <h3>2.1 투자의 정의</h3>
             <p>경제학에서 <strong>투자(Investment)</strong>란 현재 보유한 자원, 시간, 노력을 투입하여 향후 미래의 더 큰 가치(Value)를 획득하고자 하는 행위입니다.</p>
 
-            <h3>2.2 투자의 2대 프레임워크 (Risk & Return)</h3>
+            <h3>2.2 투자의 2대 프레임워크 (Risk & Return) 및 지배 원칙</h3>
             <p>모든 경제적 투자를 분석할 때는 위험과 수익이라는 두 개의 축을 기준으로 의사결정이 이루어집니다.</p>
 
             <div class="framework-box">
-                <div class="framework-title">📊 투자의 2대 분석 축 (Investment Framework)</div>
+                <div class="framework-title">📊 투자의 2대 분석 축과 선택 지배 원칙 (Dominance Principle)</div>
                 <ul>
                     <li><strong>Y축 (기대 수익 / Expected Return):</strong> 투자를 통해 미래에 얻고자 하는 기대 가치 및 소득 증가율.</li>
                     <li><strong>X축 (위험 / Risk):</strong> 미래 결과의 불확실성 및 손실 가능성의 변동 폭.</li>
+                    <li><strong>지배 원칙 선택:</strong> 동일 리스크 조건에서는 수익이 높은 위쪽(↑)을 취하고, 동일 수익 조건에서는 리스크가 적은 왼쪽(←)을 선택함.</li>
+                    <li><strong>효율적 투자선 (Efficient Frontier):</strong> 오른쪽에 있는 점보다 왼쪽 점이 낫고 아래쪽 점보다 위쪽 점이 유효하다면, 남는 것은 **맨 왼쪽 상단의 점들과 이들을 잇는 곡선 라인**뿐임.</li>
                 </ul>
+            </div>
+
+            <!-- 시각화 시뮬레이터 인터랙티브 캔버스 -->
+            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 1.2rem; margin-top: 1.2rem; margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <h4 style="font-size: 1.02rem; font-weight: 700; color: var(--navy);">📈 X-Y축 지배원칙 및 효율적 투자선 시뮬레이터</h4>
+                    <div style="display: flex; gap: 0.4rem;">
+                        <button id="simStep1" onclick="setSimStep(1)" style="padding: 0.3rem 0.6rem; font-size: 0.78rem; font-weight: 600; border-radius: 4px; border: 1px solid #cbd5e1; background: #ffffff; cursor: pointer;">1. 전체 대안</button>
+                        <button id="simStep2" onclick="setSimStep(2)" style="padding: 0.3rem 0.6rem; font-size: 0.78rem; font-weight: 600; border-radius: 4px; border: 1px solid #cbd5e1; background: #ffffff; cursor: pointer;">2. 지배점 제거</button>
+                        <button id="simStep3" onclick="setSimStep(3)" style="padding: 0.3rem 0.6rem; font-size: 0.78rem; font-weight: 600; border-radius: 4px; border: 1px solid #059669; background: #ecfdf5; color: #047857; cursor: pointer;">3. 곡선 연결</button>
+                    </div>
+                </div>
+                <canvas id="simCanvas" width="700" height="360" style="width: 100%; height: auto; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer;"></canvas>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.6rem; display: flex; justify-content: space-between; flex-wrap: wrap;">
+                    <span>💡 캔버스를 클릭하여 원하는 위치에 투자 대안 점을 추가해보세요.</span>
+                    <span id="simCountInfo" style="font-weight: 700; color: #047857;">효율적 전선 점: 0개 / 전체 0개</span>
+                </div>
             </div>
 
             <h3>2.3 인적 자본 투자와 기회(Opportunity) 창출의 경제학</h3>
@@ -409,5 +428,154 @@
         영남대학교 대학원 새마을국제개발학과 | 소액금융과 새마을운동 (0681-01)
     </footer>
 
+    <script>
+        const canvas = document.getElementById('simCanvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            const padding = { top: 35, right: 35, bottom: 45, left: 55 };
+            const chartWidth = canvas.width - padding.left - padding.right;
+            const chartHeight = canvas.height - padding.top - padding.bottom;
+            const maxRisk = 30;
+            const maxReturn = 25;
+
+            let points = [
+                { risk: 4, ret: 5 }, { risk: 6, ret: 9 }, { risk: 8, ret: 6 },
+                { risk: 9, ret: 13 }, { risk: 12, ret: 10 }, { risk: 13, ret: 16 },
+                { risk: 16, ret: 14 }, { risk: 18, ret: 19 }, { risk: 21, ret: 17 },
+                { risk: 22, ret: 21 }, { risk: 25, ret: 18 }, { risk: 27, ret: 22 }
+            ];
+            let currentStep = 3;
+
+            function toCanvasX(r) { return padding.left + (r / maxRisk) * chartWidth; }
+            function toCanvasY(ret) { return canvas.height - padding.bottom - (ret / maxReturn) * chartHeight; }
+            function toDataRisk(cx) { return Math.max(0, Math.min(maxRisk, ((cx - padding.left) / chartWidth) * maxRisk)); }
+            function toDataReturn(cy) { return Math.max(0, Math.min(maxReturn, ((canvas.height - padding.bottom - cy) / chartHeight) * maxReturn)); }
+
+            function getEfficientPoints() {
+                let eff = [];
+                for (let i = 0; i < points.length; i++) {
+                    let pA = points[i];
+                    let isDominated = false;
+                    for (let j = 0; j < points.length; j++) {
+                        if (i === j) continue;
+                        let pB = points[j];
+                        if (pB.risk <= pA.risk && pB.ret >= pA.ret) {
+                            if (pB.risk < pA.risk || pB.ret > pA.ret) { isDominated = true; break; }
+                        }
+                    }
+                    if (!isDominated) eff.push(pA);
+                }
+                eff.sort((a, b) => a.risk - b.risk);
+                return eff;
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.strokeStyle = '#e2e8f0';
+                ctx.lineWidth = 1;
+                ctx.fillStyle = '#64748b';
+                ctx.font = '11px sans-serif';
+
+                for (let r = 0; r <= maxRisk; r += 5) {
+                    let x = toCanvasX(r);
+                    ctx.beginPath(); ctx.moveTo(x, padding.top); ctx.lineTo(x, canvas.height - padding.bottom); ctx.stroke();
+                    ctx.textAlign = 'center'; ctx.fillText(r + '%', x, canvas.height - padding.bottom + 18);
+                }
+                for (let ret = 0; ret <= maxReturn; ret += 5) {
+                    let y = toCanvasY(ret);
+                    ctx.beginPath(); ctx.moveTo(padding.left, y); ctx.lineTo(canvas.width - padding.right, y); ctx.stroke();
+                    ctx.textAlign = 'right'; ctx.fillText(ret + '%', padding.left - 8, y + 4);
+                }
+
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(padding.left, padding.top);
+                ctx.lineTo(padding.left, canvas.height - padding.bottom);
+                ctx.lineTo(canvas.width - padding.right, canvas.height - padding.bottom);
+                ctx.stroke();
+
+                ctx.fillStyle = '#0f172a';
+                ctx.font = 'bold 12px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('위험 (Risk, X축) →', canvas.width / 2, canvas.height - 8);
+
+                const effPoints = getEfficientPoints();
+                const effSet = new Set(effPoints);
+
+                points.forEach(p => {
+                    let isEff = effSet.has(p);
+                    let cx = toCanvasX(p.risk);
+                    let cy = toCanvasY(p.ret);
+
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 5.5, 0, Math.PI * 2);
+                    if (currentStep === 1) {
+                        ctx.fillStyle = '#3b82f6'; ctx.fill(); ctx.strokeStyle = '#1d4ed8'; ctx.lineWidth = 1.5; ctx.stroke();
+                    } else {
+                        if (isEff) {
+                            ctx.fillStyle = '#10b981'; ctx.fill(); ctx.strokeStyle = '#047857'; ctx.lineWidth = 2; ctx.stroke();
+                        } else {
+                            ctx.fillStyle = '#cbd5e1'; ctx.fill(); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1; ctx.stroke();
+                        }
+                    }
+                });
+
+                if (currentStep === 3 && effPoints.length > 1) {
+                    ctx.beginPath();
+                    ctx.moveTo(toCanvasX(effPoints[0].risk), toCanvasY(effPoints[0].ret));
+                    for (let i = 1; i < effPoints.length; i++) {
+                        let prev = effPoints[i - 1];
+                        let curr = effPoints[i];
+                        let cx1 = toCanvasX((prev.risk + curr.risk) / 2);
+                        let cy1 = toCanvasY(prev.ret);
+                        let cx2 = toCanvasX((prev.risk + curr.risk) / 2);
+                        let cy2 = toCanvasY(curr.ret);
+                        ctx.bezierCurveTo(cx1, cy1, cx2, cy2, toCanvasX(curr.risk), toCanvasY(curr.ret));
+                    }
+                    ctx.strokeStyle = '#059669'; ctx.lineWidth = 3; ctx.stroke();
+                    ctx.lineTo(toCanvasX(effPoints[effPoints.length - 1].risk), canvas.height - padding.bottom);
+                    ctx.lineTo(toCanvasX(effPoints[0].risk), canvas.height - padding.bottom);
+                    ctx.closePath();
+                    ctx.fillStyle = 'rgba(16, 185, 129, 0.08)'; ctx.fill();
+                }
+
+                document.getElementById('simCountInfo').innerText = `효율적 전선 점: ${effPoints.length}개 / 전체 ${points.length}개`;
+            }
+
+            canvas.addEventListener('click', function(e) {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const cx = (e.clientX - rect.left) * scaleX;
+                const cy = (e.clientY - rect.top) * scaleY;
+
+                if (cx >= padding.left && cx <= canvas.width - padding.right &&
+                    cy >= padding.top && cy <= canvas.height - padding.bottom) {
+                    let r = Math.round(toDataRisk(cx) * 10) / 10;
+                    let ret = Math.round(toDataReturn(cy) * 10) / 10;
+                    points.push({ risk: r, ret: ret });
+                    draw();
+                }
+            });
+
+            window.setSimStep = function(step) {
+                currentStep = step;
+                [1, 2, 3].forEach(s => {
+                    let btn = document.getElementById('simStep' + s);
+                    if (btn) {
+                        if (s === step) {
+                            btn.style.background = '#ecfdf5'; btn.style.color = '#047857'; btn.style.borderColor = '#059669';
+                        } else {
+                            btn.style.background = '#ffffff'; btn.style.color = '#475569'; btn.style.borderColor = '#cbd5e1';
+                        }
+                    }
+                });
+                draw();
+            };
+
+            draw();
+        }
+    </script>
 </body>
 </html>
