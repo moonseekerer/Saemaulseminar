@@ -628,14 +628,14 @@
             </div>
 
             <p style="font-size: 0.92rem; color: var(--text-sub); margin-bottom: 1.2rem; line-height: 1.6;">
-                변수 $X$는 100~200 사이 정수($100, 101, \dots, 200$)의 <strong>균등분포(Uniform Distribution, 모집단 평균 $\mu = 150$)</strong>를 이룹니다.<br>
-                표본 크기 $n=20$으로 무작위 추출하여 표본평균($\bar{X}$)을 구할 때, 반복 추출에 따라 표본평균의 분포가 <strong>정규분포 $\mathcal{N}(\mu, \sigma^2/n)$로 정밀 수렴</strong>하는 CLT 원리를 실시간으로 검증합니다.
+                변수 X는 100~200 사이 정수(100, 101, ..., 200)의 <strong>균등분포(Uniform Distribution, 모집단 평균 μ = 150)</strong>를 이룹니다.<br>
+                표본 크기 n=20으로 무작위 추출하여 표본평균(X̄)을 구할 때, 반복 추출에 따라 표본평균의 분포가 <strong>정규분포 N(μ, σ²/n)로 정밀 수렴</strong>하는 CLT 원리를 실시간으로 검증합니다.
             </p>
 
             <!-- 컨트롤 및 옵션 영역 -->
             <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; background: #f8fafc; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1.2rem;">
                 <div style="font-size: 0.88rem; font-weight: 700; color: var(--navy-primary);">
-                    1회 추출 표본 크기 ($n$): 
+                    1회 추출 표본 크기 (n): 
                     <span id="clt20SampleSizeText" style="color: var(--amber-primary); font-size: 1rem;">20 개</span>
                 </div>
                 <input type="range" id="clt20SampleSizeSlider" min="5" max="50" step="5" value="20" style="width: 150px; accent-color: var(--amber-primary); cursor: pointer;" oninput="updateCLT20SampleSize(this.value)">
