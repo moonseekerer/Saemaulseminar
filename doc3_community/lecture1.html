@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제1강 강의소개 및 지역사회구조 연구의 이론과 접근방법 | 지역사회구조연구</title>
+    <meta name="description" content="지역사회구조의 4대 관점(경제·사회·문화·공간) 분석 및 John Friedmann의 중심지-주변지(Core-Periphery) 공간개발 이론 시각화 대시보드">
+    
+    <style>
+        /* 프리젠테이션 (Presentation) 웹폰트 선언 */
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-3Light.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-4Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-6SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-7Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+        html { scroll-behavior: smooth; }
+
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            
+            --rose-primary: #be123c;
+            --rose-hover: #9f1239;
+            --rose-soft: #fff1f2;
+            
+            --navy-primary: #1e3a8a;
+            --navy-soft: #eff6ff;
+            
+            --emerald-primary: #047857;
+            --emerald-soft: #ecfdf5;
+            
+            --amber-primary: #d97706;
+            --amber-soft: #fffbeb;
+            
+            --purple-primary: #7e22ce;
+            --purple-soft: #faf5ff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Presentation', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 2.5rem 1.5rem;
+            background-image: radial-gradient(#cbd5e1 0.75px, transparent 0.75px);
+            background-size: 24px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1040px;
+        }
+
+        /* 상단 네비게이션 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #ffffff;
+            color: var(--rose-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--rose-primary);
+            color: #ffffff;
+        }
+
+        /* 헤더 스타일 */
+        header {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-left: 6px solid var(--rose-primary);
+            padding: 1.8rem 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .badge-rose { background: var(--rose-soft); color: var(--rose-primary); border: 1px solid rgba(190,18,60,0.2); }
+        .badge-navy { background: var(--navy-soft); color: var(--navy-primary); border: 1px solid rgba(30,58,138,0.2); }
+
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 0.98rem;
+            color: var(--text-sub);
+            line-height: 1.55;
+        }
+
+        /* 상단 TOC 카드 */
+        .toc-item-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            padding: 0.85rem 1.1rem;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+
+        .toc-item-btn:hover {
+            border-color: var(--rose-primary);
+            background: var(--rose-soft);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(190,18,60,0.08);
+        }
+
+        .toc-num {
+            background: var(--rose-primary);
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 800;
+            padding: 0.2rem 0.55rem;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .toc-title {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        .toc-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+
+        /* 일반 카드 스타일 */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--rose-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* 탭 버튼 디자인 */
+        .perspective-tabs {
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .p-tab {
+            padding: 0.6rem 1.2rem;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .p-tab.active {
+            background: var(--rose-primary);
+            color: #ffffff;
+            border-color: var(--rose-primary);
+            box-shadow: 0 2px 6px rgba(190,18,60,0.2);
+        }
+
+        .tab-content-box {
+            background: var(--rose-soft);
+            border: 1px solid rgba(190,18,60,0.15);
+            border-radius: 10px;
+            padding: 1.5rem;
+            line-height: 1.6;
+        }
+
+        /* Friedmann 시뮬레이터 공간 대시보드 */
+        .friedmann-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .friedmann-grid { grid-template-columns: 1fr; }
+        }
+
+        .core-box {
+            background: #eff6ff;
+            border: 2px solid var(--navy-primary);
+            border-radius: 12px;
+            padding: 1.4rem;
+        }
+
+        .periphery-box {
+            background: #fffbeb;
+            border: 2px solid var(--amber-primary);
+            border-radius: 12px;
+            padding: 1.4rem;
+        }
+
+        .box-head {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sim-slider-group {
+            margin-top: 1.5rem;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 1.2rem;
+            border-radius: 10px;
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.8rem;
+        }
+
+        .slider-row label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            min-width: 140px;
+        }
+
+        .slider-row input {
+            flex-grow: 1;
+        }
+
+        /* 좌측 스티키 플로팅 네비게이터 */
+        .side-nav {
+            position: fixed;
+            top: 120px;
+            left: 24px;
+            z-index: 99;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 0.8rem 0.6rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .side-nav-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            padding: 0.2rem 0.6rem 0.5rem 0.6rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 0.2rem;
+        }
+
+        .side-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.7rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-sub);
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .side-nav-item:hover {
+            background: var(--rose-soft);
+            color: var(--rose-primary);
+        }
+
+        .side-nav-item.active {
+            background: var(--rose-primary);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 2px 6px rgba(190,18,60,0.25);
+        }
+
+        .side-icon { font-size: 0.95rem; }
+
+        @media (max-width: 1320px) {
+            .side-nav { display: none; }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            width: 100%;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- 상단 네비게이션 -->
+        <div class="top-nav">
+            <a href="index.html" class="back-btn">
+                <span>←</span> 과목 포털 및 15주차 목차
+            </a>
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">
+                영남대 대학원 새마을국제개발학과 | 지역사회구조연구 (0682-01)
+            </span>
+        </div>
+
+        <!-- 헤더 -->
+        <header>
+            <div class="badge-row">
+                <span class="badge badge-rose">제 1 강</span>
+                <span class="badge badge-navy">지역사회구조 연구의 이론과 접근방법</span>
+            </div>
+            <h1>🏛️ 강의소개 및 지역사회구조 연구의 이론과 접근방법</h1>
+            <p class="subtitle">
+                본 강의는 지역사회의 형성과 변화과정을 경제적·사회적·문화적·공간적 관점에서 종합 분석합니다.<br>
+                John Friedmann의 공간개발 이론과 다차원 접근법을 바탕으로 지방소멸과 지역 불균형 문제를 해명합니다.
+            </p>
+        </header>
+
+        <!-- 📌 상단 목차 카드 (Table of Contents) -->
+        <div class="card" style="border-left: 5px solid var(--rose-primary);">
+            <div class="card-header" style="margin-bottom: 0.8rem; padding-bottom: 0.5rem;">
+                <div class="card-title" style="font-size: 1.1rem;">
+                    📌 제1강 주요 학습 및 인터랙티브 목차 (Table of Contents)
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">클릭 시 해당 섹션으로 바로 이동합니다</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.75rem;">
+                <a href="#sec-overview" class="toc-item-btn">
+                    <span class="toc-num">01</span>
+                    <div>
+                        <div class="toc-title">🏛️ 교과목 개요 & 4대 목표</div>
+                        <div class="toc-sub">대학원 수준 지역사회구조 연구의 지향점</div>
+                    </div>
+                </a>
+                <a href="#sec-4perspectives" class="toc-item-btn">
+                    <span class="toc-num">02</span>
+                    <div>
+                        <div class="toc-title">🔬 4대 분석 관점 (경제·사회·문화·공간)</div>
+                        <div class="toc-sub">관점별 연구 대상 및 방법론 인터랙티브 대조</div>
+                    </div>
+                </a>
+                <a href="#sec-friedmann" class="toc-item-btn">
+                    <span class="toc-num">03</span>
+                    <div>
+                        <div class="toc-title">🗺️ John Friedmann 공간이론 시뮬레이터</div>
+                        <div class="toc-sub">중심지-주변지(Core-Periphery) 역동성과 파급효과</div>
+                    </div>
+                </a>
+                <a href="#sec-curriculum" class="toc-item-btn">
+                    <span class="toc-num">04</span>
+                    <div>
+                        <div class="toc-title">🗓️ 15주차 로드맵 & 평가 기준</div>
+                        <div class="toc-sub">중간/기말시험 40% 및 발표·과제 60% 안내</div>
+                    </div>
+                </a>
+                <a href="#sec-discussion" class="toc-item-btn">
+                    <span class="toc-num">05</span>
+                    <div>
+                        <div class="toc-title">💬 1주차 주요 토론 & 연구 과제</div>
+                        <div class="toc-sub">한국 지방소멸 현상과 지역 거버넌스 시사점</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 섹션 1: 교과목 개요 & 4대 목표 -->
+        <div class="card" id="sec-overview">
+            <div class="card-header">
+                <div class="card-title">🏛️ 1. 교과목 개요 및 대학원 연구 지향점</div>
+            </div>
+            <p style="font-size: 0.98rem; color: var(--text-sub); line-height: 1.7; margin-bottom: 1.2rem;">
+                <strong>지역사회구조연구 (0682-01)</strong> 교과목은 단일 학문의 틀을 넘어 경제학, 사회학, 지리학, 행정학의 융합적 접근을 시도합니다.
+                지역사회가 어떻게 형성되고, 어떠한 요인에 의해 구조적으로 변화하는지 정량·정성적 데이터로 구명하며, 지방소멸과 고령화라는 엄중한 시대적 현안에 대안적 지역발전 정책을 제시합니다.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+                <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 1.1rem; border-radius: 10px;">
+                    <div style="font-weight: 700; color: var(--rose-primary); font-size: 0.95rem;">① 구조와 변화 이론적 설명</div>
+                    <div style="font-size: 0.85rem; color: var(--text-sub); margin-top: 0.3rem;">지역사회의 체계적 변혁 과정을 다차원 사회과학 이론으로 해명</div>
+                </div>
+                <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 1.1rem; border-radius: 10px;">
+                    <div style="font-weight: 700; color: var(--navy-primary); font-size: 0.95rem;">② 지역경제 현안 정밀 분석</div>
+                    <div style="font-size: 0.85rem; color: var(--text-sub); margin-top: 0.3rem;">산업집적, 입지상수(LQ), 지역경쟁력의 정량적 평가</div>
+                </div>
+                <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 1.1rem; border-radius: 10px;">
+                    <div style="font-weight: 700; color: var(--amber-primary); font-size: 0.95rem;">③ 지방소멸·인구구조 종합 규명</div>
+                    <div style="font-size: 0.85rem; color: var(--text-sub); margin-top: 0.3rem;">인구감소와 지방소멸위험지수, 세대 간 이주 패턴 다각적 분석</div>
+                </div>
+                <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 1.1rem; border-radius: 10px;">
+                    <div style="font-weight: 700; color: var(--emerald-primary); font-size: 0.95rem;">④ RIS 및 정책 실효성 평가</div>
+                    <div style="font-size: 0.85rem; color: var(--text-sub); margin-top: 0.3rem;">지자체-대학 협력체계와 로컬 브랜딩 정책의 효과성 검증</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 섹션 2: 4대 분석 관점 인터랙티브 탭 -->
+        <div class="card" id="sec-4perspectives" style="border-left: 5px solid var(--navy-primary);">
+            <div class="card-header">
+                <div class="card-title" style="color: var(--navy-primary);">
+                    🔬 2. 지역사회구조 연구의 4대 분석 관점 (Interdisciplinary Perspectives)
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">버튼을 클릭하여 관점별 핵심 패러다임을 비교해보세요</span>
+            </div>
+
+            <div class="perspective-tabs">
+                <button class="p-tab active" onclick="switchPerspective('econ', this)">📈 경제적 관점 (Economic)</button>
+                <button class="p-tab" onclick="switchPerspective('social', this)">🤝 사회적 관점 (Social)</button>
+                <button class="p-tab" onclick="switchPerspective('cultural', this)">🎨 문화적 관점 (Cultural)</button>
+                <button class="p-tab" onclick="switchPerspective('spatial', this)">🗺️ 공간적 관점 (Spatial)</button>
+            </div>
+
+            <div class="tab-content-box" id="pContentBox">
+                <!-- JS 동적 변경 -->
+            </div>
+        </div>
+
+        <!-- 섹션 3: John Friedmann 공간이론 시뮬레이터 -->
+        <div class="card" id="sec-friedmann" style="border-left: 5px solid var(--amber-primary);">
+            <div class="card-header">
+                <div class="card-title" style="color: var(--amber-primary);">
+                    🗺️ 3. John Friedmann의 중심지-주변지 (Core-Periphery) 공간개발 시뮬레이터
+                </div>
+                <span style="font-size: 0.82rem; color: var(--text-muted);">교재: Regional Development Policy (1966)</span>
+            </div>
+
+            <p style="font-size: 0.95rem; color: var(--text-sub); line-height: 1.6;">
+                Friedmann은 지역발전 정책에서 **중심지(Core)**와 **주변지(Periphery)**의 불균형적 상호작용에 주목했습니다.<br>
+                아래 슬라이더를 통해 중심지의 **자본·인구 흡수력(Backwash Effect)**과 주변지로의 **파급효과(Spread Effect)** 비율을 조정하여 지역 격차지수 변화를 직접 관찰해 보세요.
+            </p>
+
+            <div class="friedmann-grid">
+                <div class="core-box">
+                    <div class="box-head" style="color: var(--navy-primary);">
+                        <span>🏙️ 중심지 (Core Region)</span>
+                        <span id="corePowerTag" style="font-size: 0.8rem; background: var(--navy-primary); color: #fff; padding: 0.2rem 0.5rem; border-radius: 4px;">지표: 강함</span>
+                    </div>
+                    <div style="font-size: 0.88rem; color: var(--text-sub); line-height: 1.5;">
+                        • 주요 기능: 첨단 산업, 금융, 대학, 혁신 리더십 축적<br>
+                        • 현재 자본 축적도: <strong id="coreCapitalText" style="color: var(--navy-primary);">120 %</strong><br>
+                        • 혁신 집적 이익: <strong id="coreInnovText">높음</strong>
+                    </div>
+                </div>
+
+                <div class="periphery-box">
+                    <div class="box-head" style="color: var(--amber-primary);">
+                        <span>🌾 주변지 (Periphery Region)</span>
+                        <span id="periphStatusTag" style="font-size: 0.8rem; background: var(--amber-primary); color: #fff; padding: 0.2rem 0.5rem; border-radius: 4px;">상태: 유출 경고</span>
+                    </div>
+                    <div style="font-size: 0.88rem; color: var(--text-sub); line-height: 1.5;">
+                        • 주요 기능: 원자재, 단순 노동력 공급, 농촌 공동체<br>
+                        • 현재 인구 유출율: <strong id="periphOutText" style="color: #dc2626;">- 4.2 % / 년</strong><br>
+                        • 지역 격차 지수: <strong id="gapIndexText" style="color: #dc2626;">78.5 pt (심화)</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 시뮬레이터 슬라이더 그룹 -->
+            <div class="sim-slider-group">
+                <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">
+                    ⚙️ 지역개발 정책 변수 조절기 (Policy Control Simulation)
+                </div>
+                
+                <div class="slider-row">
+                    <label for="backwashRange">역류/흡수 효과 (Backwash):</label>
+                    <input type="range" id="backwashRange" min="10" max="90" value="70" oninput="runFriedmannSim()">
+                    <span id="backwashValText" style="font-weight: 700; min-width: 50px;">70 %</span>
+                </div>
+
+                <div class="slider-row">
+                    <label for="spreadRange">파급/확산 효과 (Spread):</label>
+                    <input type="range" id="spreadRange" min="10" max="90" value="30" oninput="runFriedmannSim()">
+                    <span id="spreadValText" style="font-weight: 700; min-width: 50px;">30 %</span>
+                </div>
+
+                <div id="simFeedbackBox" style="margin-top: 1rem; padding: 0.8rem; background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.88rem; color: var(--text-main);">
+                    <!-- JS 출력 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 섹션 4: 15주차 로드맵 요약표 -->
+        <div class="card" id="sec-curriculum">
+            <div class="card-header">
+                <div class="card-title">🗓️ 4. 15주차 커리큘럼 및 평가 체계 요약</div>
+                <a href="index.html" style="font-size: 0.85rem; color: var(--rose-primary); font-weight: 700; text-decoration: none;">전체 로드맵 보러가기 →</a>
+            </div>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left;">
+                    <thead>
+                        <tr style="background: #f8fafc; border-bottom: 2px solid var(--border-color);">
+                            <th style="padding: 0.8rem; width: 15%;">구분</th>
+                            <th style="padding: 0.8rem; width: 45%;">주요 내용 및 평가</th>
+                            <th style="padding: 0.8rem; width: 40%;">핵심 연구 방법론 / 키워드</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 0.8rem; font-weight: 700; color: var(--rose-primary);">1~7 주차</td>
+                            <td style="padding: 0.8rem;">지역사회구조 기초 이론, 사회적 자본, RIS, 인구소멸</td>
+                            <td style="padding: 0.8rem; color: var(--text-sub);">John Friedmann, 입지상수(LQ), 지방소멸위험지수</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color); background: var(--amber-soft);">
+                            <td style="padding: 0.8rem; font-weight: 700; color: var(--amber-primary);">8 주차 (중간)</td>
+                            <td style="padding: 0.8rem; font-weight: 700;">중간고사 평가 (20%)</td>
+                            <td style="padding: 0.8rem; color: var(--text-sub);">1~7주차 범위 서술형 및 정책 논술 검정</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 0.8rem; font-weight: 700; color: var(--purple-primary);">9~12 주차</td>
+                            <td style="padding: 0.8rem;">로컬브랜딩, 공간GIS, 빅데이터 분석, 정책 성과평가</td>
+                            <td style="padding: 0.8rem; color: var(--text-sub);">Moran's I 핫스팟, 이중차분법(DID), PSM 매칭</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color); background: var(--purple-soft);">
+                            <td style="padding: 0.8rem; font-weight: 700; color: var(--purple-primary);">13~14 주차</td>
+                            <td style="padding: 0.8rem; font-weight: 700;">학술 논문 세미나 및 학생 연구 발표 (60%)</td>
+                            <td style="padding: 0.8rem; color: var(--text-sub);">최신 KCI/SSCI 논문 리뷰 & 연구논문 피어 리뷰</td>
+                        </tr>
+                        <tr style="background: var(--amber-soft);">
+                            <td style="padding: 0.8rem; font-weight: 700; color: var(--amber-primary);">15 주차 (기말)</td>
+                            <td style="padding: 0.8rem; font-weight: 700;">기말고사 평가 (20%)</td>
+                            <td style="padding: 0.8rem; color: var(--text-sub);">종합 지식 검정 및 최종 학점 부여</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 섹션 5: 토론 및 연구 과제 -->
+        <div class="card" id="sec-discussion" style="border-left: 5px solid var(--purple-primary);">
+            <div class="card-header">
+                <div class="card-title" style="color: var(--purple-primary);">
+                    💬 5. 1주차 릴레이 생각해볼 문제 & 세미나 토론
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div style="background: #faf5ff; border: 1px solid rgba(126,34,206,0.15); padding: 1.1rem; border-radius: 10px;">
+                    <div style="font-weight: 700; color: var(--purple-primary); font-size: 0.95rem;">Q1. 수도권 일극 집중과 지방소멸의 원인 분해</div>
+                    <p style="font-size: 0.88rem; color: var(--text-sub); margin-top: 0.4rem; line-height: 1.5;">
+                        한국의 지방소멸 현상은 단순한 인구 자연감소 때문인가, 아니면 청년층의 경제·문화적 일극 집적으로 인한 공간적 역류효과(Backwash Effect) 때문인가?
+                    </p>
+                </div>
+                <div style="background: #faf5ff; border: 1px solid rgba(126,34,206,0.15); padding: 1.1rem; border-radius: 10px;">
+                    <div style="font-weight: 700; color: var(--purple-primary); font-size: 0.95rem;">Q2. 새마을운동 성공 사례에서의 사회적 자본 역할</div>
+                    <p style="font-size: 0.88rem; color: var(--text-sub); margin-top: 0.4rem; line-height: 1.5;">
+                        1970년대 한국 새마을운동의 이락(마을) 단위 공동체 사업은 결속형(Bonding) 사회적 자본과 리더십이 어떠한 경로로 공간 구조를 변혁시켰는가?
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 🧭 좌측 플로팅 바 (Floating Side Navigator) -->
+    <nav class="side-nav">
+        <div class="side-nav-title">🧭 빠른 목차 탐색</div>
+        <a href="#sec-overview" class="side-nav-item active" data-target="sec-overview">
+            <span class="side-icon">🏛️</span> 개요 & 4대 목표
+        </a>
+        <a href="#sec-4perspectives" class="side-nav-item" data-target="sec-4perspectives">
+            <span class="side-icon">🔬</span> 4대 분석 관점
+        </a>
+        <a href="#sec-friedmann" class="side-nav-item" data-target="sec-friedmann">
+            <span class="side-icon">🗺️</span> Friedmann 시뮬레이터
+        </a>
+        <a href="#sec-curriculum" class="side-nav-item" data-target="sec-curriculum">
+            <span class="side-icon">🗓️</span> 15주차 로드맵
+        </a>
+        <a href="#sec-discussion" class="side-nav-item" data-target="sec-discussion">
+            <span class="side-icon">💬</span> 1주차 토론 주제
+        </a>
+    </nav>
+
+    <footer>
+        영남대학교 대학원 새마을국제개발학과 | 박사 2기 지역사회구조연구 (0682-01) | 연구자 박문식
+    </footer>
+
+    <script>
+        // 4대 분석 관점 데이터
+        const perspectiveData = {
+            econ: {
+                title: "📈 경제적 관점 (Economic Perspective)",
+                desc: "지역사회를 재화와 서비스, 생산요소(자본, 노동, 기술)가 순환하는 경제적 공간으로 파악합니다.",
+                bullets: [
+                    "<strong>주요 분석 대상:</strong> 지역내총생산(GRDP), 입지상수(LQ), 산업 집적도 및 고용 창출 효과",
+                    "<strong>핵심 이론:</strong> 마샬의 집적이익(Agglomeration Economies), 슘페터의 혁신이론, 수출기반모형(Export-Base Model)",
+                    "<strong>정책적 시사점:</strong> 지역 특화 산업 육성, 앵커기업 유치, 지역경제 자립 기반 확충"
+                ]
+            },
+            social: {
+                title: "🤝 사회적 관점 (Social Perspective)",
+                desc: "지역 주민 간의 네트워크, 신뢰, 규범, 그리고 상호작용 구조에 주목합니다.",
+                bullets: [
+                    "<strong>주요 분석 대상:</strong> 결속형·교량형 사회적 자본(Social Capital), 주민참여율, 공동체 의식",
+                    "<strong>핵심 이론:</strong> 퍼트남(Putnam)의 신뢰 이론, 그라노베터(Granovetter)의 약한 연결의 힘(Weak Ties)",
+                    "<strong>정책적 시사점:</strong> 주민 주도 마을 만들기, 사회적 경제(협동조합, 마을기업) 생태계 조성"
+                ]
+            },
+            cultural: {
+                title: "🎨 문화적 관점 (Cultural Perspective)",
+                desc: "지역 고유의 역사, 장소성(Sense of Place), 아이덴티티 및 문화 자산을 분석합니다.",
+                bullets: [
+                    "<strong>주요 분석 대상:</strong> 로컬 브랜딩, 지역 정체성, 문화유산, 생활 양식 및 관계인구",
+                    "<strong>핵심 이론:</strong> 르페브르(Lefebvre)의 공간의 생산, 플로리다(Florida)의 창의계급론(Creative Class)",
+                    "<strong>정책적 시사점:</strong> 문화도시 지정, 로컬 크리에이터 육성, 고향사랑기부제 및 로컬 브랜딩"
+                ]
+            },
+            spatial: {
+                title: "🗺️ 공간적 관점 (Spatial Perspective)",
+                desc: "토지 이용, 인구의 지리적 배치, 교통 네트워크, 도시-농촌 간 연계 구조를 연구합니다.",
+                bullets: [
+                    "<strong>주요 분석 대상:</strong> 중심지-주변지 구조, 공간 자가상관(Moran's I), GIS 공간 빅데이터",
+                    "<strong>핵심 이론:</strong> 프리드만(Friedmann)의 Core-Periphery 모델, 크리스탈러(Christaller)의 중심지 이론",
+                    "<strong>정책적 시사점:</strong> 압축도시(Compact City), 도농 복합 거점 개발, 공간 복지 재배치"
+                ]
+            }
+        };
+
+        function switchPerspective(key, btnEl) {
+            const tabs = document.querySelectorAll('.p-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            btnEl.classList.add('active');
+
+            const data = perspectiveData[key];
+            const box = document.getElementById('pContentBox');
+            
+            let html = `
+                <div style="font-weight: 700; font-size: 1.1rem; color: var(--rose-primary); margin-bottom: 0.5rem;">${data.title}</div>
+                <div style="font-size: 0.93rem; color: var(--text-sub); margin-bottom: 1rem;">${data.desc}</div>
+                <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem;">
+            `;
+            data.bullets.forEach(b => {
+                html += `<li style="font-size: 0.9rem; color: var(--text-main);">🔹 ${b}</li>`;
+            });
+            html += `</ul>`;
+            box.innerHTML = html;
+        }
+
+        // Friedmann 공간 시뮬레이터 계산기
+        function runFriedmannSim() {
+            const backwash = parseInt(document.getElementById('backwashRange').value, 10);
+            const spread = parseInt(document.getElementById('spreadRange').value, 10);
+
+            document.getElementById('backwashValText').innerText = `${backwash} %`;
+            document.getElementById('spreadValText').innerText = `${spread} %`;
+
+            // 지표 계산
+            const coreCapital = 100 + (backwash * 0.5) - (spread * 0.2);
+            const periphOut = - (backwash * 0.08) + (spread * 0.05);
+            const gapIndex = 50 + (backwash * 0.6) - (spread * 0.5);
+
+            document.getElementById('coreCapitalText').innerText = `${coreCapital.toFixed(1)} %`;
+            document.getElementById('periphOutText').innerText = `${periphOut >= 0 ? '+' : ''}${periphOut.toFixed(1)} % / 년`;
+            document.getElementById('gapIndexText').innerText = `${gapIndex.toFixed(1)} pt`;
+
+            const feedback = document.getElementById('simFeedbackBox');
+            if (backwash > spread + 20) {
+                feedback.style.borderColor = '#dc2626';
+                feedback.innerHTML = `⚠️ <strong style="color:#dc2626;">역류/흡수 효과 우세 상태:</strong> 중심지 자본 집적도가 증가하는 반면 주변지 인구 유출이 심화되어 불균형 격차가 확대됩니다. (Friedmann의 초기 개발단계)`;
+            } else if (spread > backwash - 10) {
+                feedback.style.borderColor = '#047857';
+                feedback.innerHTML = `✅ <strong style="color:#047857;">파급/확산 효과 확산 상태:</strong> 중심지의 혁신과 기술이 주변지로 전이되어 균형 발전 모드로 진입합니다. (최종 성숙 단계)`;
+            } else {
+                feedback.style.borderColor = '#d97706';
+                feedback.innerHTML = `📌 <strong>과도기 상태:</strong> 자본 흡수와 기술 확산이 팽팽히 맞서며 정체 구간을 형성하고 있습니다.`;
+            }
+        }
+
+        // 스크롤 트래킹 IntersectionObserver
+        function initScrollTracking() {
+            const sectionIds = ['sec-overview', 'sec-4perspectives', 'sec-friedmann', 'sec-curriculum', 'sec-discussion'];
+            const navItems = document.querySelectorAll('.side-nav-item');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -60% 0px',
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const targetId = entry.target.getAttribute('id');
+                        navItems.forEach(item => {
+                            if (item.getAttribute('data-target') === targetId) {
+                                item.classList.add('active');
+                            } else {
+                                item.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sectionIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) observer.observe(el);
+            });
+        }
+
+        window.onload = function() {
+            switchPerspective('econ', document.querySelectorAll('.p-tab')[0]);
+            runFriedmannSim();
+            initScrollTracking();
+        };
+    </script>
+</body>
+</html>

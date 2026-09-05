@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지역사회구조연구 (0682-01) 교과목 포털 | 영남대학교 대학원</title>
+    <meta name="description" content="영남대학교 대학원 새마을국제개발학과 박사 2기 지역사회구조연구 교과목 포털 및 15주차 커리큘럼 아카이브">
+    
+    <style>
+        /* 프리젠테이션 (Presentation) 웹폰트 선언 */
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-3Light.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-4Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-6SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-7Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            
+            --rose-primary: #be123c;
+            --rose-hover: #9f1239;
+            --rose-soft: #fff1f2;
+            
+            --navy-primary: #1e3a8a;
+            --navy-soft: #eff6ff;
+            
+            --emerald-primary: #047857;
+            --emerald-soft: #ecfdf5;
+            
+            --amber-primary: #d97706;
+            --amber-soft: #fffbeb;
+            
+            --purple-primary: #7e22ce;
+            --purple-soft: #faf5ff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Presentation', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 2.5rem 1.5rem;
+            background-image: radial-gradient(#cbd5e1 0.75px, transparent 0.75px);
+            background-size: 24px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1080px;
+        }
+
+        /* 상단 바 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #ffffff;
+            color: var(--rose-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.55rem 1.1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--rose-primary);
+            color: #ffffff;
+        }
+
+        .canvas-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #ffffff;
+            color: var(--navy-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.55rem 1.1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+        }
+
+        .canvas-btn:hover {
+            background: var(--navy-primary);
+            color: #ffffff;
+        }
+
+        /* 헤더 스타일 */
+        header {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-left: 6px solid var(--rose-primary);
+            padding: 2rem 2.2rem;
+            border-radius: 14px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .badge-rose { background: var(--rose-soft); color: var(--rose-primary); border: 1px solid rgba(190,18,60,0.2); }
+        .badge-navy { background: var(--navy-soft); color: var(--navy-primary); border: 1px solid rgba(30,58,138,0.2); }
+
+        h1 {
+            font-size: 2.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            color: var(--text-sub);
+            line-height: 1.6;
+        }
+
+        /* 대시보드 카드리아웃 */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.6rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .goal-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .goal-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--text-sub);
+            line-height: 1.5;
+        }
+
+        .goal-icon {
+            color: var(--rose-primary);
+            font-weight: bold;
+        }
+
+        /* 평가 비율 차트 */
+        .eval-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin-top: auto;
+            padding-top: 1rem;
+        }
+
+        .eval-item {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 0.9rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .eval-val {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--rose-primary);
+        }
+
+        .eval-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        /* 15주차 로드맵 타임라인 */
+        .timeline-section {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.8rem 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            margin-bottom: 2rem;
+        }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+
+        .week-card {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.1rem 1.2rem;
+            background: #ffffff;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .week-card:hover {
+            border-color: var(--rose-primary);
+            box-shadow: 0 4px 12px rgba(190,18,60,0.08);
+            transform: translateY(-2px);
+        }
+
+        .week-card.active-week {
+            border: 2px solid var(--rose-primary);
+            background: var(--rose-soft);
+        }
+
+        .week-card.exam-week {
+            border: 1.5px dashed var(--amber-primary);
+            background: var(--amber-soft);
+        }
+
+        .week-card.presentation-week {
+            border: 1.5px dashed var(--purple-primary);
+            background: var(--purple-soft);
+        }
+
+        .week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+        }
+
+        .week-num {
+            font-size: 0.82rem;
+            font-weight: 800;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            background: var(--border-color);
+            color: var(--text-main);
+        }
+
+        .week-card.active-week .week-num {
+            background: var(--rose-primary);
+            color: #ffffff;
+        }
+
+        .week-title {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.45;
+            margin-bottom: 0.5rem;
+        }
+
+        .week-desc {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            line-height: 1.5;
+        }
+
+        .action-link {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--rose-primary);
+            margin-top: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            width: 100%;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- 상단 네비게이션 -->
+        <div class="top-nav">
+            <a href="../index.html" class="back-btn">
+                <span>←</span> 박사과정 메인 포털
+            </a>
+            <a href="https://canvas.yu.ac.kr/courses/34586" target="_blank" class="canvas-link canvas-btn">
+                🏛️ Canvas LMS 바로가기 ↗
+            </a>
+        </div>
+
+        <!-- 헤더 -->
+        <header>
+            <div class="badge-row">
+                <span class="badge badge-rose">🏛️ 영남대학교 대학원</span>
+                <span class="badge badge-navy">새마을국제개발학과 박사 2기</span>
+                <span class="badge badge-rose">과목코드: 0682-01</span>
+            </div>
+            <h1>🏘️ 지역사회구조연구 (Research in Community Structure)</h1>
+            <p class="subtitle">
+                지역사회의 형성과 변화과정을 경제적·사회적·문화적·공간적 관점에서 분석하고,<br>
+                지방소멸, 인구구조, 사회적 자본, RIS, 지역 거버넌스 및 지속가능한 발전을 연구하는 대학원 심화 교과목입니다.
+            </p>
+        </header>
+
+        <!-- 교과목 대시보드 3열 카드 -->
+        <div class="dashboard-grid">
+            
+            <!-- 카드 1: 교과목 목표 -->
+            <div class="card">
+                <div class="card-title" style="color: var(--rose-primary);">
+                    🎯 핵심 수업 목표 (Course Objectives)
+                </div>
+                <ul class="goal-list">
+                    <li>
+                        <span class="goal-icon">✓</span>
+                        <span>지역사회 구조와 변화과정을 다차원 이론으로 설명할 수 있다.</span>
+                    </li>
+                    <li>
+                        <span class="goal-icon">✓</span>
+                        <span>지역경제와 지역사회의 다양한 사회적 현안을 정량·정성 분석한다.</span>
+                    </li>
+                    <li>
+                        <span class="goal-icon">✓</span>
+                        <span>지방소멸, 고령화, 인구감소 등 시대적 핵심 문제를 종합 구명한다.</span>
+                    </li>
+                    <li>
+                        <span class="goal-icon">✓</span>
+                        <span>지역개발정책 및 지역혁신체계(RIS) 정책 실효성을 평가한다.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 카드 2: 학습 평가 및 강의 형태 -->
+            <div class="card">
+                <div class="card-title" style="color: var(--navy-primary);">
+                    ⚖️ 학습 평가 비율 및 진행 방식
+                </div>
+                <p style="font-size: 0.9rem; color: var(--text-sub); margin-bottom: 0.8rem; line-height: 1.5;">
+                    교수 강의, 최신 국내외 학술논문 세미나 발표/토론, 지역 개발 사례 대조 분석으로 진행됩니다.
+                </p>
+                <div class="eval-grid">
+                    <div class="eval-item">
+                        <div class="eval-val">20%</div>
+                        <div class="eval-label">중간시험</div>
+                    </div>
+                    <div class="eval-item">
+                        <div class="eval-val">20%</div>
+                        <div class="eval-label">기말시험</div>
+                    </div>
+                    <div class="eval-item" style="background: var(--rose-soft); border-color: rgba(190,18,60,0.2);">
+                        <div class="eval-val">60%</div>
+                        <div class="eval-label">발표 & 과제</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 카드 3: 주요 문헌 및 정보 -->
+            <div class="card">
+                <div class="card-title" style="color: var(--amber-primary);">
+                    📚 주교재 및 참고자료
+                </div>
+                <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 1rem; border-radius: 10px; margin-bottom: 0.8rem;">
+                    <div style="font-weight: 700; font-size: 1rem; color: var(--text-main);">John Friedmann</div>
+                    <div style="font-style: italic; font-size: 0.92rem; color: var(--rose-primary); font-weight: 600; margin-top: 0.2rem;">
+                        Regional Development Policy: A Case Study of Venezuela
+                    </div>
+                    <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.4rem;">
+                        중심지-주변지(Core-Periphery) 공간구조 및 지역 개발 정책의 고전 명저
+                    </div>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-sub);">
+                    👤 **담당연구자**: 박문식 (영남대 박사 2기)
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 15주차 로드맵 타임라인 섹션 -->
+        <div class="timeline-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--rose-primary);">
+                    🗓️ 15주차 종합 주별계획 (Curriculum Roadmap)
+                </h2>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">주차별 카드를 클릭하면 해당 강의 페이지로 이동합니다</span>
+            </div>
+
+            <div class="week-grid">
+                
+                <!-- 1주차 (Active) -->
+                <a href="lecture1.html" class="week-card active-week">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num">01 주차</span>
+                            <span style="font-size: 0.75rem; font-weight: 700; color: var(--rose-primary);">🚀 학습 페이지 열람</span>
+                        </div>
+                        <div class="week-title">강의소개 및 지역사회구조 연구의 이론과 접근방법</div>
+                        <div class="week-desc">지역사회구조의 4대 관점(경제·사회·문화·공간) 및 John Friedmann 공간이론 개관</div>
+                    </div>
+                    <div class="action-link">
+                        <span>1강 웹 강의안 & 시뮬레이터 보러가기</span>
+                        <span>→</span>
+                    </div>
+                </a>
+
+                <!-- 2주차 -->
+                <div class="week-card">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num">02 주차</span>
+                        </div>
+                        <div class="week-title">지역사회 구조와 사회적 자본 (Social Capital)</div>
+                        <div class="week-desc">결속형(Bonding) 및 교량형(Bridging) 사회적 자본, 지역 사회 네트워크 구조 분석</div>
+                    </div>
+                </div>
+
+                <!-- 3주차 -->
+                <div class="week-card">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num">03 주차</span>
+                        </div>
+                        <div class="week-title">지역경제 구조와 산업집적, 지역경쟁력</div>
+                        <div class="week-desc">입지상수(LQ), 집적이익(Agglomeration), 마샬-아로우-로머 외재성과 경쟁력</div>
+                    </div>
+                </div>
+
+                <!-- 4주차 -->
+                <div class="week-card">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num">04 주차</span>
+                        </div>
+                        <div class="week-title">인구감소, 지방소멸 및 지역 불균형 발전</div>
+                        <div class="week-desc">마스다 리포트, 지방소멸위험지수(KDI/지방행정연구원), 인구 이동 모형</div>
+                    </div>
+                </div>
+
+                <!-- 5주차 -->
+                <div class="week-card">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num">05 주차</span>
+                        </div>
+                        <div class="week-title">도시와 농촌의 공간구조 및 지역발전 전략</div>
+                        <div class="week-desc">도농복합지역 균형발전, 농촌 거점지 육성 및 공간 구조 Re-design</div>
+                    </div>
+                </div>
+
+                <!-- 6주차 -->
+                <div class="week-card">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num">06 주차</span>
+                        </div>
+                        <div class="week-title">지역혁신체계 (RIS)와 혁신클러스터 정책</div>
+                        <div class="week-desc">산학연계 네트워크, 지자체-대학 협력기반 지역혁신사업(RIS) 및 혁신 생태계</div>
+                    </div>
+                </div>
+
+                <!-- 7주차 -->
+                <div class="week-card">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num">07 주차</span>
+                        </div>
+                        <div class="week-title">사회적경제, 공동체경제 및 주민참여형 지역발전</div>
+                        <div class="week-desc">사회적기업, 협동조합, 마을기업 및 상하향식(Bottom-up) 거버넌스</div>
+                    </div>
+                </div>
+
+                <!-- 8주차 (중간고사) -->
+                <div class="week-card exam-week">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num" style="background: var(--amber-primary); color: #fff;">08 주차</span>
+                            <span style="font-size: 0.75rem; font-weight: 700; color: var(--amber-primary);">📝 평가 20%</span>
+                        </div>
+                        <div class="week-title">중간고사 (Midterm Examination)</div>
+                        <div class="week-desc">1~7주차 이론 및 지역사회구조 분석 논술 시험</div>
+                    </div>
+                </div>
+
+                <!-- 9주차 -->
+                <div class="week-card">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num">09 주차</span>
+                        </div>
+                        <div class="week-title">문화관광, 로컬브랜딩 및 지역 활성화 전략</div>
+                        <div class="week-desc">지역 고유 자산 기반 브랜딩, 관계인구 창출 및 로컬 크리에이터 생태계</div>
+                    </div>
+                </div>
+
+                <!-- 10주차 -->
+                <div class="week-card">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num">10 주차</span>
+                        </div>
+                        <div class="week-title">스마트시티, 디지털 전환 및 AI 기반 지역혁신</div>
+                        <div class="week-desc">지능형 도시 공간 관리, 지역 데이터 활용 및 스마트 리빙랩 사례</div>
+                    </div>
+                </div>
+
+                <!-- 11주차 -->
+                <div class="week-card">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num">11 주차</span>
+                        </div>
+                        <div class="week-title">공간통계, GIS 및 지역 빅데이터 분석방법</div>
+                        <div class="week-desc">Moran's I 공간 자가상관, LISA 핫스팟 분석 및 지역 빅데이터 시각화</div>
+                    </div>
+                </div>
+
+                <!-- 12주차 -->
+                <div class="week-card">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num">12 주차</span>
+                        </div>
+                        <div class="week-title">지역개발사업의 성과평가 및 정책효과 분석</div>
+                        <div class="week-desc">이중차분법(DID), 성향점수매칭(PSM)을 활용한 지역 정책 사업 평가</div>
+                    </div>
+                </div>
+
+                <!-- 13주차 (세미나) -->
+                <div class="week-card presentation-week">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num" style="background: var(--purple-primary); color: #fff;">13 주차</span>
+                            <span style="font-size: 0.75rem; font-weight: 700; color: var(--purple-primary);">🎤 발표/토론</span>
+                        </div>
+                        <div class="week-title">국내외 지역사회구조 연구 논문 세미나</div>
+                        <div class="week-desc">최신 SSCI / KCI 지역학 및 도시사회학 학술 논문 크리티컬 리뷰</div>
+                    </div>
+                </div>
+
+                <!-- 14주차 (발표) -->
+                <div class="week-card presentation-week">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num" style="background: var(--purple-primary); color: #fff;">14 주차</span>
+                            <span style="font-size: 0.75rem; font-weight: 700; color: var(--purple-primary);">🎤 과제 60%</span>
+                        </div>
+                        <div class="week-title">학생 연구논문 발표 및 종합토론</div>
+                        <div class="week-desc">개인별 지역사회구조 분석 피어 리뷰 및 최종 연구논문 발표</div>
+                    </div>
+                </div>
+
+                <!-- 15주차 (기말고사) -->
+                <div class="week-card exam-week">
+                    <div>
+                        <div class="week-header">
+                            <span class="week-num" style="background: var(--amber-primary); color: #fff;">15 주차</span>
+                            <span style="font-size: 0.75rem; font-weight: 700; color: var(--amber-primary);">📝 평가 20%</span>
+                        </div>
+                        <div class="week-title">기말고사 (Final Examination)</div>
+                        <div class="week-desc">전 범위 종합 문제 해결 및 정책 평가 논술 검정</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        영남대학교 대학원 새마을국제개발학과 | 박사 2기 지역사회구조연구 (0682-01) | 연구자 박문식
+    </footer>
+
+</body>
+</html>
