@@ -492,7 +492,7 @@
             <!-- 누적 통계 지표 카운터 4종 -->
             <div class="summary-grid" style="margin-bottom: 1.5rem;">
                 <div class="summary-card">
-                    <div class="name">총 누적 추출 횟수 (N_sim)</div>
+                    <div class="name">총 누적 추출 횟수 (N<sub>sim</sub>)</div>
                     <div class="val" id="accCountText" style="color: var(--purple-primary);">0 회</div>
                 </div>
                 <div class="summary-card">
@@ -608,7 +608,7 @@
                             <th>소득 X (만원)</th>
                             <th>소비 Y (만원)</th>
                             <th>OLS 예측값 Ŷ</th>
-                            <th>잔차 (e_i = Y - Ŷ)</th>
+                            <th>잔차 (e<sub>i</sub> = Y - Ŷ)</th>
                         </tr>
                     </thead>
                     <tbody id="dataTableBody">
@@ -667,7 +667,7 @@
             <!-- 요약 지표 카운터 4종 -->
             <div class="summary-grid" style="margin-bottom: 1.5rem;">
                 <div class="summary-card">
-                    <div class="name">총 누적 추출 횟수 (N_sim)</div>
+                    <div class="name">총 누적 추출 횟수 (N<sub>sim</sub>)</div>
                     <div class="val" id="clt20CountText" style="color: var(--amber-primary);">0 회</div>
                 </div>
                 <div class="summary-card">
@@ -876,7 +876,7 @@
                                             `소득 (X): ${raw.x} 만원`,
                                             `소비 (Y): ${raw.y} 만원`,
                                             `회귀 예측값 (Ŷ): ${raw.yHat} 만원`,
-                                            `잔차 (e_i): ${raw.res} 만원`
+                                            `잔차 (eᵢ): ${raw.res} 만원`
                                         ];
                                     }
                                     return `${context.dataset.label}: (${raw.x.toFixed(1)}, ${raw.y.toFixed(1)})`;
