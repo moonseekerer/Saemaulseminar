@@ -448,8 +448,14 @@
                 <span style="font-size: 0.8rem; color: var(--text-muted);">강의자료 22~24p 수록 내용</span>
             </div>
             
+            <div style="margin-bottom: 0.8rem;">
+                <span id="cltRatioBadge" style="display: inline-block; background: var(--purple-soft); color: var(--purple-primary); font-size: 0.85rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 6px; border: 1px solid #e9d5ff;">
+                    🎯 현재 설정된 1회 추출 비율: 30% 표본 (18개 가구 단위)
+                </span>
+            </div>
+
             <p style="font-size: 0.92rem; color: var(--text-sub); margin-bottom: 1.2rem; line-height: 1.6;">
-                반복 추출 버튼을 누를 때마다 무작위 표본추출이 실행되며 구한 기울기 추정치(β̂)가 <strong>누적으로 적재되어 히스토그램과 이론적 정규분포 곡선(Normal Curve)으로 실시간 수렴</strong>합니다.
+                반복 추출 버튼을 누를 때마다 위에서 설정한 비율의 무작위 표본추출이 실행되며 구한 기울기 추정치(β̂)가 <strong>누적으로 적재되어 히스토그램과 이론적 정규분포 곡선(Normal Curve)으로 실시간 수렴</strong>합니다.
             </p>
 
             <!-- 학술적 누적 조작 버튼 그룹 -->
@@ -659,6 +665,11 @@
             if (mainChart && mainChart.data.datasets[2]) {
                 mainChart.data.datasets[2].label = `선택된 ${sampleRatioPercent}% 무작위 표본`;
                 mainChart.update();
+            }
+
+            const cltBadge = document.getElementById('cltRatioBadge');
+            if (cltBadge) {
+                cltBadge.innerText = `🎯 현재 설정된 1회 추출 비율: ${sampleRatioPercent}% 표본 (${count}개 가구 단위)`;
             }
         }
 
