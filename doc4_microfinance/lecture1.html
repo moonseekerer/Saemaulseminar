@@ -397,13 +397,20 @@
                 <li><strong>무위험 자산(Risk-Free Asset, $R_f$):</strong> 원금 손실 위험이 제로(0)에 가까운 자산(예: 국채, 디폴트 위험이 없는 국가 발행 채권)으로, 모든 위험 자산의 수익률을 평가하는 기준점 역할을 수행함.</li>
             </ul>
 
-            <h3>2.4 포트폴리오 이론 (Portfolio Theory)과 분산 투자 원리</h3>
+            <h3>2.4 자본배분선(CAL)과 기울기 지배 원리 (Sharpe Ratio)</h3>
+            <p>무위험 자산($R_f$)이 존재할 때, 투자자는 $R_f$점과 위험자산(예: $A$점, $B$점)을 잇는 자본배분선(Capital Allocation Line) 상에서 포트폴리오를 조합합니다.</p>
+            <ul>
+                <li><strong>기울기의 경제적 의미:</strong> $R_f$와 위험자산 점($A$, $B$)을 잇는 직선의 기울기($\frac{E(R) - R_f}{\sigma}$)는 <strong>'단위 위험(Risk)당 얻는 위험 프리미엄(기대수익)'</strong>을 나타냅니다.</li>
+                <li><strong>기울기 극대화 선택:</strong> 동일한 $R_f$에서 출발할 때 $R_f$와 점 $A$, 점 $B$를 잇는 직선 중 <strong>기울기가 더 큰 선이 기울기가 작은 선을 경제적으로 완전히 지배(Dominate)</strong>합니다. 결과적으로 기울기가 상대적으로 작은 대안은 도태되고, 기울기가 가장 가파른 <strong>최적 접점 포트폴리오(기울기가 가장 큰 선)만 남게 됩니다.</strong></li>
+            </ul>
+
+            <h3>2.5 포트폴리오 이론 (Portfolio Theory)과 분산 투자 원리</h3>
             <p>개별 자산의 위험을 관리하기 위한 핵심 금융 이론으로 <strong>"계란을 한 바구니에 담지 마라"</strong>는 정설에 근거합니다.</p>
             <ul>
                 <li><strong>리스크 관리:</strong> 단일 자산에 올인하는 경우 발행 주체의 부도나 시장 변동성에 노출되므로, 상관관계가 낮은 여러 자산에 분산 투자함으로써 동일한 기대수익 수준에서 포트폴리오 전체의 비체계적 위험을 감소시킴.</li>
             </ul>
 
-            <h3>2.5 인적 자본 투자와 기회(Opportunity) 창출의 경제학</h3>
+            <h3>2.6 인적 자본 투자와 기회(Opportunity) 창출의 경제학</h3>
             <p>공부와 인적 자본 투자는 단순한 결과 획득을 넘어 <strong>'기회(Opportunity)의 유무'</strong>를 결정짓는 핵심 기제입니다.</p>
             <ul>
                 <li><strong>기회 창출의 기제:</strong> 초중고 공부가 특정 대학 입학이나 대기업 취업을 100% 보장하지는 않더라도, 공부라는 인적 자본 투자를 집행함으로써 비로소 미래의 기회가 생겨남.</li>
@@ -422,7 +429,8 @@
                     <p style="margin-top:0.4rem;"><strong>· 투자의 목적:</strong> 지금 내가 가진 자원(시간·노력·자본)을 투입함으로써 미래의 더 큰 가치(Value)를 획득함.</p>
                     <p style="margin-top:0.4rem;"><strong>· 투자의 2대 축:</strong> Expected 수익(Y축)과 Risk(X축)의 관계 분석.</p>
                     <p style="margin-top:0.4rem;"><strong>· 리스크-기대수익 비례 법칙:</strong> 높은 기대수익을 얻기 위해서는 그에 상응하는 리스크를 감수해야 함.</p>
-                    <p style="margin-top:0.4rem;"><strong>· 무위험 자산($R_f$) 및 포트폴리오:</strong> 리스크가 없는 기준 자산($R_f$)과 위험 분산을 위한 포트폴리오 구성을 강조함.</p>
+                    <p style="margin-top:0.4rem;"><strong>· 무위험 자산($R_f$) 및 기울기 극대화:</strong> $R_f$와 $A$, $B$점을 잇는 직선 중 단위 위험당 기대수익(기울기)이 더 큰 선택지만 살아남음.</p>
+                    <p style="margin-top:0.4rem;"><strong>· 포트폴리오 분산투자:</strong> 계란을 한 바구니에 담지 않는 리스크 관리 강조.</p>
                     <p style="margin-top:0.4rem;"><strong>· 기회 창출 메커니즘:</strong> 인적 자본 투자는 100% 결과를 보장받아서가 아니라, 하지 않으면 기회가 소멸되고 함으로써 기회가 생기기 때문에 집행함.</p>
 
                     <h4 style="font-size:0.98rem; color:var(--primary); margin-top:1rem; margin-bottom:0.4rem; border-bottom:1px solid #fef08a; padding-bottom:0.2rem;">💬 [현장 언급 사례 및 에피소드 (교수 현장 발언 & 원문)]</h4>
@@ -438,8 +446,13 @@
                     </details>
 
                     <details class="sub-toggle">
-                        <summary>📌 무위험 자산(Risk Free, Rf)과 포트폴리오 (현장 발언 보기)</summary>
-                        <blockquote>"Risk free ($R_f$)는 무위험 자산을 뜻합니다.<br>포트폴리오 이론의 원칙은 계란을 한 바구니에 담지 마라는 것입니다."</blockquote>
+                        <summary>📌 무위험 자산(Rf)과 점 A, B 연결 시 기울기 극대화 원리 (현장 발언 보기)</summary>
+                        <blockquote>"Risk free ($R_f$)와 $A$점, $B$점을 이었을 때 기울기가 큰 것만 남습니다.<br>기울기가 크다는 것은 동일한 리스크당 더 높은 기대수익을 얻을 수 있다는 뜻이므로, 기울기가 작은 선택지는 지배당해 사라지고 기울기가 가장 큰 선택지만 남게 됩니다."</blockquote>
+                    </details>
+
+                    <details class="sub-toggle">
+                        <summary>📌 포트폴리오 원칙 (현장 발언 보기)</summary>
+                        <blockquote>"포트폴리오 이론의 원칙은 간단합니다. 계란을 한 바구니에 담지 마라는 것입니다."</blockquote>
                     </details>
 
                     <details class="sub-toggle">
