@@ -397,11 +397,19 @@
                 <li><strong>무위험 자산(Risk-Free Asset, $R_f$):</strong> 원금 손실 위험이 제로(0)에 가까운 자산(예: 국채, 디폴트 위험이 없는 국가 발행 채권)으로, 모든 위험 자산의 수익률을 평가하는 기준점 역할을 수행함.</li>
             </ul>
 
-            <h3>2.4 자본배분선(CAL)과 기울기 지배 원리 (Sharpe Ratio)</h3>
-            <p>무위험 자산($R_f$)이 존재할 때, 투자자는 $R_f$점과 위험자산(예: $A$점, $B$점)을 잇는 자본배분선(Capital Allocation Line) 상에서 포트폴리오를 조합합니다.</p>
+            <h3>2.4 자본배분선(CAL)과 공통 시장선 방정식 ($y = a + bx$)</h3>
+            <p>무위험 자산($R_f$)이 존재할 때, $R_f$에서 효율적 프론티어 곡선으로 그은 접선 중 <strong>기울기가 가장 높은 그래프는 시장의 모든 투자자가 공유하는 최적의 공통 자본배분선(Capital Market Line)</strong>이 됩니다.</p>
             <ul>
-                <li><strong>기울기의 경제적 의미:</strong> $R_f$와 위험자산 점($A$, $B$)을 잇는 직선의 기울기($\frac{E(R) - R_f}{\sigma}$)는 <strong>'단위 위험(Risk)당 얻는 위험 프리미엄(기대수익)'</strong>을 나타냅니다.</li>
-                <li><strong>기울기 극대화 선택:</strong> 동일한 $R_f$에서 출발할 때 $R_f$와 점 $A$, 점 $B$를 잇는 직선 중 <strong>기울기가 더 큰 선이 기울기가 작은 선을 경제적으로 완전히 지배(Dominate)</strong>합니다. 결과적으로 기울기가 상대적으로 작은 대안은 도태되고, 기울기가 가장 가파른 <strong>최적 접점 포트폴리오(기울기가 가장 큰 선)만 남게 됩니다.</strong></li>
+                <li><strong>일차방정식 구조 ($y = a + bx$):</strong>
+                    <ul>
+                        <li><strong>$Y$절편 ($a$):</strong> 무위험 자산 수익률 ($R_f$)</li>
+                        <li><strong>기울기 ($b$):</strong> 위험 1단위 증가에 따른 수익률 증가율 프리미엄 ($b = \frac{R_b - R_f}{\text{Risk}}$)</li>
+                    </ul>
+                </li>
+                <li><strong>자산 $i$의 기대수익률 공식:</strong>
+                    $$E(R_i) = R_f + (R_b - R_f) \cdot \text{Risk}_i$$
+                    기본 무위험 수익률($R_f$)에 감수하는 위험(Risk) 크기와 위험 1단위당 보상 비율($(R_b - R_f)$)을 곱한 위험 프리미엄을 더하여 결정됩니다.</li>
+                <li><strong>기울기 극대화 선택:</strong> 동일한 $R_f$에서 출발할 때 점 $A$, 점 $B$ 중 <strong>기울기가 가장 가파른 접선만 남고, 나머지 열등한 기울기의 선들은 시장에서 지배(Dominate)되어 소멸</strong>합니다.</li>
             </ul>
 
             <h3>2.5 포트폴리오 이론 (Portfolio Theory)과 분산 투자 원리</h3>
@@ -446,8 +454,8 @@
                     </details>
 
                     <details class="sub-toggle">
-                        <summary>📌 무위험 자산(Rf)과 점 A, B 연결 시 기울기 극대화 원리 (현장 발언 보기)</summary>
-                        <blockquote>"Risk free ($R_f$)와 $A$점, $B$점을 이었을 때 기울기가 큰 것만 남습니다.<br>기울기가 크다는 것은 동일한 리스크당 더 높은 기대수익을 얻을 수 있다는 뜻이므로, 기울기가 작은 선택지는 지배당해 사라지고 기울기가 가장 큰 선택지만 남게 됩니다."</blockquote>
+                        <summary>📌 Rf와 점 연결 시 기울기 극대화 및 공통 그래프 방정식 ($y = a + bx$) (현장 발언 보기)</summary>
+                        <blockquote>"Risk free ($R_f$)와 점 하나를 이었을 때 기울기가 가장 높은 그래프는 시장의 모두가 공유하는 선이 됩니다.<br><br>일차방정식 $y = a + bx$에서 절편 $a$는 $R_f$가 되고, 기울기 $b$는 위험 1단위 증가율당 수익률 증가율($(R_b - R_f)$)이 됩니다.<br>따라서 자산의 기대수익률 공식은 $E(R_i) = R_f + (R_b - R_f) \cdot \text{Risk}$가 되는 것입니다."</blockquote>
                     </details>
 
                     <details class="sub-toggle">
