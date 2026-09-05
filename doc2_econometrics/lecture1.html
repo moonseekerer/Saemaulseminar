@@ -7,7 +7,6 @@
     <meta name="description" content="소득(X)과 소비(Y) 60개 관측치 데이터 기반 인터랙티브 OLS 회귀분석 및 표본추출 시뮬레이터">
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.0.1"></script>
     
     <style>
         /* 프리젠테이션 (Presentation) 웹폰트 선언 */
@@ -33,6 +32,8 @@
             
             --amber-primary: #d97706;
             --amber-soft: #fffbeb;
+            --purple-primary: #7e22ce;
+            --purple-soft: #faf5ff;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -197,23 +198,29 @@
             background: linear-gradient(135deg, var(--navy-primary), var(--navy-hover));
             color: #ffffff;
             border: none;
-            padding: 0.85rem 1.2rem;
+            padding: 0.75rem 1rem;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             width: 100%;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(30,58,138,0.2);
+            box-shadow: 0 2px 4px rgba(30,58,138,0.15);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
 
         .sim-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(30,58,138,0.3);
+            box-shadow: 0 4px 8px rgba(30,58,138,0.25);
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
         }
 
         .reset-btn {
@@ -258,11 +265,6 @@
             border-color: var(--navy-primary);
         }
 
-        .toggle-icon {
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
-        }
-
         .toggle-content {
             display: none;
             background: #ffffff;
@@ -276,7 +278,7 @@
 
         .summary-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
@@ -409,8 +411,8 @@
                     <div class="card-header">
                         <div class="card-title">🎲 30% 표본추출 시뮬레이터</div>
                     </div>
-                    <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 1rem;">
-                        60개 전체 관측치 중 18개(30%)를 무작위로 추출하여 표본 회귀선(SRF)의 **표본오차(Sampling Error)**를 시뮬레이션합니다.
+                    <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 0.8rem;">
+                        60개 전체 관측치 중 18개(30%)를 무작위로 추출하여 표본 회귀선(SRF)의 **표본오차**를 시뮬레이션합니다.
                     </p>
                     <button class="sim-btn" onclick="runSamplingSimulation()">
                         🎲 30% 무작위 표본추출 실행
@@ -425,8 +427,66 @@
             </div>
         </div>
 
-        <!-- 📊 OLS 통계 분석 요약표 토글 영역 (NEW) -->
-        <div style="margin-top: 2rem;">
+        <!-- 🔔 NEW: β̂ 계수 누적 정규분포 수렴 시뮬레이터 섹션 -->
+        <div class="card" style="margin-bottom: 2rem; border-left: 5px solid var(--purple-primary);">
+            <div class="card-header">
+                <div class="card-title" style="color: var(--purple-primary);">
+                    🎲 β̂(b) 계수 누적 표본추출 & 정규분포 수렴 시뮬레이터 (CLT 시각화)
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">강의자료 22~24p 수록 내용</span>
+            </div>
+            
+            <p style="font-size: 0.92rem; color: var(--text-sub); margin-bottom: 1.2rem; line-height: 1.6;">
+                버튼을 누를 때마다 30% 무작위 표본추출이 실행되며 구한 기울기 추정치($\hat{\beta}$)가 <strong>누적으로 계속 쌓여 히스토그램과 이론적 정규분포 곡선(빨간 벨 커브)으로 실시간 수렴</strong>합니다.
+            </p>
+
+            <!-- 누적 조작 버튼 그룹 -->
+            <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                <button class="sim-btn" style="flex: 1; background: var(--purple-primary);" onclick="accumulateSamples(1)">
+                    ➕ 1회 누적 추가
+                </button>
+                <button class="sim-btn" style="flex: 1; background: var(--navy-primary);" onclick="accumulateSamples(10)">
+                    🚀 10회 연쇄 추가
+                </button>
+                <button class="sim-btn" style="flex: 1; background: var(--emerald-primary);" onclick="accumulateSamples(50)">
+                    ⚡ 50회 폭풍 추가
+                </button>
+                <button class="sim-btn" style="flex: 1; background: #dc2626;" id="autoPlayBtn" onclick="toggleAutoPlay()">
+                    ▶️ 자동 지속 연쇄 실행
+                </button>
+                <button class="reset-btn" style="width: auto; padding: 0 1.2rem;" onclick="resetAccSamples()">
+                    🔄 누적 초기화
+                </button>
+            </div>
+
+            <!-- 누적 통계 지표 카운터 4종 -->
+            <div class="summary-grid" style="margin-bottom: 1.5rem;">
+                <div class="summary-card">
+                    <div class="name">총 누적 추출 횟수 (N_sim)</div>
+                    <div class="val" id="accCountText" style="color: var(--purple-primary);">0 회</div>
+                </div>
+                <div class="summary-card">
+                    <div class="name">누적 β̂(b) 평균 (목표: 0.60)</div>
+                    <div class="val" id="accMeanText" style="color: var(--emerald-primary);">-</div>
+                </div>
+                <div class="summary-card">
+                    <div class="name">누적 β̂ 표준편차 (Std Dev)</div>
+                    <div class="val" id="accStdText">-</div>
+                </div>
+                <div class="summary-card">
+                    <div class="name">왜도 (Skewness, 목표: 0)</div>
+                    <div class="val" id="accSkewText">-</div>
+                </div>
+            </div>
+
+            <!-- 히스토그램 및 정규분포 벨 커브 차트 용기 -->
+            <div class="chart-wrapper" style="height: 380px;">
+                <canvas id="accHistogramChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 📊 OLS 통계 분석 요약표 토글 영역 -->
+        <div style="margin-top: 1rem;">
             <button class="toggle-btn" onclick="toggleSummaryTable(this)">
                 <span>📊 OLS 회귀분석 통계 요약표 (Regression Output Table)</span>
                 <span class="toggle-icon" id="toggleIcon">▼</span>
@@ -457,7 +517,7 @@
                     </div>
                     <div class="summary-card">
                         <div class="name">F-통계량 (F-statistic)</div>
-                        <div class="val" style="color: #7e22ce;">554.01 <span style="font-size: 0.75rem; font-weight: normal; color: var(--text-muted);">(p < 0.0001)</span></div>
+                        <div class="val" style="color: var(--purple-primary);">554.01 <span style="font-size: 0.75rem; font-weight: normal; color: var(--text-muted);">(p < 0.0001)</span></div>
                     </div>
                 </div>
 
@@ -565,13 +625,17 @@
         }
 
         const popOLS = calculateOLS(fullDataset);
-        let chartInstance = null;
+        let mainChart = null;
+        let accChart = null;
 
-        // 차트 초기화 함수
-        function initChart() {
+        // 누적 저장소
+        let accumulatedBetas = [];
+        let autoPlayTimer = null;
+
+        // 메인 산점도 차트 초기화
+        function initMainChart() {
             const ctx = document.getElementById('mainScatterChart').getContext('2d');
             
-            // 데이터 포인트 포맷팅
             const scatterData = fullDataset.map(d => ({
                 x: d.x,
                 y: d.y,
@@ -585,7 +649,7 @@
                 { x: 270, y: popOLS.alpha + popOLS.beta * 270 }
             ];
 
-            chartInstance = new Chart(ctx, {
+            mainChart = new Chart(ctx, {
                 type: 'scatter',
                 data: {
                     datasets: [
@@ -654,84 +718,212 @@
                                 }
                             }
                         },
-                        legend: {
-                            labels: { font: { family: 'Presentation', size: 12, weight: '600' } }
-                        }
+                        legend: { labels: { font: { family: 'Presentation', size: 12, weight: '600' } } }
                     },
                     scales: {
-                        x: {
-                            title: { display: true, text: '가구 소득 X (만원)', font: { family: 'Presentation', size: 13, weight: 'bold' } },
-                            min: 60,
-                            max: 280,
-                            grid: { color: '#e2e8f0' }
-                        },
-                        y: {
-                            title: { display: true, text: '가구 소비 Y (만원)', font: { family: 'Presentation', size: 13, weight: 'bold' } },
-                            min: 40,
-                            max: 200,
-                            grid: { color: '#e2e8f0' }
-                        }
+                        x: { title: { display: true, text: '가구 소득 X (만원)', font: { family: 'Presentation', size: 13, weight: 'bold' } }, min: 60, max: 280, grid: { color: '#e2e8f0' } },
+                        y: { title: { display: true, text: '가구 소비 Y (만원)', font: { family: 'Presentation', size: 13, weight: 'bold' } }, min: 40, max: 200, grid: { color: '#e2e8f0' } }
                     }
                 }
             });
         }
 
-        // 표본추출 시뮬레이션 실행
-        function runSamplingSimulation() {
-            const sampleSize = 18; // 30% of 60
+        // 누적 히스토그램 및 벨 커브 차트 초기화
+        function initAccChart() {
+            const ctx = document.getElementById('accHistogramChart').getContext('2d');
+            
+            accChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: '누적 추출된 β̂ 히스토그램 빈도',
+                            data: [],
+                            backgroundColor: 'rgba(126, 34, 206, 0.65)',
+                            borderColor: '#7e22ce',
+                            borderWidth: 1.5,
+                            barPercentage: 0.95,
+                            categoryPercentage: 1.0
+                        },
+                        {
+                            label: '이론적 정규분포 벨 커브 N(μ, σ²)',
+                            data: [],
+                            type: 'line',
+                            borderColor: '#dc2626',
+                            borderWidth: 3,
+                            pointRadius: 0,
+                            fill: false,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) { return `${ctx.dataset.label}: ${ctx.raw.toFixed(2)}`; }
+                            }
+                        },
+                        legend: { labels: { font: { family: 'Presentation', size: 12, weight: '600' } } }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: '추출된 기울기 계수 β̂(b)', font: { family: 'Presentation', size: 13, weight: 'bold' } }, grid: { color: '#e2e8f0' } },
+                        y: { title: { display: true, text: '빈도 수 (Frequency)', font: { family: 'Presentation', size: 13, weight: 'bold' } }, min: 0, grid: { color: '#e2e8f0' } }
+                    }
+                }
+            });
+        }
+
+        // 단일 무작위 표본추출 1회 실행
+        function drawOneSample() {
+            const sampleSize = 18;
             const shuffled = [...fullDataset].sort(() => 0.5 - Math.random());
             const sampledData = shuffled.slice(0, sampleSize);
+            const res = calculateOLS(sampledData);
+            return { sampledData, res };
+        }
 
-            const sampleOLS = calculateOLS(sampledData);
+        // 단일 표본 시뮬레이션 (상단 카드)
+        function runSamplingSimulation() {
+            const { sampledData, res } = drawOneSample();
+            accumulatedBetas.push(res.beta);
 
-            // 표본 scatter 데이터
             const sampledFormatted = sampledData.map(d => ({
-                x: d.x,
-                y: d.y,
-                id: d.id,
-                yHat: (sampleOLS.alpha + sampleOLS.beta * d.x).toFixed(2),
-                res: (d.y - (sampleOLS.alpha + sampleOLS.beta * d.x)).toFixed(2)
+                x: d.x, y: d.y, id: d.id,
+                yHat: (res.alpha + res.beta * d.x).toFixed(2),
+                res: (d.y - (res.alpha + res.beta * d.x)).toFixed(2)
             }));
 
-            // 표본 회귀선 데이터
             const sampleLineData = [
-                { x: 70, y: sampleOLS.alpha + sampleOLS.beta * 70 },
-                { x: 270, y: sampleOLS.alpha + sampleOLS.beta * 270 }
+                { x: 70, y: res.alpha + res.beta * 70 },
+                { x: 270, y: res.alpha + res.beta * 270 }
             ];
 
-            chartInstance.data.datasets[2].data = sampledFormatted;
-            chartInstance.data.datasets[3].data = sampleLineData;
-            chartInstance.update();
+            mainChart.data.datasets[2].data = sampledFormatted;
+            mainChart.data.datasets[3].data = sampleLineData;
+            mainChart.update();
 
-            // 결과 박스 업데이트
             document.getElementById('sampleResultBox').style.display = 'block';
             document.getElementById('sampleEqText').innerText = 
-                `Ŷ = ${sampleOLS.alpha.toFixed(2)} + ${sampleOLS.beta.toFixed(2)} · X (기울기 차이: ${(sampleOLS.beta - popOLS.beta).toFixed(3)})`;
+                `Ŷ = ${res.alpha.toFixed(2)} + ${res.beta.toFixed(2)} · X (기울기 차이: ${(res.beta - popOLS.beta).toFixed(3)})`;
+
+            updateAccumulatedUI();
+        }
+
+        // 누적 표본추출 n회 실행
+        function accumulateSamples(count) {
+            for (let i = 0; i < count; i++) {
+                const { res } = drawOneSample();
+                accumulatedBetas.push(res.beta);
+            }
+            updateAccumulatedUI();
+        }
+
+        // 누적 UI 및 차트 업데이트
+        function updateAccumulatedUI() {
+            const n = accumulatedBetas.length;
+            if (n === 0) return;
+
+            // 평균, 표준편차, 왜도 계산
+            const mean = accumulatedBetas.reduce((a, b) => a + b, 0) / n;
+            const variance = accumulatedBetas.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / (n > 1 ? n - 1 : 1);
+            const stdDev = Math.sqrt(variance);
+            const skewness = (accumulatedBetas.reduce((a, b) => a + Math.pow(b - mean, 3), 0) / n) / Math.pow(stdDev || 1, 3);
+
+            document.getElementById('accCountText').innerText = `${n} 회`;
+            document.getElementById('accMeanText').innerText = `${mean.toFixed(4)}`;
+            document.getElementById('accStdText').innerText = `${stdDev.toFixed(4)}`;
+            document.getElementById('accSkewText').innerText = `${skewness.toFixed(3)}`;
+
+            // 히스토그램 빈(Bin) 생성 (범위: 0.44 ~ 0.76, 16개 구간)
+            const minBin = 0.44;
+            const maxBin = 0.76;
+            const numBins = 16;
+            const binWidth = (maxBin - minBin) / numBins;
+
+            const binCounts = new Array(numBins).fill(0);
+            const binLabels = [];
+
+            for (let i = 0; i < numBins; i++) {
+                const binCenter = minBin + (i + 0.5) * binWidth;
+                binLabels.push(binCenter.toFixed(3));
+            }
+
+            accumulatedBetas.forEach(val => {
+                let idx = Math.floor((val - minBin) / binWidth);
+                if (idx < 0) idx = 0;
+                if (idx >= numBins) idx = numBins - 1;
+                binCounts[idx]++;
+            });
+
+            // 이론적 정규분포 Bell Curve 높이 계산
+            // 높이 = n * binWidth * PDF(x; mean, stdDev)
+            const bellCurve = binLabels.map(labelStr => {
+                const x = parseFloat(labelStr);
+                if (stdDev === 0) return 0;
+                const pdf = (1 / (stdDev * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((x - mean) / stdDev, 2));
+                return pdf * n * binWidth;
+            });
+
+            accChart.data.labels = binLabels;
+            accChart.data.datasets[0].data = binCounts;
+            accChart.data.datasets[1].data = bellCurve;
+            accChart.update();
+        }
+
+        // 연속 자동 실행 토글
+        function toggleAutoPlay() {
+            const btn = document.getElementById('autoPlayBtn');
+            if (autoPlayTimer) {
+                clearInterval(autoPlayTimer);
+                autoPlayTimer = null;
+                btn.innerText = '▶️ 자동 지속 연쇄 실행';
+                btn.style.background = '#dc2626';
+            } else {
+                btn.innerText = '⏸️ 연쇄 실행 일시정지';
+                btn.style.background = '#047857';
+                autoPlayTimer = setInterval(() => {
+                    accumulateSamples(5);
+                }, 100);
+            }
+        }
+
+        // 누적 데이터 초기화
+        function resetAccSamples() {
+            if (autoPlayTimer) toggleAutoPlay();
+            accumulatedBetas = [];
+            document.getElementById('accCountText').innerText = '0 회';
+            document.getElementById('accMeanText').innerText = '-';
+            document.getElementById('accStdText').innerText = '-';
+            document.getElementById('accSkewText').innerText = '-';
+            accChart.data.labels = [];
+            accChart.data.datasets[0].data = [];
+            accChart.data.datasets[1].data = [];
+            accChart.update();
         }
 
         function resetSimulation() {
-            chartInstance.data.datasets[2].data = [];
-            chartInstance.data.datasets[3].data = [];
-            chartInstance.update();
+            mainChart.data.datasets[2].data = [];
+            mainChart.data.datasets[3].data = [];
+            mainChart.update();
             document.getElementById('sampleResultBox').style.display = 'none';
         }
 
-        // 통계 요약표 토글 함수
         function toggleSummaryTable(btn) {
             const content = document.getElementById('toggleContent');
             const icon = document.getElementById('toggleIcon');
             if (content.style.display === 'block') {
                 content.style.display = 'none';
                 icon.innerText = '▼';
-                btn.style.borderRadius = '12px';
             } else {
                 content.style.display = 'block';
                 icon.innerText = '▲';
-                btn.style.borderRadius = '12px 12px 0 0';
             }
         }
 
-        // 테이블 동적 생성
         function renderTable() {
             const tbody = document.getElementById('dataTableBody');
             tbody.innerHTML = '';
@@ -751,7 +943,8 @@
         }
 
         window.onload = function() {
-            initChart();
+            initMainChart();
+            initAccChart();
             renderTable();
         };
     </script>
