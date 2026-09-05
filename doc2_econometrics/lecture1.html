@@ -412,7 +412,7 @@
                         <div class="card-title">🎲 30% 표본추출 시뮬레이터</div>
                     </div>
                     <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 0.8rem;">
-                        60개 전체 관측치 중 18개(30%)를 무작위로 추출하여 표본 회귀선(SRF)의 **표본오차**를 시뮬레이션합니다.
+                        60개 전체 관측치 중 18개(30%)를 무작위로 추출하여 표본 회귀선(SRF)의 <strong>표본오차</strong>를 시뮬레이션합니다.
                     </p>
                     <button class="sim-btn" onclick="runSamplingSimulation()">
                         🎲 30% 무작위 표본추출 실행
@@ -437,7 +437,7 @@
             </div>
             
             <p style="font-size: 0.92rem; color: var(--text-sub); margin-bottom: 1.2rem; line-height: 1.6;">
-                반복 추출 버튼을 누를 때마다 무작위 표본추출이 실행되며 구한 기울기 추정치($\hat{\beta}$)가 <strong>누적으로 적재되어 히스토그램과 이론적 정규분포 곡선(Normal Curve)으로 실시간 수렴</strong>합니다.
+                반복 추출 버튼을 누를 때마다 무작위 표본추출이 실행되며 구한 기울기 추정치(β̂)가 <strong>누적으로 적재되어 히스토그램과 이론적 정규분포 곡선(Normal Curve)으로 실시간 수렴</strong>합니다.
             </p>
 
             <!-- 학술적 누적 조작 버튼 그룹 -->
@@ -654,7 +654,7 @@
                 data: {
                     datasets: [
                         {
-                            label: '모집단 관측치 (60개 가구)',
+                            label: '모집단 관측치 (60개)',
                             data: scatterData,
                             backgroundColor: '#1e3a8a',
                             borderColor: '#1e3a8a',
@@ -663,7 +663,7 @@
                             pointHoverBackgroundColor: '#dc2626'
                         },
                         {
-                            label: '모집단 회귀선 (Y = 17 + 0.6X)',
+                            label: '모집단 회귀선 (PRF: Y = 17 + 0.6X)',
                             data: popLineData,
                             type: 'line',
                             borderColor: '#1e3a8a',
@@ -718,7 +718,17 @@
                                 }
                             }
                         },
-                        legend: { labels: { font: { family: 'Presentation', size: 12, weight: '600' } } }
+                        legend: {
+                            position: 'top',
+                            align: 'center',
+                            labels: {
+                                font: { family: 'Presentation', size: 12, weight: '600' },
+                                padding: 18,
+                                boxWidth: 16,
+                                boxHeight: 12,
+                                usePointStyle: true
+                            }
+                        }
                     },
                     scales: {
                         x: { title: { display: true, text: '가구 소득 X (만원)', font: { family: 'Presentation', size: 13, weight: 'bold' } }, min: 60, max: 280, grid: { color: '#e2e8f0' } },
@@ -767,7 +777,14 @@
                                 label: function(ctx) { return `${ctx.dataset.label}: ${ctx.raw.toFixed(2)}`; }
                             }
                         },
-                        legend: { labels: { font: { family: 'Presentation', size: 12, weight: '600' } } }
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: { family: 'Presentation', size: 12, weight: '600' },
+                                padding: 16,
+                                boxWidth: 16
+                            }
+                        }
                     },
                     scales: {
                         x: { title: { display: true, text: '추출된 기울기 계수 β̂(b)', font: { family: 'Presentation', size: 13, weight: 'bold' } }, grid: { color: '#e2e8f0' } },
