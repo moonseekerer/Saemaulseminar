@@ -409,12 +409,24 @@
                 <!-- 무작위 표본추출 시뮬레이터 -->
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">🎲 30% 표본추출 시뮬레이터</div>
+                        <div class="card-title" id="sampleCardTitle">🎲 30% 표본추출 시뮬레이터</div>
                     </div>
+                    
+                    <!-- 표본 추출 비율 조정 슬라이더 -->
+                    <div style="margin-bottom: 0.9rem; background: #f8fafc; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                            <span style="font-size: 0.85rem; font-weight: 700; color: var(--navy-primary);">
+                                표본 추출 비율: <span id="ratioDisplay" style="color: var(--amber-primary); font-size: 1rem;">30%</span>
+                            </span>
+                            <span id="sampleCountDisplay" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">(18개 가구 / 60개)</span>
+                        </div>
+                        <input type="range" id="sampleRatioSlider" min="5" max="80" step="5" value="30" style="width: 100%; accent-color: var(--navy-primary); cursor: pointer;" oninput="updateSampleRatio(this.value)">
+                    </div>
+
                     <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 0.8rem;">
-                        60개 전체 관측치 중 18개(30%)를 무작위로 추출하여 표본 회귀선(SRF)의 <strong>표본오차</strong>를 시뮬레이션합니다.
+                        60개 관측치 중 <strong id="sampleCountInline">18개(30%)</strong>를 무작위로 추출하여 표본 회귀선(SRF)의 <strong>표본오차</strong>를 시뮬레이션합니다.
                     </p>
-                    <button class="sim-btn" onclick="runSamplingSimulation()">
+                    <button class="sim-btn" id="runSampleBtn" onclick="runSamplingSimulation()">
                         🎲 30% 무작위 표본추출 실행
                     </button>
                     <div id="sampleResultBox" style="margin-top: 0.8rem; display: none;" class="stat-box">
@@ -628,9 +640,27 @@
         let mainChart = null;
         let accChart = null;
 
-        // 누적 저장소
+        // 누적 저장소 및 표본 추출 비율 상태
         let accumulatedBetas = [];
         let autoPlayTimer = null;
+        let sampleRatioPercent = 30;
+
+        // 표본 추출 비율 동적 변경 핸들러
+        function updateSampleRatio(val) {
+            sampleRatioPercent = parseInt(val, 10);
+            const count = Math.max(2, Math.round(fullDataset.length * (sampleRatioPercent / 100)));
+            
+            document.getElementById('ratioDisplay').innerText = `${sampleRatioPercent}%`;
+            document.getElementById('sampleCountDisplay').innerText = `(${count}개 가구 / ${fullDataset.length}개)`;
+            document.getElementById('sampleCountInline').innerText = `${count}개(${sampleRatioPercent}%)`;
+            document.getElementById('runSampleBtn').innerText = `🎲 ${sampleRatioPercent}% 무작위 표본추출 실행`;
+            document.getElementById('sampleCardTitle').innerText = `🎲 ${sampleRatioPercent}% 표본추출 시뮬레이터`;
+            
+            if (mainChart && mainChart.data.datasets[2]) {
+                mainChart.data.datasets[2].label = `선택된 ${sampleRatioPercent}% 무작위 표본`;
+                mainChart.update();
+            }
+        }
 
         // 메인 산점도 차트 초기화
         function initMainChart() {
@@ -794,9 +824,9 @@
             });
         }
 
-        // 단일 무작위 표본추출 1회 실행
+        // 동적 무작위 표본추출 1회 실행
         function drawOneSample() {
-            const sampleSize = 18;
+            const sampleSize = Math.max(2, Math.round(fullDataset.length * (sampleRatioPercent / 100)));
             const shuffled = [...fullDataset].sort(() => 0.5 - Math.random());
             const sampledData = shuffled.slice(0, sampleSize);
             const res = calculateOLS(sampledData);
