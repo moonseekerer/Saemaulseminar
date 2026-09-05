@@ -367,14 +367,14 @@
                     <li><strong>Y축 (기대 수익 / Expected Return):</strong> 투자를 통해 미래에 얻고자 하는 기대 가치 및 소득 증가율.</li>
                     <li><strong>X축 (위험 / Risk):</strong> 미래 결과의 불확실성 및 손실 가능성의 변동 폭.</li>
                     <li><strong>지배 원칙 선택:</strong> 동일 리스크 조건에서는 수익이 높은 위쪽(↑)을 취하고, 동일 수익 조건에서는 리스크가 적은 왼쪽(←)을 선택함.</li>
-                    <li><strong>효율적 투자선 (Efficient Frontier):</strong> 오른쪽에 있는 점보다 왼쪽 점이 낫고 아래쪽 점보다 위쪽 점이 유효하다면, 남는 것은 **맨 왼쪽 상단의 점들과 이들을 잇는 곡선 라인**뿐임.</li>
+                    <li><strong>효율적 프론티어 (Efficient Frontier):</strong> 오른쪽에 있는 점보다 왼쪽 점이 낫고 아래쪽 점보다 위쪽 점이 유효하다면, 남는 것은 **맨 왼쪽 상단의 점들과 이들을 잇는 곡선 라인(효율적 프론티어)**뿐임.</li>
                 </ul>
             </div>
 
             <!-- 시각화 시뮬레이터 인터랙티브 캔버스 -->
             <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 1.2rem; margin-top: 1.2rem; margin-bottom: 1.5rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
-                    <h4 style="font-size: 1.02rem; font-weight: 700; color: var(--navy);">📈 X-Y축 지배원칙 및 효율적 투자선 시뮬레이터</h4>
+                    <h4 style="font-size: 1.02rem; font-weight: 700; color: var(--navy);">📈 X-Y축 지배원칙 및 효율적 프론티어 시뮬레이터</h4>
                     <div style="display: flex; gap: 0.4rem;">
                         <button id="simStep1" onclick="setSimStep(1)" style="padding: 0.3rem 0.6rem; font-size: 0.78rem; font-weight: 600; border-radius: 4px; border: 1px solid #cbd5e1; background: #ffffff; cursor: pointer;">1. 전체 대안</button>
                         <button id="simStep2" onclick="setSimStep(2)" style="padding: 0.3rem 0.6rem; font-size: 0.78rem; font-weight: 600; border-radius: 4px; border: 1px solid #cbd5e1; background: #ffffff; cursor: pointer;">2. 지배점 제거</button>
@@ -384,7 +384,7 @@
                 <canvas id="simCanvas" width="700" height="360" style="width: 100%; height: auto; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer;"></canvas>
                 <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.6rem; display: flex; justify-content: space-between; flex-wrap: wrap;">
                     <span>💡 캔버스를 클릭하여 원하는 위치에 투자 대안 점을 추가해보세요.</span>
-                    <span id="simCountInfo" style="font-weight: 700; color: #047857;">효율적 전선 점: 0개 / 전체 0개</span>
+                    <span id="simCountInfo" style="font-weight: 700; color: #047857;">효율적 프론티어 점: 0개 / 전체 0개</span>
                 </div>
             </div>
 
@@ -540,7 +540,7 @@
                     ctx.fillStyle = 'rgba(16, 185, 129, 0.08)'; ctx.fill();
                 }
 
-                document.getElementById('simCountInfo').innerText = `효율적 전선 점: ${effPoints.length}개 / 전체 ${points.length}개`;
+                document.getElementById('simCountInfo').innerText = `효율적 프론티어 점: ${effPoints.length}개 / 전체 ${points.length}개`;
             }
 
             canvas.addEventListener('click', function(e) {
