@@ -234,24 +234,62 @@
             color: var(--text-main);
         }
 
-        /* 슬라이더 컨트롤 */
-        .slider-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .slider-header {
+        /* 토글 아코디언 스타일 */
+        .toggle-btn {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.2rem 1.6rem;
+            font-family: 'Presentation', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--navy-primary);
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
-            font-size: 0.85rem;
-            font-weight: 600;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
         }
 
-        input[type=range] {
-            width: 100%;
-            accent-color: var(--navy-primary);
+        .toggle-btn:hover {
+            background: var(--navy-soft);
+            border-color: var(--navy-primary);
         }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-content {
+            display: none;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            padding: 1.6rem;
+            margin-top: -8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .summary-card .name { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+        .summary-card .val { font-size: 1.3rem; font-weight: 700; color: var(--text-main); margin-top: 0.2rem; }
 
         /* 데이터 테이블 영역 */
         .table-section {
@@ -382,6 +420,85 @@
                         <div id="sampleEqText" style="font-size: 0.95rem; font-weight: 700; color: var(--amber-primary); margin-top: 0.3rem;"></div>
                     </div>
                     <button class="reset-btn" onclick="resetSimulation()" style="margin-top: 0.6rem;">전체 모집단 뷰로 초기화</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 📊 OLS 통계 분석 요약표 토글 영역 (NEW) -->
+        <div style="margin-top: 2rem;">
+            <button class="toggle-btn" onclick="toggleSummaryTable(this)">
+                <span>📊 OLS 회귀분석 통계 요약표 (Regression Output Table)</span>
+                <span class="toggle-icon" id="toggleIcon">▼</span>
+            </button>
+            <div class="toggle-content" id="toggleContent">
+                
+                <!-- 핵심 통계 지표 요약 6종 카드 -->
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <div class="name">관측치 수 (N)</div>
+                        <div class="val">60 개</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="name">절편 (Intercept, α̂)</div>
+                        <div class="val" style="color: var(--navy-primary);">17.0000</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="name">소득 계수 (Income, β̂)</div>
+                        <div class="val" style="color: var(--emerald-primary);">0.6000</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="name">결정계수 (R²)</div>
+                        <div class="val">0.9052</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="name">수정된 결정계수 (Adj R²)</div>
+                        <div class="val">0.9036</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="name">F-통계량 (F-statistic)</div>
+                        <div class="val" style="color: #7e22ce;">554.01 <span style="font-size: 0.75rem; font-weight: normal; color: var(--text-muted);">(p < 0.0001)</span></div>
+                    </div>
+                </div>
+
+                <!-- 계수 추정치 세부 표 -->
+                <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.8rem; color: var(--text-main);">회귀계수 추정 및 통계적 유의성 검정표</h4>
+                <div style="overflow-x: auto; border: 1px solid var(--border-color); border-radius: 8px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">구분 (Variables)</th>
+                                <th>추정계수 (Coeff)</th>
+                                <th>표준오차 (Std Error)</th>
+                                <th>t-통계량 (t-stat)</th>
+                                <th>p-유의확률 (p-value)</th>
+                                <th>95% 신뢰구간</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: left; font-weight: 700;">절편 (Intercept, α̂)</td>
+                                <td>17.0000</td>
+                                <td>4.6620</td>
+                                <td>3.6465</td>
+                                <td style="color: var(--emerald-primary); font-weight: 700;">0.0006 ***</td>
+                                <td>[7.667, 26.333]</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left; font-weight: 700;">소득 (Income, β̂)</td>
+                                <td style="color: var(--emerald-primary); font-weight: 700;">0.6000</td>
+                                <td>0.0255</td>
+                                <td>23.5374</td>
+                                <td style="color: var(--emerald-primary); font-weight: 700;">&lt; 0.0001 ***</td>
+                                <td>[0.549, 0.651]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 1rem; font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
+                    * *** p &lt; 0.001 유의수준에서 통계적으로 매우 유의함.<br>
+                    * 유의성 검정 결과: 소득(X)의 t-통계량은 23.54 (p &lt; 0.0001)로 소득이 소비에 미치는 영향이 유의확률 99.9% 이상에서 매우 강하고 통계적으로 유의합니다.
                 </div>
 
             </div>
@@ -597,6 +714,21 @@
             chartInstance.data.datasets[3].data = [];
             chartInstance.update();
             document.getElementById('sampleResultBox').style.display = 'none';
+        }
+
+        // 통계 요약표 토글 함수
+        function toggleSummaryTable(btn) {
+            const content = document.getElementById('toggleContent');
+            const icon = document.getElementById('toggleIcon');
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+                icon.innerText = '▼';
+                btn.style.borderRadius = '12px';
+            } else {
+                content.style.display = 'block';
+                icon.innerText = '▲';
+                btn.style.borderRadius = '12px 12px 0 0';
+            }
         }
 
         // 테이블 동적 생성
