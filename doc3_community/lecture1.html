@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>제1강 강의소개 및 지역사회구조 연구의 이론과 접근방법 | 지역사회구조연구</title>
-    <meta name="description" content="지역사회구조의 개념, 주요 이론(구조기능주의, 갈등이론, 사회자본이론), 오스트롬 공동자원 관리, 네트워크 이론, 6대 접근법 및 5단계 분석틀 완벽 강의페이지">
+    <title>1주차. 강의소개 및 지역사회구조 연구의 이론과 접근방법 | 지역사회구조연구</title>
+    <meta name="description" content="지역사회구조의 개념, 주요 이론, 집단행동 및 오스트롬 거버넌스, 권력구조, 네트워크 이론, 회복력, 6대 접근법 및 5단계 분석틀 강의안">
     
     <style>
-        /* 프리젠테이션 (Presentation) 웹폰트 선언 */
         @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-3Light.woff2') format('woff2'); font-weight: 300; font-display: swap; }
         @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-4Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
         @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-6SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
@@ -18,26 +17,12 @@
         :root {
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
-            --text-main: #0f172a;
+            --text-main: #1e293b;
             --text-sub: #475569;
             --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            
-            --rose-primary: #be123c;
-            --rose-hover: #9f1239;
-            --rose-soft: #fff1f2;
-            
-            --navy-primary: #1e3a8a;
-            --navy-soft: #eff6ff;
-            
-            --emerald-primary: #047857;
-            --emerald-soft: #ecfdf5;
-            
-            --amber-primary: #d97706;
-            --amber-soft: #fffbeb;
-            
-            --purple-primary: #7e22ce;
-            --purple-soft: #faf5ff;
+            --border-color: #cbd5e1;
+            --primary: #854d0e;
+            --navy: #1e3a8a;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -47,9 +32,8 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             min-height: 100vh;
-            padding: 2.5rem 1.5rem;
-            background-image: radial-gradient(#cbd5e1 0.75px, transparent 0.75px);
-            background-size: 24px 24px;
+            padding: 3rem 1.5rem;
+            line-height: 1.65;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -57,350 +41,256 @@
 
         .container {
             width: 100%;
-            max-width: 1060px;
+            max-width: 900px;
         }
 
-        /* 상단 네비게이션 */
         .top-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
-        }
-
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            background: #ffffff;
-            color: var(--rose-primary);
-            border: 1px solid var(--border-color);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            text-decoration: none;
             font-size: 0.9rem;
+        }
+
+        .top-nav a {
+            color: var(--text-sub);
+            text-decoration: none;
             font-weight: 600;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-            transition: all 0.2s ease;
         }
 
-        .back-btn:hover {
-            background: var(--rose-primary);
-            color: #ffffff;
+        .top-nav a:hover {
+            color: var(--primary);
+            text-decoration: underline;
         }
 
-        /* 헤더 스타일 */
         header {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-left: 6px solid var(--rose-primary);
-            padding: 2rem 2.2rem;
-            border-radius: 14px;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
+            border-bottom: 2px solid var(--text-main);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2.5rem;
         }
 
-        .badge-row {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
+        .course-meta {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
         }
-
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
-
-        .badge-rose { background: var(--rose-soft); color: var(--rose-primary); border: 1px solid rgba(190,18,60,0.2); }
-        .badge-navy { background: var(--navy-soft); color: var(--navy-primary); border: 1px solid rgba(30,58,138,0.2); }
 
         h1 {
             font-size: 2.1rem;
             font-weight: 700;
             color: var(--text-main);
+            margin-bottom: 0.8rem;
             letter-spacing: -0.02em;
         }
 
-        .subtitle {
+        .header-sub {
             font-size: 1.02rem;
             color: var(--text-sub);
             line-height: 1.6;
         }
 
-        /* 목차 버튼 그리드 */
-        .toc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 0.75rem;
-            margin-top: 1rem;
-        }
-
-        .toc-item-btn {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+        /* 목차 영역 */
+        .toc-block {
             background: #ffffff;
             border: 1px solid var(--border-color);
-            padding: 0.8rem 1rem;
-            border-radius: 10px;
-            text-decoration: none;
-            color: var(--text-main);
-            transition: all 0.2s ease;
-        }
-
-        .toc-item-btn:hover {
-            border-color: var(--rose-primary);
-            background: var(--rose-soft);
-            transform: translateY(-2px);
-            box-shadow: 0 3px 8px rgba(190,18,60,0.08);
-        }
-
-        .toc-num {
-            background: var(--rose-primary);
-            color: #ffffff;
-            font-size: 0.78rem;
-            font-weight: 800;
-            padding: 0.2rem 0.5rem;
-            border-radius: 6px;
-            flex-shrink: 0;
+            border-radius: 8px;
+            padding: 1.4rem 1.6rem;
+            margin-bottom: 2.5rem;
         }
 
         .toc-title {
-            font-size: 0.88rem;
             font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
             color: var(--text-main);
-            line-height: 1.3;
-        }
-
-        /* 일반 카드 스타일 */
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 1.8rem 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.2rem;
-            padding-bottom: 0.8rem;
             border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.4rem;
         }
 
-        .card-title {
+        .toc-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem 1.5rem;
+            list-style: none;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 640px) {
+            .toc-list { grid-template-columns: 1fr; }
+        }
+
+        .toc-list a {
+            color: var(--text-sub);
+            text-decoration: none;
+        }
+
+        .toc-list a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        /* 본문 섹션 */
+        section {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
             font-size: 1.3rem;
             font-weight: 700;
-            color: var(--rose-primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .section-desc {
-            font-size: 0.98rem;
-            color: var(--text-sub);
-            line-height: 1.65;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
             margin-bottom: 1.2rem;
         }
 
-        /* 상자 및 그리드 디자인 */
-        .box-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .info-box {
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 1.2rem;
-        }
-
-        .info-title {
+        h3 {
+            font-size: 1.08rem;
             font-weight: 700;
-            font-size: 0.98rem;
-            color: var(--navy-primary);
-            margin-bottom: 0.4rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .info-body {
-            font-size: 0.88rem;
-            color: var(--text-sub);
-            line-height: 1.55;
-        }
-
-        /* 강조 태그 박스 */
-        .highlight-box {
-            background: var(--rose-soft);
-            border: 1px solid rgba(190,18,60,0.2);
-            border-left: 5px solid var(--rose-primary);
-            padding: 1.2rem 1.4rem;
-            border-radius: 8px;
+            color: var(--navy);
             margin-top: 1.2rem;
-            font-size: 0.95rem;
-            color: var(--text-main);
-            line-height: 1.6;
+            margin-bottom: 0.5rem;
         }
 
-        /* 흐름도 체계도 디자인 */
-        .flow-container {
+        p {
+            font-size: 0.96rem;
+            color: var(--text-sub);
+            margin-bottom: 0.8rem;
+        }
+
+        ul, ol {
+            padding-left: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--text-sub);
+            font-size: 0.94rem;
+        }
+
+        li {
+            margin-bottom: 0.35rem;
+        }
+
+        .callout {
+            background: #f8fafc;
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.2rem;
+            font-size: 0.93rem;
+            color: var(--text-main);
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* 체계도 흐름선 */
+        .process-flow {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             gap: 0.5rem;
             background: #f8fafc;
             border: 1px solid var(--border-color);
-            padding: 1.4rem 1rem;
-            border-radius: 12px;
-            margin-top: 1.2rem;
-            flex-wrap: wrap;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            overflow-x: auto;
         }
 
-        .flow-step {
+        .process-step {
             background: #ffffff;
-            border: 2px solid var(--rose-primary);
-            border-radius: 10px;
-            padding: 0.9rem 1.1rem;
-            text-align: center;
-            flex: 1;
-            min-width: 150px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+            white-space: nowrap;
         }
 
-        .flow-step-num {
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: var(--rose-primary);
-            margin-bottom: 0.2rem;
+        .process-arrow {
+            color: var(--primary);
         }
 
-        .flow-step-title {
-            font-size: 0.92rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .flow-arrow {
-            font-size: 1.2rem;
-            color: var(--rose-primary);
-            font-weight: bold;
-        }
-
-        /* 테이블 디자인 */
+        /* 테이블 */
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.9rem;
             margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        th, td {
+            padding: 0.7rem 0.6rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
         }
 
         th {
             background: #f1f5f9;
-            color: var(--text-main);
             font-weight: 700;
-            padding: 0.85rem;
+            color: var(--text-main);
             border-bottom: 2px solid var(--border-color);
-            text-align: left;
         }
 
-        td {
-            padding: 0.85rem;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-sub);
-            line-height: 1.5;
-        }
-
-        tr:hover td {
-            background: #f8fafc;
-        }
-
-        /* 좌측 스티키 플로팅 네비게이터 */
+        /* 좌측 스티키 목차 */
         .side-nav {
             position: fixed;
             top: 100px;
             left: 20px;
             z-index: 99;
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(8px);
+            background: #ffffff;
             border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 0.8rem 0.5rem;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-            width: 195px;
+            border-radius: 8px;
+            padding: 0.8rem 0.6rem;
+            width: 190px;
             max-height: calc(100vh - 120px);
             overflow-y: auto;
-            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         .side-nav-title {
-            font-size: 0.76rem;
             font-weight: 700;
             color: var(--text-muted);
-            padding: 0.2rem 0.5rem 0.4rem 0.5rem;
+            padding-bottom: 0.4rem;
+            margin-bottom: 0.4rem;
             border-bottom: 1px solid var(--border-color);
-            margin-bottom: 0.2rem;
         }
 
         .side-nav-item {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.45rem 0.6rem;
-            border-radius: 7px;
-            text-decoration: none;
+            display: block;
+            padding: 0.35rem 0.4rem;
             color: var(--text-sub);
-            font-size: 0.78rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
+            text-decoration: none;
+            border-radius: 4px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .side-nav-item:hover {
-            background: var(--rose-soft);
-            color: var(--rose-primary);
+            background: #f1f5f9;
+            color: var(--primary);
         }
 
         .side-nav-item.active {
-            background: var(--rose-primary);
+            background: var(--primary);
             color: #ffffff;
             font-weight: 700;
-            box-shadow: 0 2px 6px rgba(190,18,60,0.25);
         }
 
-        .side-icon { font-size: 0.88rem; flex-shrink: 0; }
-
-        @media (max-width: 1320px) {
+        @media (max-width: 1300px) {
             .side-nav { display: none; }
         }
 
         footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
             border-top: 1px solid var(--border-color);
-            width: 100%;
-            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
         }
     </style>
 </head>
@@ -408,465 +298,288 @@
 
     <div class="container">
         
-        <!-- 상단 네비게이션 -->
-        <div class="top-nav">
-            <a href="index.html" class="back-btn">
-                <span>←</span> 교과목 포털 및 15주차 목차
-            </a>
-            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">
-                영남대학교 대학원 새마을국제개발학과 | 지역사회구조연구 (0682-01)
-            </span>
-        </div>
+        <nav class="top-nav">
+            <a href="index.html">← 과목 포털 및 15주차 목차</a>
+            <span style="color: var(--text-muted);">영남대학교 대학원 새마을국제개발학과 | 지역사회구조연구 (0682-01)</span>
+        </nav>
 
-        <!-- 헤더 -->
         <header>
-            <div class="badge-row">
-                <span class="badge badge-rose">제 1 강</span>
-                <span class="badge badge-navy">이론과 접근방법</span>
-            </div>
-            <h1>🏛️ 강의소개 및 지역사회구조 연구의 이론과 접근방법</h1>
-            <p class="subtitle">
-                본 강의는 지역사회의 개념과 구조, 연구 필요성, 주요 사회과학 이론(구조기능주의, 갈등이론, 사회자본이론),<br>
-                집단행동 및 오스트롬 거버넌스, 권력구조, 네트워크 이론, 회복력, 6대 접근법 및 5단계 분석틀을 통합적으로 다룹니다.
+            <div class="course-meta">1주차 강의안</div>
+            <h1>강의소개 및 지역사회구조 연구의 이론과 접근방법</h1>
+            <p class="header-sub">
+                지역사회의 개념과 구조, 연구 이유, 3대 이론, 집단행동 및 오스트롬 거버넌스, 권력구조, 네트워크 이론, 회복력, 6대 접근법 및 5단계 분석틀 정리
             </p>
         </header>
 
-        <!-- 📌 상단 목차 카드 -->
-        <div class="card" style="border-left: 5px solid var(--rose-primary);">
-            <div class="card-header" style="margin-bottom: 0.4rem; padding-bottom: 0.4rem;">
-                <div class="card-title" style="font-size: 1.1rem;">
-                    📌 제1강 11개 주요 학습 단원 목차
-                </div>
-                <span style="font-size: 0.8rem; color: var(--text-muted);">클릭 시 해당 섹션으로 부드럽게 이동합니다</span>
-            </div>
-            <div class="toc-grid">
-                <a href="#sec-concept" class="toc-item-btn"><span class="toc-num">01</span><span class="toc-title">지역사회 및 구조의 개념</span></a>
-                <a href="#sec-why" class="toc-item-btn"><span class="toc-num">02</span><span class="toc-title">왜 지역사회구조를 연구하는가?</span></a>
-                <a href="#sec-theories" class="toc-item-btn"><span class="toc-num">03</span><span class="toc-title">지역사회구조 연구의 주요 이론</span></a>
-                <a href="#sec-collective" class="toc-item-btn"><span class="toc-num">04</span><span class="toc-title">집단행동이론 & 오스트롬 거버넌스</span></a>
-                <a href="#sec-power" class="toc-item-btn"><span class="toc-num">05</span><span class="toc-title">권력구조와 리더십</span></a>
-                <a href="#sec-network" class="toc-item-btn"><span class="toc-num">06</span><span class="toc-title">사회네트워크이론</span></a>
-                <a href="#sec-resilience" class="toc-item-btn"><span class="toc-num">07</span><span class="toc-title">지역사회 회복력과 지속가능성</span></a>
-                <a href="#sec-approaches" class="toc-item-btn"><span class="toc-num">08</span><span class="toc-title">연구의 6대 접근방법</span></a>
-                <a href="#sec-framework" class="toc-item-btn"><span class="toc-num">09</span><span class="toc-title">5단계 분석 틀</span></a>
-                <a href="#sec-saemaul" class="toc-item-btn"><span class="toc-num">10</span><span class="toc-title">새마을국제개발 연구접근</span></a>
-                <a href="#sec-summary-table" class="toc-item-btn"><span class="toc-num">11</span><span class="toc-title">분석방법 표 & 핵심 5가지</span></a>
-            </div>
+        <!-- 목차 -->
+        <div class="toc-block">
+            <div class="toc-title">목차</div>
+            <ul class="toc-list">
+                <li><a href="#sec-concept">1. 지역사회와 지역사회구조의 개념</a></li>
+                <li><a href="#sec-why">2. 왜 지역사회구조를 연구하는가?</a></li>
+                <li><a href="#sec-theories">3. 지역사회구조 연구의 주요 이론</a></li>
+                <li><a href="#sec-collective">4. 집단행동이론과 공동자원 관리</a></li>
+                <li><a href="#sec-power">5. 지역사회 권력구조와 리더십</a></li>
+                <li><a href="#sec-network">6. 사회네트워크이론</a></li>
+                <li><a href="#sec-resilience">7. 지역사회 회복력과 지속가능성</a></li>
+                <li><a href="#sec-approaches">8. 연구의 6대 접근방법</a></li>
+                <li><a href="#sec-framework">9. 지역사회구조의 5단계 분석 틀</a></li>
+                <li><a href="#sec-saemaul">10. 새마을국제개발에서의 접근방법</a></li>
+                <li><a href="#sec-summary-table">11. 분석방법 요약 및 핵심 5가지</a></li>
+            </ul>
         </div>
 
-        <!-- 01. 개념 -->
-        <div class="card" id="sec-concept">
-            <div class="card-header">
-                <div class="card-title">🏘️ 1. 지역사회와 지역사회구조의 개념</div>
-            </div>
+        <!-- 1. 개념 -->
+        <section id="sec-concept">
+            <h2>1. 지역사회와 지역사회구조의 개념</h2>
             
-            <div style="margin-bottom: 1.5rem;">
-                <h3 style="font-size: 1.1rem; color: var(--navy-primary); margin-bottom: 0.6rem;">■ 지역사회(Community)의 개념</h3>
-                <p class="section-desc">
-                    일정한 공간적 영역을 기반으로 주민들이 생활하고 상호작용하는 사회적 단위입니다. 단순한 지리적 공간이 아니라 경제·사회·문화·정치적 관계가 결합된 종합 사회체계입니다.
-                </p>
-                <div class="box-grid">
-                    <div class="info-box">
-                        <div class="info-title">📍 지역성</div>
-                        <div class="info-body">공동의 생활공간 및 지리적 터전</div>
-                    </div>
-                    <div class="info-box">
-                        <div class="info-title">🤝 사회적 상호작용</div>
-                        <div class="info-body">주민 간 관계, 교류 및 호혜적 활동</div>
-                    </div>
-                    <div class="info-box">
-                        <div class="info-title">❤️ 공동체 의식</div>
-                        <div class="info-body">소속감, 공동 정체성 및 유대감</div>
-                    </div>
-                    <div class="info-box">
-                        <div class="info-title">🏛️ 제도와 조직</div>
-                        <div class="info-body">지역사회를 운영하는 공식·비공식 체계</div>
-                    </div>
-                </div>
-            </div>
+            <h3>지역사회(Community)의 개념</h3>
+            <p>일정한 공간적 영역을 기반으로 주민들이 생활하고 상호작용하는 사회적 단위입니다. 단순한 지리적 공간이 아니라 경제·사회·문화·정치적 관계가 결합된 사회체계입니다.</p>
+            <ul>
+                <li><strong>지역성:</strong> 공동의 생활공간</li>
+                <li><strong>사회적 상호작용:</strong> 주민 간 관계와 교류</li>
+                <li><strong>공동체 의식:</strong> 소속감과 공동의 정체성</li>
+                <li><strong>제도와 조직:</strong> 지역사회를 운영하는 공식·비공식 체계</li>
+            </ul>
 
-            <div>
-                <h3 style="font-size: 1.1rem; color: var(--navy-primary); margin-bottom: 0.6rem;">■ 지역사회구조(Community Structure)의 개념</h3>
-                <p class="section-desc">
-                    지역사회 내부의 개인·가구·집단·조직·제도 간 관계가 일정한 형태로 조직된 상태입니다. 지역사회의 자원, 권력, 정보 및 의사결정 기회가 누구에게 어떻게 배분되어 있는가를 명확히 설명합니다.
-                </p>
-                <div class="box-grid">
-                    <div class="info-box"><div class="info-title">👥 인구 및 가구구조</div><div class="info-body">연령, 성별, 가구원 수, 이주 패턴</div></div>
-                    <div class="info-box"><div class="info-title">🏭 경제 및 산업구조</div><div class="info-body">주요 산업, 소득 분배, 고용 형태</div></div>
-                    <div class="info-box"><div class="info-title">📊 계층 및 사회집단</div><div class="info-body">자산, 계층, 취약계층 비중</div></div>
-                    <div class="info-box"><div class="info-title">🏢 조직 및 제도구조</div><div class="info-body">마을조직, 협동조합, 행정기관</div></div>
-                    <div class="info-box"><div class="info-title">⚖️ 권력 및 의사결정</div><div class="info-body">리더십, 자원 배분 권한</div></div>
-                    <div class="info-box"><div class="info-title">🕸️ 사회적 관계망</div><div class="info-body">신뢰, 밀도, 네트워크 연결성</div></div>
-                </div>
-            </div>
+            <h3>지역사회구조(Community Structure)의 개념</h3>
+            <p>지역사회 내부의 개인·가구·집단·조직·제도 간 관계가 일정한 형태로 조직된 상태를 의미합니다. 자원, 권력, 정보 및 의사결정 기회가 누구에게 어떻게 배분되는가를 설명합니다.</p>
+            <ul>
+                <li>인구 및 가구구조</li>
+                <li>경제 및 산업구조</li>
+                <li>계층 및 사회집단 구조</li>
+                <li>조직 및 제도구조</li>
+                <li>권력 및 의사결정 구조</li>
+                <li>사회적 관계와 네트워크</li>
+                <li>문화·규범·가치체계</li>
+            </ul>
 
-            <div class="highlight-box">
-                💡 <strong>핵심 관점:</strong> 지역개발의 성과는 단순히 자본·기술·시설의 투입에 의해 결정되는 것이 아니라, <strong>지역사회의 구조와 주민 간 관계, 제도 및 거버넌스가 외부 자원을 어떻게 받아들이고 활용하는가</strong>에 의해 크게 달라집니다.
+            <div class="callout">
+                <strong>핵심 관점:</strong> 지역개발의 성과는 자본이나 시설 투입만으로 결정되지 않으며, 지역사회의 구조와 주민 간 관계, 제도 및 거버넌스가 외부 자원을 수용하고 활용하는 방식에 따라 좌우됩니다.
             </div>
-        </div>
+        </section>
 
-        <!-- 02. 왜 연구하는가? -->
-        <div class="card" id="sec-why" style="border-left: 5px solid var(--navy-primary);">
-            <div class="card-header">
-                <div class="card-title" style="color: var(--navy-primary);">
-                    🔬 2. 왜 지역사회구조를 연구하는가? (3대 핵심 관점)
-                </div>
-            </div>
+        <!-- 2. 연구 이유 -->
+        <section id="sec-why">
+            <h2>2. 왜 지역사회구조를 연구하는가?</h2>
             
-            <div class="box-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
-                <div style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 1.3rem; border-radius: 12px;">
-                    <h4 style="font-size: 1.05rem; color: var(--navy-primary); margin-bottom: 0.6rem;">📈 지역개발 관점</h4>
-                    <ul style="font-size: 0.88rem; color: var(--text-sub); line-height: 1.6; padding-left: 1rem;">
-                        <li>동일한 개발사업이라도 지역에 따라 성과와 지속가능성이 다르게 나타나는 원인 규명</li>
-                        <li>지역 내부의 자원·조직·리더십·사회적 관계 파악</li>
-                        <li>개발사업에 대한 주민의 참여 및 집단행동 가능성 분석</li>
-                        <li>지역사회 내부의 갈등과 이해관계 구조 파악</li>
-                    </ul>
-                </div>
+            <h3>지역개발 관점</h3>
+            <ul>
+                <li>동일한 개발사업이라도 지역에 따라 성과와 지속가능성이 다르게 나타나는 원인 규명</li>
+                <li>지역 내부의 자원·조직·리더십·사회적 관계 파악</li>
+                <li>개발사업에 대한 주민의 참여 및 집단행동 가능성 분석</li>
+                <li>지역사회 내부의 갈등과 이해관계 구조 파악</li>
+            </ul>
 
-                <div style="background: #ecfdf5; border: 1px solid #a7f3d0; padding: 1.3rem; border-radius: 12px;">
-                    <h4 style="font-size: 1.05rem; color: var(--emerald-primary); margin-bottom: 0.6rem;">🌐 국제개발협력 관점</h4>
-                    <ul style="font-size: 0.88rem; color: var(--text-sub); line-height: 1.6; padding-left: 1rem;">
-                        <li>개발도상국 지역사회의 사회·경제·문화적 특성에 대한 심층 이해</li>
-                        <li>외부에서 설계된 개발사업과 지역사회 구조 간 정합성 검토</li>
-                        <li>지역 엘리트 중심의 사업 추진 및 엘리트 독점(Elite Capture) 문제 파악</li>
-                        <li>취약계층·여성·청년·소농 등의 사업 참여 가능성 분석</li>
-                    </ul>
-                </div>
+            <h3>국제개발협력 관점</h3>
+            <ul>
+                <li>개발도상국 지역사회의 사회·경제·문화적 특성 이해</li>
+                <li>외부에서 설계된 개발사업과 지역사회 구조 간 정합성 검토</li>
+                <li>지역 엘리트 중심의 사업 추진 및 엘리트 독점 문제 파악</li>
+                <li>취약계층·여성·청년·소농 등의 사업 참여 가능성 분석</li>
+                <li>주민참여형 개발 및 지속가능한 지역개발 전략 수립</li>
+            </ul>
 
-                <div style="background: var(--rose-soft); border: 1px solid rgba(190,18,60,0.2); padding: 1.3rem; border-radius: 12px;">
-                    <h4 style="font-size: 1.05rem; color: var(--rose-primary); margin-bottom: 0.6rem;">🌱 새마을국제개발 관점</h4>
-                    <ul style="font-size: 0.88rem; color: var(--text-sub); line-height: 1.6; padding-left: 1rem;">
-                        <li>새마을운동을 단순한 인프라 사업이 아닌 지역사회 변화 과정으로 이해</li>
-                        <li>주민참여 → 공동의사결정 → 공동행동 → 성과공유 → 공동체 역량 강화 구조 파악</li>
-                        <li>지도자와 주민 간 관계 및 지역 리더십 분석</li>
-                        <li>근면·자조·협동이 실제 집단행동으로 전환되는 조건 탐색</li>
-                    </ul>
-                </div>
+            <h3>새마을국제개발 관점</h3>
+            <ul>
+                <li>새마을운동을 단순 인프라 사업이 아닌 지역사회 변화 과정으로 이해</li>
+                <li>주민참여 → 공동의사결정 → 공동행동 → 성과공유 → 공동체 역량 강화의 구조 파악</li>
+                <li>지도자와 주민 간 관계 및 지역 리더십 분석</li>
+                <li>근면·자조·협동 정신이 집단행동으로 전환되는 조건 탐색</li>
+            </ul>
+        </section>
+
+        <!-- 3. 주요 이론 -->
+        <section id="sec-theories">
+            <h2>3. 지역사회구조 연구의 주요 이론</h2>
+
+            <h3>3.1 구조기능주의</h3>
+            <p>지역사회를 구성요소가 상호연결된 하나의 사회체계로 이해합니다. 가족, 마을조직, 학교, 종교조직, 지방정부 등이 각각 정해진 기능을 수행하여 전체 체계의 안정과 유지에 기여합니다.</p>
+
+            <h3>3.2 갈등이론</h3>
+            <p>지역사회를 자원·권력·기회를 둘러싼 집단 간 경쟁과 갈등의 공간으로 파악합니다. 토지소유 구조, 의사결정 주도권, 개발 수혜의 불평등 및 엘리트 독점 현상을 분석합니다.</p>
+
+            <h3>3.3 사회자본이론</h3>
+            <p>사회적 관계 속에서 형성되는 신뢰, 규범, 네트워크 및 호혜성을 중요한 자원으로 봅니다.</p>
+            <ul>
+                <li><strong>결속형 사회자본:</strong> 가족·친족 등 동질적 집단 내부의 강한 관계</li>
+                <li><strong>교량형 사회자본:</strong> 서로 다른 집단을 연결하는 수평적 관계</li>
+                <li><strong>연계형 사회자본:</strong> 주민과 정부·외부기관을 연결하는 수직적 관계</li>
+            </ul>
+            <div class="process-flow">
+                <div class="process-step">사회자본</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">주민참여</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">집단행동</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">지역개발 성과</div>
             </div>
-        </div>
+        </section>
 
-        <!-- 03. 주요 이론 -->
-        <div class="card" id="sec-theories">
-            <div class="card-header">
-                <div class="card-title">📚 3. 지역사회구조 연구의 주요 이론</div>
+        <!-- 4. 집단행동 & 오스트롬 -->
+        <section id="sec-collective">
+            <h2>4. 집단행동이론과 공동자원 관리</h2>
+
+            <h3>4.1 집단행동이론</h3>
+            <p>공동의 이익이 존재하더라도 개인은 비용을 부담하지 않고 편익만 얻으려는 무임승차 유인을 가집니다. 마을길 조성, 관개시설 관리, 공동영농, 마을기금 등 개인의 선택을 집단의 공동행동으로 전환시키는 조건이 중요합니다.</p>
+
+            <h3>4.2 Ostrom의 공동자원 관리이론</h3>
+            <p>주민들이 자율적 제도와 규칙을 형성할 경우 공동자원을 효과적으로 관리할 수 있다는 이론입니다.</p>
+            <ol>
+                <li>참여자와 자원의 명확한 경계</li>
+                <li>지역 조건에 적합한 규칙</li>
+                <li>주민의 의사결정 참여</li>
+                <li>자율적 모니터링</li>
+                <li>단계적 제재</li>
+                <li>저비용 갈등해결 장치</li>
+                <li>주민의 자율적 조직권 인정</li>
+                <li>다층적 거버넌스 연계</li>
+            </ol>
+        </section>
+
+        <!-- 5. 권력구조 -->
+        <section id="sec-power">
+            <h2>5. 지역사회 권력구조와 리더십</h2>
+            <p>지역사회에서 누가 의사결정을 내리고 자원을 배분하는가에 관한 구조입니다.</p>
+            <ul>
+                <li><strong>공식적 권력:</strong> 지방정부, 마을위원회, 행정기관, 공식 지도자</li>
+                <li><strong>비공식적 권력:</strong> 전통적 지도자, 종교지도자, 대지주, 기업인, 원로, 친족 지도자</li>
+            </ul>
+        </section>
+
+        <!-- 6. 사회네트워크이론 -->
+        <section id="sec-network">
+            <h2>6. 사회네트워크이론</h2>
+            <p>개인과 조직 간 관계의 구조가 행동과 성과를 결정한다는 이론입니다.</p>
+            <ul>
+                <li><strong>Node:</strong> 개인 또는 조직</li>
+                <li><strong>Tie:</strong> 개인·조직 간 관계</li>
+                <li><strong>Density:</strong> 네트워크 연결밀도</li>
+                <li><strong>Centrality:</strong> 특정 행위자의 중심성</li>
+                <li><strong>Bridge:</strong> 서로 다른 집단을 연결하는 행위자</li>
+            </ul>
+        </section>
+
+        <!-- 7. 회복력 -->
+        <section id="sec-resilience">
+            <h2>7. 지역사회 회복력과 지속가능성</h2>
+            <p><strong>지역사회 회복력:</strong> 경제·사회·환경적 충격에 대응하여 지역사회가 적응·회복·전환할 수 있는 능력입니다.</p>
+            <ul>
+                <li>경제적 다양성</li>
+                <li>사회적 신뢰</li>
+                <li>지역 리더십</li>
+                <li>주민 네트워크</li>
+                <li>지역조직 역량</li>
+                <li>학습 및 혁신능력</li>
+            </ul>
+        </section>
+
+        <!-- 8. 6대 접근방법 -->
+        <section id="sec-approaches">
+            <h2>8. 지역사회구조 연구의 주요 접근방법</h2>
+            <ol>
+                <li><strong>생태학적 접근:</strong> 인구 분포, 토지이용, 산업구조, 정주체계 분석</li>
+                <li><strong>사회구조적 접근:</strong> 계층, 직업, 소득, 토지소유 불평등 파악</li>
+                <li><strong>제도적 접근:</strong> 공식 정책 및 비공식 관습·규범의 영향 분석</li>
+                <li><strong>사회네트워크 접근:</strong> 중심성, 밀도, 연결성 및 정보 확산 분석</li>
+                <li><strong>참여적 접근:</strong> PRA, FGD, 주민워크숍 등 주민 주도 조사</li>
+                <li><strong>혼합방법론:</strong> 정량분석(통계, GIS)과 정성분석(면접, 사례연구) 결합</li>
+            </ol>
+        </section>
+
+        <!-- 9. 5단계 분석 틀 -->
+        <section id="sec-framework">
+            <h2>9. 지역사회구조의 5단계 분석 틀</h2>
+            <div class="process-flow">
+                <div class="process-step">① 기초구조<br><small>인구·토지·산업</small></div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">② 관계구조<br><small>조직·신뢰·네트워크</small></div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">③ 제도 및 권력<br><small>리더십·의사결정</small></div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">④ 주민 행동<br><small>참여·협력·집단행동</small></div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">⑤ 개발 성과<br><small>빈곤감소·지속가능성</small></div>
             </div>
+        </section>
 
-            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                
-                <!-- 3.1 구조기능주의 -->
-                <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 1.4rem; border-radius: 12px;">
-                    <h4 style="font-size: 1.05rem; color: var(--navy-primary); margin-bottom: 0.5rem;">3.1 구조기능주의 (Structural Functionalism)</h4>
-                    <p style="font-size: 0.92rem; color: var(--text-sub); line-height: 1.6; margin-bottom: 0.8rem;">
-                        지역사회를 여러 구성요소가 상호연결된 하나의 사회체계로 이해합니다. 가족, 마을조직, 학교, 종교조직, 지방정부 등이 각각 일정한 기능을 수행하여 지역사회의 안정과 유지에 기여합니다.
-                    </p>
-                    <div style="background: #ffffff; padding: 0.9rem 1.1rem; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.88rem;">
-                        <strong>💡 국제개발 적용:</strong> 마을위원회, 협동조합, 농민조직, 여성조직 등의 기능 분석 및 개발사업 수행을 위한 지역사회의 조직적 역량 평가
-                    </div>
-                </div>
-
-                <!-- 3.2 갈등이론 -->
-                <div style="background: #fffbeb; border: 1px solid #fde68a; padding: 1.4rem; border-radius: 12px;">
-                    <h4 style="font-size: 1.05rem; color: var(--amber-primary); margin-bottom: 0.5rem;">3.2 갈등이론 (Conflict Theory)</h4>
-                    <p style="font-size: 0.92rem; color: var(--text-sub); line-height: 1.6; margin-bottom: 0.8rem;">
-                        지역사회를 조화로운 공동체라기보다 자원·권력·기회를 둘러싼 집단 간 경쟁과 갈등의 공간으로 이해합니다. 토지, 자본, 정치적 영향력의 불평등한 배분에 주목합니다.
-                    </p>
-                    <div style="background: #ffffff; padding: 0.9rem 1.1rem; border-radius: 8px; border: 1px solid #fde68a; font-size: 0.88rem;">
-                        <strong>💡 국제개발 적용:</strong> 토지소유 구조와 빈곤, 개발사업 수혜의 불평등, 지역 엘리트의 사업자원 독점(Elite Capture) 분석
-                    </div>
-                </div>
-
-                <!-- 3.3 사회자본이론 -->
-                <div style="background: var(--purple-soft); border: 1px solid rgba(126,34,206,0.2); padding: 1.4rem; border-radius: 12px;">
-                    <h4 style="font-size: 1.05rem; color: var(--purple-primary); margin-bottom: 0.5rem;">3.3 사회자본이론 (Social Capital Theory)</h4>
-                    <p style="font-size: 0.92rem; color: var(--text-sub); line-height: 1.6; margin-bottom: 1rem;">
-                        사회적 관계 속에서 형성되는 신뢰, 규범, 네트워크 및 호혜성을 지역발전의 중요한 자원으로 이해합니다.
-                    </p>
-                    <div class="box-grid" style="grid-template-columns: repeat(3, 1fr);">
-                        <div style="background: #ffffff; padding: 1rem; border-radius: 8px; border: 1px solid rgba(126,34,206,0.15);">
-                            <div style="font-weight: 700; color: var(--purple-primary); font-size: 0.9rem;">🔗 결속형 (Bonding)</div>
-                            <div style="font-size: 0.82rem; color: var(--text-sub); margin-top: 0.3rem;">가족·친족·동질적 집단 내부의 강한 수평적 관계</div>
-                        </div>
-                        <div style="background: #ffffff; padding: 1rem; border-radius: 8px; border: 1px solid rgba(126,34,206,0.15);">
-                            <div style="font-weight: 700; color: var(--purple-primary); font-size: 0.9rem;">🌐 교량형 (Bridging)</div>
-                            <div style="font-size: 0.82rem; color: var(--text-sub); margin-top: 0.3rem;">서로 다른 마을·이질적 집단을 연결하는 관계</div>
-                        </div>
-                        <div style="background: #ffffff; padding: 1rem; border-radius: 8px; border: 1px solid rgba(126,34,206,0.15);">
-                            <div style="font-weight: 700; color: var(--purple-primary); font-size: 0.9rem;">🏛️ 연계형 (Linking)</div>
-                            <div style="font-size: 0.82rem; color: var(--text-sub); margin-top: 0.3rem;">주민과 정부·비정부기구·외부기관 간 수직적 관계</div>
-                        </div>
-                    </div>
-                </div>
-
+        <!-- 10. 새마을국제개발 -->
+        <section id="sec-saemaul">
+            <h2>10. 새마을국제개발에서의 지역사회구조 연구</h2>
+            <p><strong>전통적 접근:</strong> 외부자원 투입 → 인프라 구축 → 경제적 성과</p>
+            <p><strong>지역사회구조적 접근:</strong></p>
+            <div class="process-flow">
+                <div class="process-step">지역진단</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">주민조직</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">리더십</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">사회자본</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">주민참여</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">집단행동</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">지속가능성</div>
             </div>
-        </div>
-
-        <!-- 04. 집단행동이론 & 오스트롬 -->
-        <div class="card" id="sec-collective" style="border-left: 5px solid var(--amber-primary);">
-            <div class="card-header">
-                <div class="card-title" style="color: var(--amber-primary);">
-                    ⚙️ 4. 집단행동이론과 오스트롬의 공동자원 관리이론
-                </div>
-            </div>
-
-            <div style="margin-bottom: 1.5rem;">
-                <h3 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.5rem;">4.1 집단행동이론과 무임승차 문제</h3>
-                <p class="section-desc">
-                    공동의 이익이 존재하더라도 주민들이 반드시 공동행동에 자발적으로 참여하는 것은 아닙니다. 개인은 비용을 부담하지 않고 편익만 얻으려는 **무임승차(Free-riding)** 유인을 가질 수 있습니다.
-                </p>
-                <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; font-size: 0.88rem; color: var(--text-sub);">
-                    📌 <strong>새마을개발 연결:</strong> 마을길 조성, 공동관개시설 관리, 공동영농, 농산물 공동출하, 마을환경 개선, 공동기금 조성 → 개인의 선택을 집단의 공동행동으로 전환시키는 핵심 과제
-                </div>
-            </div>
-
-            <div>
-                <h3 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.5rem;">4.2 Ostrom의 공동자원(CPR) 자율 거버넌스 8대 원칙</h3>
-                <p class="section-desc">
-                    Elinor Ostrom 교수는 국가나 시장뿐만 아니라, 주민들이 스스로 제도를 형성하여 공동자원을 지속가능하게 관리할 수 있음을 증명했습니다.
-                </p>
-                <div class="box-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
-                    <div class="info-box"><div class="info-title">1. 명확한 경계</div><div class="info-body">참여 자격 및 자원의 물리적 경계 명확화</div></div>
-                    <div class="info-box"><div class="info-title">2. 조건 적합 규칙</div><div class="info-body">지역 여건에 맞는 혜택과 의무 규정</div></div>
-                    <div class="info-box"><div class="info-title">3. 의사결정 참여</div><div class="info-body">규칙 개격에 주민 대다수 참여</div></div>
-                    <div class="info-box"><div class="info-title">4. 자체 모니터링</div><div class="info-body">주민 스스로 자원 이용 상태 감시</div></div>
-                    <div class="info-box"><div class="info-title">5. 단계적 제재</div><div class="info-body">위반 정도에 따른 비례적 제재</div></div>
-                    <div class="info-box"><div class="info-title">6. 갈등해결 장치</div><div class="info-body">저비용의 신속한 갈등 중재 창구</div></div>
-                    <div class="info-box"><div class="info-title">7. 자율 조직권</div><div class="info-body">외부 정부의 주민 규칙 자율성 인정</div></div>
-                    <div class="info-box"><div class="info-title">8. 연계 거버넌스</div><div class="info-body">다층적 조직 간 유기적 역할 분담</div></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 05. 권력구조 -->
-        <div class="card" id="sec-power">
-            <div class="card-header">
-                <div class="card-title">👑 5. 지역사회 권력구조와 리더십</div>
-            </div>
-            
-            <div class="box-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 1.2rem;">
-                <div style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 1.2rem; border-radius: 10px;">
-                    <h4 style="font-size: 1rem; color: var(--navy-primary); margin-bottom: 0.5rem;">🏛️ 공식적 권력 (Formal Power)</h4>
-                    <p style="font-size: 0.88rem; color: var(--text-sub); line-height: 1.5;">
-                        • 지방정부 행정기관<br>
-                        • 공식 마을위원회<br>
-                        • 법적 선출 지도자 및 이장
-                    </p>
-                </div>
-                <div style="background: #fffbeb; border: 1px solid #fde68a; padding: 1.2rem; border-radius: 10px;">
-                    <h4 style="font-size: 1rem; color: var(--amber-primary); margin-bottom: 0.5rem;">🔍 비공식적 권력 (Informal Power)</h4>
-                    <p style="font-size: 0.88rem; color: var(--text-sub); line-height: 1.5;">
-                        • 전통적 지역 유력자 및 원로<br>
-                        • 대지주, 기업인, 종교 지도자<br>
-                        • 문중 및 친족집단 리더
-                    </p>
-                </div>
-            </div>
-
-            <div style="background: #f8fafc; border: 1px solid var(--border-color); padding: 1.1rem; border-radius: 8px; font-size: 0.9rem; color: var(--text-main);">
-                🧐 <strong>핵심 분석 질문:</strong> "실제 의사결정자는 누구인가?", "공식 지도자와 실질적 영향력자는 동일한가?", "자원 배분 과정에 누구의 영향력이 작용하는가?"
-            </div>
-        </div>
-
-        <!-- 06. 사회네트워크이론 -->
-        <div class="card" id="sec-network" style="border-left: 5px solid var(--purple-primary);">
-            <div class="card-header">
-                <div class="card-title" style="color: var(--purple-primary);">
-                    🕸️ 6. 사회네트워크이론 (Social Network Theory)
-                </div>
-            </div>
-
-            <p class="section-desc">
-                개인의 특성뿐만 아니라 개인과 개인, 조직과 조직 간 **관계의 구조**가 행동과 개발 성과를 결정합니다.
-            </p>
-
-            <div class="box-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 1.2rem;">
-                <div class="info-box"><div class="info-title">Node (마디)</div><div class="info-body">개인 또는 지역 조직</div></div>
-                <div class="info-box"><div class="info-title">Tie (연결선)</div><div class="info-body">행위자 간 관계 및 교류</div></div>
-                <div class="info-box"><div class="info-title">Density (밀도)</div><div class="info-body">네트워크 연결 촘촘함</div></div>
-                <div class="info-box"><div class="info-title">Centrality (중심성)</div><div class="info-body">특정 리더의 영향력 위치</div></div>
-                <div class="info-box"><div class="info-title">Bridge (다리)</div><div class="info-body">서로 다른 집단 연결자</div></div>
-            </div>
-
-            <div style="background: var(--purple-soft); border: 1px solid rgba(126,34,206,0.2); padding: 1.2rem; border-radius: 10px; font-size: 0.9rem; text-align: center; font-weight: 700; color: var(--purple-primary);">
-                농가 ↔ 마을리더 ↔ 협동조합 ↔ 지방정부 ↔ NGO ↔ 개발원조기관
-            </div>
-        </div>
-
-        <!-- 07. 회복력 -->
-        <div class="card" id="sec-resilience">
-            <div class="card-header">
-                <div class="card-title">🛡️ 7. 지역사회 회복력과 지속가능성</div>
-            </div>
-            
-            <p class="section-desc">
-                <strong>지역사회 회복력(Community Resilience):</strong> 경제·사회·환경적 충격에 대응하여 지역사회가 자율적으로 적응·회복·전환할 수 있는 능력입니다.
-            </p>
-
-            <div class="box-grid">
-                <div class="info-box"><div class="info-title">🌾 경제적 다양성</div><div class="info-body">단일 산업 의존 탈피 및 소득원 다변화</div></div>
-                <div class="info-box"><div class="info-title">🤝 사회적 신뢰</div><div class="info-body">위기 상황에서의 무임승차 방지 및 협력</div></div>
-                <div class="info-box"><div class="info-title">👑 지역 리더십</div><div class="info-body">위기 대응 및 자원 동원 리더십</div></div>
-                <div class="info-box"><div class="info-title">💡 학습 및 혁신능력</div><div class="info-body">새로운 기술 및 관습 적응 역량</div></div>
-            </div>
-        </div>
-
-        <!-- 08. 6대 접근방법 -->
-        <div class="card" id="sec-approaches" style="border-left: 5px solid var(--emerald-primary);">
-            <div class="card-header">
-                <div class="card-title" style="color: var(--emerald-primary);">
-                    🔬 8. 지역사회구조 연구의 6대 접근방법
-                </div>
-            </div>
-
-            <div class="box-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-                <div class="info-box">
-                    <div class="info-title">1. 생태학적 접근</div>
-                    <div class="info-body">인구 분포·이동, 토지이용, 산업구조, 정주체계 분석</div>
-                </div>
-                <div class="info-box">
-                    <div class="info-title">2. 사회구조적 접근</div>
-                    <div class="info-body">계층, 직업, 소득, 토지소유, 교육수준 불평등 파악</div>
-                </div>
-                <div class="info-box">
-                    <div class="info-title">3. 제도적 접근</div>
-                    <div class="info-body">공식 법률·정책과 비공식 관습·규범이 행동에 미치는 영향</div>
-                </div>
-                <div class="info-box">
-                    <div class="info-title">4. 사회네트워크 접근</div>
-                    <div class="info-body">중심성, 밀도, 연결성 및 정보·혁신 확산 경로 분석</div>
-                </div>
-                <div class="info-box">
-                    <div class="info-title">5. 참여적 접근</div>
-                    <div class="info-body">주민참여조사(PRA), 집단심층면접(FGD), 주민워크숍 활용</div>
-                </div>
-                <div class="info-box">
-                    <div class="info-title">6. 혼합방법론</div>
-                    <div class="info-body">정량분석(통계, GIS, SNA) + 정성분석(면접, 사례연구) 결합</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 09. 5단계 분석 틀 -->
-        <div class="card" id="sec-framework">
-            <div class="card-header">
-                <div class="card-title">🧩 9. 지역사회구조의 5단계 분석 틀</div>
-            </div>
-
-            <div class="flow-container">
-                <div class="flow-step">
-                    <div class="flow-step-num">STEP 1</div>
-                    <div class="flow-step-title">① 기초구조</div>
-                    <div style="font-size: 0.75rem; color: var(--text-sub); margin-top: 0.2rem;">인구·토지·산업·소득</div>
-                </div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step">
-                    <div class="flow-step-num">STEP 2</div>
-                    <div class="flow-step-title">② 관계구조</div>
-                    <div style="font-size: 0.75rem; color: var(--text-sub); margin-top: 0.2rem;">주민조직·네트워크·신뢰</div>
-                </div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step">
-                    <div class="flow-step-num">STEP 3</div>
-                    <div class="flow-step-title">③ 제도/권력</div>
-                    <div style="font-size: 0.75rem; color: var(--text-sub); margin-top: 0.2rem;">리더십·의사결정체계</div>
-                </div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step">
-                    <div class="flow-step-num">STEP 4</div>
-                    <div class="flow-step-title">④ 주민행동</div>
-                    <div style="font-size: 0.75rem; color: var(--text-sub); margin-top: 0.2rem;">참여·협력·집단행동</div>
-                </div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step" style="background: var(--rose-soft); border-color: var(--rose-primary);">
-                    <div class="flow-step-num">STEP 5</div>
-                    <div class="flow-step-title" style="color: var(--rose-primary);">⑤ 개발성과</div>
-                    <div style="font-size: 0.75rem; color: var(--text-sub); margin-top: 0.2rem;">빈곤감소·역량·지속가능성</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 10. 새마을국제개발 연구접근 -->
-        <div class="card" id="sec-saemaul" style="border-left: 5px solid var(--rose-primary);">
-            <div class="card-header">
-                <div class="card-title" style="color: var(--rose-primary);">
-                    🌱 10. 새마을국제개발에서의 지역사회구조 연구
-                </div>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.2rem;">
-                <div style="background: #f1f5f9; padding: 1.1rem; border-radius: 10px;">
-                    <h4 style="font-size: 0.98rem; color: var(--text-muted); margin-bottom: 0.4rem;">전통적 개발 접근 방식</h4>
-                    <p style="font-size: 0.88rem; color: var(--text-sub); font-weight: 600;">
-                        외부자원 투입 → 인프라 구축 → 단기 경제적 성과
-                    </p>
-                </div>
-                <div style="background: var(--rose-soft); border: 1px solid rgba(190,18,60,0.2); padding: 1.1rem; border-radius: 10px;">
-                    <h4 style="font-size: 0.98rem; color: var(--rose-primary); margin-bottom: 0.4rem;">지역사회구조적 개발 접근 방식</h4>
-                    <p style="font-size: 0.88rem; color: var(--rose-primary); font-weight: 700;">
-                        지역사회 진단 → 주민조직 → 리더십 → 사회자본 → 주민참여 → 집단행동 → 사업성과 → 역량강화 → 지속가능성
-                    </p>
-                </div>
-            </div>
-        </div>
+        </section>
 
         <!-- 11. 요약 표 및 5가지 -->
-        <div class="card" id="sec-summary-table">
-            <div class="card-header">
-                <div class="card-title">📋 11. 지역사회구조 주요 분석방법 표 & 핵심 5가지</div>
-            </div>
+        <section id="sec-summary-table">
+            <h2>11. 주요 분석방법 및 핵심 정리</h2>
 
-            <div style="overflow-x: auto; margin-bottom: 1.5rem;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 25%;">분석 영역</th>
-                            <th style="width: 30%;">주요 분석 방법</th>
-                            <th style="width: 45%;">핵심 분석 내용</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>인구·경제구조</td><td>기술통계·지역통계</td><td>인구, 산업, 소득, 고용 구조 분석</td></tr>
-                        <tr><td>사회계층</td><td>설문조사·계량분석</td><td>소득·자산·토지·교육 격차 측정</td></tr>
-                        <tr><td>사회자본</td><td>설문·요인분석</td><td>신뢰, 규범, 호혜성, 네트워크 수준</td></tr>
-                        <tr><td>주민참여</td><td>회귀분석·구조방정식</td><td>주민참여 결정요인 및 경로 파악</td></tr>
-                        <tr><td>집단행동</td><td>실험·게임이론</td><td>협력 발생 조건 및 무임승차 억제</td></tr>
-                        <tr><td>권력구조</td><td>심층면접·이해관계자 분석</td><td>지역 리더 및 실질적 영향력자 파악</td></tr>
-                        <tr><td>사회관계</td><td>사회네트워크분석(SNA)</td><td>중심성, 연결 밀도, 연결 구조 분석</td></tr>
-                        <tr><td>공간구조</td><td>GIS·공간통계</td><td>자원 및 시설 공간 접근성 측정</td></tr>
-                        <tr><td>제도 분석</td><td>사례연구·제도분석</td><td>공식·비공식 규칙의 실효성 평가</td></tr>
-                        <tr><td>주민인식</td><td>PRA · FGD</td><td>주민 현장 문제 및 자발적 개발 수요</td></tr>
-                    </tbody>
-                </table>
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>분석 영역</th>
+                        <th>주요 분석 방법</th>
+                        <th>분석 내용</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>인구·경제구조</td><td>기술통계·지역통계</td><td>인구, 산업, 소득, 고용 구조 분석</td></tr>
+                    <tr><td>사회계층</td><td>설문조사·계량분석</td><td>소득·자산·토지·교육 격차 측정</td></tr>
+                    <tr><td>사회자본</td><td>설문·요인분석</td><td>신뢰, 규범, 네트워크 수준 측정</td></tr>
+                    <tr><td>주민참여</td><td>회귀분석·구조방정식</td><td>참여 결정요인 파악</td></tr>
+                    <tr><td>집단행동</td><td>실험·게임이론</td><td>협력 발생 조건 및 무임승차 억제</td></tr>
+                    <tr><td>권력구조</td><td>심층면접·이해관계자 분석</td><td>지역 리더 및 실질적 영향력자 파악</td></tr>
+                    <tr><td>사회관계</td><td>사회네트워크분석(SNA)</td><td>중심성, 밀도, 연결 구조 분석</td></tr>
+                    <tr><td>공간구조</td><td>GIS·공간통계</td><td>자원 및 시설 접근성 분석</td></tr>
+                    <tr><td>제도 분석</td><td>사례연구·제도분석</td><td>공식·비공식 규칙 영향 평가</td></tr>
+                    <tr><td>주민인식</td><td>FGD · PRA</td><td>주민 문제 및 개발 수요 파악</td></tr>
+                </tbody>
+            </table>
 
-            <div style="background: var(--rose-soft); border: 2px solid var(--rose-primary); padding: 1.4rem; border-radius: 12px;">
-                <h4 style="font-size: 1.1rem; color: var(--rose-primary); margin-bottom: 0.8rem;">💡 지역사회구조 연구에서 반드시 기억해야 할 5가지</h4>
-                <ol style="font-size: 0.95rem; color: var(--text-main); line-height: 1.7; padding-left: 1.2rem;">
-                    <li><strong>지역사회는 단순한 공간이 아니라 관계의 체계이다.</strong></li>
-                    <li><strong>개발성과는 자원의 양뿐만 아니라 지역사회의 구조에 의해 결정된다.</strong></li>
-                    <li><strong>권력·제도·사회자본·네트워크가 주민참여와 집단행동을 좌우한다.</strong></li>
-                    <li><strong>개발사업에서는 누가 참여하고 누가 배제되는지를 반드시 분석해야 한다.</strong></li>
-                    <li><strong>지속가능한 국제개발은 외부 지원보다 지역사회 스스로 문제를 해결할 수 있는 역량을 형성하는 데 초점을 두어야 한다.</strong></li>
+            <div class="callout" style="margin-top: 1.5rem;">
+                <strong>기억해야 할 5가지 핵심 원칙:</strong>
+                <ol style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <li>지역사회는 공간이 아니라 관계의 체계이다.</li>
+                    <li>개발성과는 자원의 양뿐만 아니라 지역사회의 구조에 의해 결정된다.</li>
+                    <li>권력·제도·사회자본·네트워크가 주민참여와 집단행동을 좌우한다.</li>
+                    <li>개발사업에서는 누가 참여하고 누가 배제되는지를 분석해야 한다.</li>
+                    <li>지속가능한 개발은 외부 지원보다 지역사회의 자율적 문제해결 역량 형성에 초점을 두어야 한다.</li>
                 </ol>
             </div>
-        </div>
+        </section>
 
     </div>
 
-    <!-- 🧭 좌측 플로팅 바 (Floating Side Navigator) -->
+    <!-- 좌측 스티키 목차 -->
     <nav class="side-nav">
-        <div class="side-nav-title">🧭 11개 단원 목차</div>
-        <a href="#sec-concept" class="side-nav-item active" data-target="sec-concept"><span class="side-icon">🏘️</span> 1. 개념</a>
-        <a href="#sec-why" class="side-nav-item" data-target="sec-why"><span class="side-icon">🔬</span> 2. 연구 필요성</a>
-        <a href="#sec-theories" class="side-nav-item" data-target="sec-theories"><span class="side-icon">📚</span> 3. 주요 이론</a>
-        <a href="#sec-collective" class="side-nav-item" data-target="sec-collective"><span class="side-icon">⚙️</span> 4. 집단행동/오스트롬</a>
-        <a href="#sec-power" class="side-nav-item" data-target="sec-power"><span class="side-icon">👑</span> 5. 권력구조</a>
-        <a href="#sec-network" class="side-nav-item" data-target="sec-network"><span class="side-icon">🕸️</span> 6. 네트워크이론</a>
-        <a href="#sec-resilience" class="side-nav-item" data-target="sec-resilience"><span class="side-icon">🛡️</span> 7. 회복력</a>
-        <a href="#sec-approaches" class="side-nav-item" data-target="sec-approaches"><span class="side-icon">🔬</span> 8. 6대 접근법</a>
-        <a href="#sec-framework" class="side-nav-item" data-target="sec-framework"><span class="side-icon">🧩</span> 9. 5단계 분석틀</a>
-        <a href="#sec-saemaul" class="side-nav-item" data-target="sec-saemaul"><span class="side-icon">🌱</span> 10. 새마을 연구접근</a>
-        <a href="#sec-summary-table" class="side-nav-item" data-target="sec-summary-table"><span class="side-icon">📋</span> 11. 분석표 & 5가지</a>
+        <div class="side-nav-title">목차 Nav</div>
+        <a href="#sec-concept" class="side-nav-item active" data-target="sec-concept">1. 개념</a>
+        <a href="#sec-why" class="side-nav-item" data-target="sec-why">2. 연구 이유</a>
+        <a href="#sec-theories" class="side-nav-item" data-target="sec-theories">3. 주요 이론</a>
+        <a href="#sec-collective" class="side-nav-item" data-target="sec-collective">4. 집단행동/Ostrom</a>
+        <a href="#sec-power" class="side-nav-item" data-target="sec-power">5. 권력구조</a>
+        <a href="#sec-network" class="side-nav-item" data-target="sec-network">6. 네트워크이론</a>
+        <a href="#sec-resilience" class="side-nav-item" data-target="sec-resilience">7. 회복력</a>
+        <a href="#sec-approaches" class="side-nav-item" data-target="sec-approaches">8. 6대 접근법</a>
+        <a href="#sec-framework" class="side-nav-item" data-target="sec-framework">9. 5단계 분석틀</a>
+        <a href="#sec-saemaul" class="side-nav-item" data-target="sec-saemaul">10. 새마을 연구접근</a>
+        <a href="#sec-summary-table" class="side-nav-item" data-target="sec-summary-table">11. 분석방법 요약</a>
     </nav>
 
     <footer>
@@ -874,7 +587,6 @@
     </footer>
 
     <script>
-        // 스크롤 트래킹 IntersectionObserver
         function initScrollTracking() {
             const sectionIds = [
                 'sec-concept', 'sec-why', 'sec-theories', 'sec-collective', 
