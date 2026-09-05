@@ -4,84 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>박문식 박사과정 학업 & 연구 포털</title>
-    <meta name="description" content="영남대학교 새마을국제개발학과 박사 1기 & 2기 학업·연구·과제 아카이브">
+    <meta name="description" content="영남대학교 대학원 새마을국제개발학과 박사 1기 및 2기 학업·연구 아카이브">
     <!-- Open Graph -->
     <meta property="og:title" content="박문식 박사과정 학업 & 연구 포털">
-    <meta property="og:description" content="영남대학교 새마을국제개발학과 박사 1기 및 2기 연구·과제·시뮬레이터 아카이브">
+    <meta property="og:description" content="영남대학교 대학원 새마을국제개발학과 박사 1기 및 2기 연구·과제·시뮬레이터 아카이브">
     <meta property="og:type" content="website">
     
     <style>
-        /* 프리젠테이션 (Presentation / Freesentation) 웹폰트 정의 */
-        @font-face {
-            font-family: 'Presentation';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-1Thin.woff2') format('woff2');
-            font-weight: 100;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'Presentation';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-2ExtraLight.woff2') format('woff2');
-            font-weight: 200;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'Presentation';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-3Light.woff2') format('woff2');
-            font-weight: 300;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'Presentation';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-4Regular.woff2') format('woff2');
-            font-weight: 400;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'Presentation';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-5Medium.woff2') format('woff2');
-            font-weight: 500;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'Presentation';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-6SemiBold.woff2') format('woff2');
-            font-weight: 600;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'Presentation';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-7Bold.woff2') format('woff2');
-            font-weight: 700;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'Presentation';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-8ExtraBold.woff2') format('woff2');
-            font-weight: 800;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'Presentation';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-9Black.woff2') format('woff2');
-            font-weight: 900;
-            font-display: swap;
-        }
+        /* 프리젠테이션 (Presentation) 웹폰트 정의 */
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-3Light.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-4Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-6SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-7Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
 
         :root {
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
-            --text-main: #0f172a;
+            --text-main: #1e293b;
             --text-sub: #475569;
             --text-muted: #64748b;
-            --border-color: #e2e8f0;
+            --border-color: #cbd5e1;
             
             --navy-primary: #1e3a8a;
             --navy-soft: #eff6ff;
@@ -89,21 +31,17 @@
             --emerald-primary: #047857;
             --emerald-soft: #ecfdf5;
             
-            --amber-primary: #b45309;
+            --amber-primary: #854d0e;
             --amber-soft: #fffbeb;
 
             --rose-primary: #be123c;
             --rose-soft: #fff1f2;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Presentation', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            font-family: 'Presentation', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             min-height: 100vh;
@@ -111,8 +49,7 @@
             flex-direction: column;
             align-items: center;
             padding: 3.5rem 1.5rem;
-            background-image: radial-gradient(#cbd5e1 0.75px, transparent 0.75px);
-            background-size: 24px 24px;
+            line-height: 1.6;
         }
 
         @media (max-width: 640px) {
@@ -131,12 +68,12 @@
             margin-bottom: 2.5rem;
             width: 100%;
             max-width: 960px;
+            border-bottom: 2px solid var(--text-main);
+            padding-bottom: 2rem;
         }
 
         .univ-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
+            display: inline-block;
             background: #ffffff;
             border: 1px solid var(--border-color);
             padding: 0.4rem 1rem;
@@ -144,12 +81,11 @@
             font-size: 0.85rem;
             font-weight: 600;
             color: var(--navy-primary);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
             margin-bottom: 1.2rem;
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.3rem;
             font-weight: 700;
             color: var(--text-main);
             letter-spacing: -0.02em;
@@ -162,14 +98,9 @@
             align-items: center;
             gap: 0.8rem;
             color: var(--text-sub);
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
             flex-wrap: wrap;
-        }
-
-        .header-meta .author {
-            font-weight: 700;
-            color: var(--text-main);
         }
 
         .reference-links {
@@ -177,23 +108,19 @@
             justify-content: center;
             gap: 0.6rem;
             flex-wrap: wrap;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
 
         .ref-link {
             background: #ffffff;
             color: var(--text-sub);
             border: 1px solid var(--border-color);
-            padding: 0.45rem 1rem;
-            border-radius: 8px;
+            padding: 0.4rem 0.9rem;
+            border-radius: 6px;
             text-decoration: none;
             font-size: 0.85rem;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
+            font-weight: 600;
             transition: all 0.2s ease;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
         }
 
         .ref-link:hover {
@@ -203,7 +130,7 @@
         }
 
         .subtitle {
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: var(--text-muted);
         }
 
@@ -213,10 +140,9 @@
             justify-content: center;
             background: #e2e8f0;
             padding: 4px;
-            border-radius: 12px;
+            border-radius: 8px;
             margin-bottom: 2.5rem;
             gap: 4px;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
 
         .tab-btn {
@@ -225,7 +151,7 @@
             color: var(--text-sub);
             border: none;
             padding: 0.6rem 1.4rem;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
@@ -239,7 +165,7 @@
         .tab-btn.active {
             background: #ffffff;
             color: var(--navy-primary);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         /* 섹션 헤더 */
@@ -258,17 +184,13 @@
             font-size: 1.4rem;
             font-weight: 700;
             color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
         }
 
         .section-header .tag {
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             padding: 0.2rem 0.6rem;
             border-radius: 6px;
             font-weight: 600;
-            text-transform: uppercase;
         }
 
         .tag-doc2 { background: var(--emerald-soft); color: var(--emerald-primary); border: 1px solid rgba(4,120,87,0.2); }
@@ -282,14 +204,13 @@
             padding: 0.8rem 1.2rem;
             background: #ffffff;
             border-left: 4px solid var(--navy-primary);
-            border-radius: 0 8px 8px 0;
+            border-radius: 0 6px 6px 0;
             border-top: 1px solid var(--border-color);
             border-right: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
         }
 
         .course-sub-header h3 {
@@ -299,9 +220,9 @@
         }
 
         .canvas-link {
-            background: #fef2f2;
-            color: #dc2626;
-            border: 1px solid #fecaca;
+            background: #ffffff;
+            color: var(--navy-primary);
+            border: 1px solid var(--border-color);
             padding: 0.3rem 0.75rem;
             border-radius: 6px;
             font-size: 0.8rem;
@@ -311,9 +232,8 @@
         }
 
         .canvas-link:hover {
-            background: #dc2626;
+            background: var(--navy-primary);
             color: #ffffff;
-            border-color: #dc2626;
         }
 
         /* 그리드 및 카드 디자인 */
@@ -329,50 +249,48 @@
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 8px;
             padding: 1.6rem;
             text-decoration: none;
             color: var(--text-main);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
             display: flex;
             flex-direction: column;
             height: 100%;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
             position: relative;
         }
 
         .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
             border-color: var(--navy-primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
 
         .chapter-badge {
             background: #f1f5f9;
             color: var(--text-sub);
-            padding: 0.3rem 0.65rem;
-            border-radius: 6px;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
             font-size: 0.78rem;
             font-weight: 600;
             align-self: flex-start;
-            margin-bottom: 1.2rem;
-            border: 1px solid #e2e8f0;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
         }
 
         .card-title {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 700;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
             line-height: 1.4;
             color: var(--text-main);
-            letter-spacing: -0.01em;
         }
 
         .card-desc {
             color: var(--text-sub);
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             line-height: 1.6;
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.5rem;
             flex-grow: 1;
         }
 
@@ -380,38 +298,16 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: var(--navy-primary);
-            padding-top: 1rem;
-            border-top: 1px dashed var(--border-color);
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--border-color);
         }
-
-        .card-footer span {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .arrow {
-            transition: transform 0.2s ease;
-        }
-
-        .card:hover .arrow {
-            transform: translateX(4px);
-        }
-
-        /* 각 과목 및 카드별 포인트 태그 */
-        .card.doc2-card1 .chapter-badge { background: var(--emerald-soft); color: var(--emerald-primary); border-color: rgba(4,120,87,0.2); }
-        .card.doc2-card-chart .chapter-badge { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
-        .card.doc2-card2 .chapter-badge { background: var(--navy-soft); color: var(--navy-primary); border-color: rgba(30,58,138,0.2); }
-        .card.doc2-card3 .chapter-badge { background: #faf5ff; color: #7e22ce; border-color: #f3e8ff; }
-        .card.doc2-card-mf .chapter-badge { background: var(--amber-soft); color: var(--amber-primary); border-color: rgba(180,83,9,0.2); }
-        .card.doc2-card-cs .chapter-badge { background: var(--rose-soft); color: var(--rose-primary); border-color: rgba(190,18,60,0.2); }
 
         footer {
             margin-top: 4rem;
-            padding: 2rem;
+            padding-top: 2rem;
             text-align: center;
             border-top: 1px solid var(--border-color);
             width: 100%;
@@ -433,332 +329,281 @@
 <body>
 
     <header>
-        <div class="univ-badge">🏛️ 영남대학교 대학원 새마을국제개발학과</div>
+        <div class="univ-badge">영남대학교 대학원 새마을국제개발학과</div>
         <h1 id="mainTitle">박문식 박사과정 학업 & 연구 아카이브</h1>
         <div class="header-meta">
-            <span>박사 1기 & 2기 통합 포털</span>
+            <span>박사 1기 및 2기 과정 연구 포털</span>
             <span>|</span>
             <span class="author">연구자 박문식</span>
         </div>
         <div class="reference-links">
-            <a href="https://canvas.yu.ac.kr/" target="_blank" class="ref-link">
-                영남대 Canvas LMS <span>↗</span>
-            </a>
-            <a href="http://archives.saemaul.or.kr/" target="_blank" class="ref-link">
-                새마을 아카이브 <span>↗</span>
-            </a>
-            <a href="https://www.archives.go.kr/next/viewMainNew.do" target="_blank" class="ref-link">
-                국가기록원 <span>↗</span>
-            </a>
+            <a href="https://canvas.yu.ac.kr/" target="_blank" class="ref-link">영남대 Canvas LMS ↗</a>
+            <a href="http://archives.saemaul.or.kr/" target="_blank" class="ref-link">새마을 아카이브 ↗</a>
+            <a href="https://www.archives.go.kr/next/viewMainNew.do" target="_blank" class="ref-link">국가기록원 ↗</a>
         </div>
-        <p class="subtitle">열람하실 수강 기수(박사 1기 / 박사 2기) 및 과목별 연구 자료를 선택해 주세요.</p>
+        <p class="subtitle">수강 기수(박사 1기 / 박사 2기) 및 과목별 연구 자료를 열람할 수 있습니다.</p>
     </header>
 
     <!-- 탭 필터 영역 -->
     <div class="tab-container">
-        <button class="tab-btn active" onclick="filterSection('all', this)">🌐 전체 아카이브</button>
-        <button class="tab-btn" onclick="filterSection('doc2', this)">🔬 박사 2기 (3개 과목)</button>
-        <button class="tab-btn" onclick="filterSection('doc1', this)">🎓 박사 1기 (새마을세미나)</button>
+        <button class="tab-btn active" onclick="filterSection('all', this)">전체 아카이브</button>
+        <button class="tab-btn" onclick="filterSection('doc2', this)">박사 2기 (3개 과목)</button>
+        <button class="tab-btn" onclick="filterSection('doc1', this)">박사 1기 (새마을세미나)</button>
     </div>
 
     <!-- 박사 2기 섹션 -->
     <div class="section-header doc2-group" id="sec-doc2">
-        <h2>🔬 박사 2기 과정 <span class="tag tag-doc2">3개 개설과목</span></h2>
+        <h2>박사 2기 과정 <span class="tag tag-doc2">3개 개설과목</span></h2>
     </div>
 
     <!-- 2기 과목 1: 계량분석방법론연구(0680-01) -->
     <div class="course-sub-header doc2-group">
-        <h3>📊 계량분석방법론연구 (0680-01)</h3>
+        <h3>계량분석방법론연구 (0680-01)</h3>
         <a href="https://canvas.yu.ac.kr/courses/35238" target="_blank" class="canvas-link">Canvas 강의실 ↗</a>
     </div>
     <div class="grid-container doc2-group" id="grid-doc2-econometrics">
         
-        <!-- 계량 1강 시뮬레이터 (NEW) -->
-        <a href="doc2_econometrics/lecture1.html" class="card doc2-card1">
-            <div class="chapter-badge">제 1 강 [시뮬레이터]</div>
-            <div class="card-title">회귀분석(Regression Analysis) & OLS 시뮬레이터</div>
+        <!-- 계량 1강 시뮬레이터 -->
+        <a href="doc2_econometrics/lecture1.html" class="card">
+            <div class="chapter-badge">제1강 시뮬레이터</div>
+            <div class="card-title">회귀분석 및 OLS 시뮬레이터</div>
             <div class="card-desc">
-                x축 소득(X), y축 소비(Y) 60개 관측치 데이터 산점도, 데이터별 ID 툴팁, 무작위 30% 표본추출 OLS 시뮬레이션을 직접 체험합니다.
+                소득(X)과 소비(Y) 60개 관측치 데이터 산점도, 데이터별 ID 툴팁, 무작위 30% 표본추출 OLS 시뮬레이션
             </div>
             <div class="card-footer">
-                <span>시뮬레이터 실행하기 <span class="arrow">→</span></span>
+                <span>시뮬레이터 실행하기 →</span>
             </div>
         </a>
 
         <!-- 계량 1강 원본 PDF -->
-        <a href="doc2_econometrics/제1강 회귀분석-1.pdf" target="_blank" class="card doc2-card-chart">
-            <div class="chapter-badge">제 1 강 [강의자료 PDF]</div>
+        <a href="doc2_econometrics/제1강 회귀분석-1.pdf" target="_blank" class="card">
+            <div class="chapter-badge">제1강 강의자료 PDF</div>
             <div class="card-title">제1강 회귀분석 이론 강의안</div>
             <div class="card-desc">
-                $X$(소득)와 $Y$(소비) 간의 관계, OLS 추정량의 BLUE 성질, 중심극한정리(CLT), 가설검정($t$-value, $p$-value) 및 결정계수($R^2$) 이론 정리
+                소득과 소비의 관계, OLS 추정량의 BLUE 성질, 중심극한정리(CLT), 가설검정 및 결정계수 이론
             </div>
             <div class="card-footer">
-                <span>PDF 열람하기 <span class="arrow">→</span></span>
+                <span>PDF 열람하기 →</span>
             </div>
         </a>
 
         <!-- 계량 데이터셋 -->
-        <a href="doc2_econometrics/소득과소비_제1장데이터.xlsx" target="_blank" class="card doc2-card2">
-            <div class="chapter-badge">실습 데이터 [XLSX]</div>
+        <a href="doc2_econometrics/소득과소비_제1장데이터.xlsx" target="_blank" class="card">
+            <div class="chapter-badge">실습 데이터 XLSX</div>
             <div class="card-title">소득과 소비 제1장 실습 데이터셋</div>
             <div class="card-desc">
-                60개 가구의 소득($X$)과 소비($Y$) 관측치 데이터로, OLS 회귀분석 및 표본추출 시뮬레이션 실습용 엑셀 데이터 파일
+                60개 가구의 소득과 소비 관측치 데이터로, 회귀분석 및 표본추출 실습용 엑셀 데이터 파일
             </div>
             <div class="card-footer">
-                <span>데이터 다운로드 <span class="arrow">→</span></span>
+                <span>데이터 다운로드 →</span>
             </div>
         </a>
 
         <!-- 계량 Gujarati 교재 -->
-        <a href="doc2_econometrics/Basic Econometrics Gujarati.pdf" target="_blank" class="card doc2-card3">
-            <div class="chapter-badge">주교재 [PDF Full]</div>
+        <a href="doc2_econometrics/Basic Econometrics Gujarati.pdf" target="_blank" class="card">
+            <div class="chapter-badge">주교재 PDF</div>
             <div class="card-title">Basic Econometrics (Gujarati)</div>
             <div class="card-desc">
-                계량경제학 명저 Basic Econometrics 풀버전 교재(1,024p). 기초회귀, 다중회귀, 이판성, 자기상관 및 패널분석 포함
+                계량경제학 주교재 Basic Econometrics (1,024p). 기초회귀, 다중회귀, 이분산성, 자기상관 및 패널분석
             </div>
             <div class="card-footer">
-                <span>교재 PDF 열람 <span class="arrow">→</span></span>
+                <span>교재 PDF 열람 →</span>
             </div>
         </a>
     </div>
 
     <!-- 2기 과목 2: 소액금융과새마을운동(0681-01) -->
     <div class="course-sub-header doc2-group" style="border-left-color: #b45309;">
-        <h3>💰 소액금융과새마을운동 (0681-01)</h3>
+        <h3>소액금융과 새마을운동 (0681-01)</h3>
         <a href="https://canvas.yu.ac.kr/courses/34597" target="_blank" class="canvas-link">Canvas 강의실 ↗</a>
     </div>
     <div class="grid-container doc2-group" id="grid-doc2-microfinance">
-        <a href="https://canvas.yu.ac.kr/courses/34597" target="_blank" class="card doc2-card-mf">
-            <div class="chapter-badge">과목 안내 [LMS 연동]</div>
+        <a href="https://canvas.yu.ac.kr/courses/34597" target="_blank" class="card">
+            <div class="chapter-badge">과목 안내</div>
             <div class="card-title">소액금융과 새마을운동 (0681-01)</div>
             <div class="card-desc">
                 개발도상국 마이크로파이낸스(Microfinance)와 한국 새마을금고의 개발 및 금융 포용성 연구 과목
             </div>
             <div class="card-footer">
-                <span>Canvas 바로가기 <span class="arrow">→</span></span>
+                <span>Canvas 바로가기 →</span>
             </div>
         </a>
     </div>
 
     <!-- 2기 과목 3: 지역사회구조연구(0682-01) -->
     <div class="course-sub-header doc2-group" style="border-left-color: #be123c;">
-        <h3>🏘️ 지역사회구조연구 (0682-01)</h3>
+        <h3>지역사회구조연구 (0682-01)</h3>
         <a href="https://canvas.yu.ac.kr/courses/34586" target="_blank" class="canvas-link">Canvas 강의실 ↗</a>
     </div>
     <div class="grid-container doc2-group" id="grid-doc2-community">
-        <!-- 과목 종합 포털 (NEW) -->
-        <a href="doc3_community/index.html" class="card doc2-card-cs">
-            <div class="chapter-badge">교과목 종합 포털 [NEW]</div>
-            <div class="card-title">지역사회구조연구 교과목 포털 & 15주차 로드맵</div>
+        <!-- 과목 종합 포털 -->
+        <a href="doc3_community/index.html" class="card">
+            <div class="chapter-badge" style="background: var(--rose-soft); color: var(--rose-primary);">교과목 포털</div>
+            <div class="card-title">지역사회구조연구 교과목 포털 및 15주차 로드맵</div>
             <div class="card-desc">
-                15주차 커리큘럼 타임라인, 4대 수업목표, 학습 평가 비율(중간 20%, 기말 20%, 발표/과제 60%) 및 Friedmann 주교재 정보 안내
+                15주차 커리큘럼 타임라인, 수업목표, 학습 평가 비율(중간 20%, 기말 20%, 발표/과제 60%) 및 Friedmann 교재 안내
             </div>
             <div class="card-footer">
-                <span>포털 들어가기 <span class="arrow">→</span></span>
+                <span>포털 들어가기 →</span>
             </div>
         </a>
 
-        <!-- 제1강 시뮬레이터 및 강의안 (NEW) -->
-        <a href="doc3_community/lecture1.html" class="card doc2-card1">
-            <div class="chapter-badge">제 1 강 [웹강의안/시뮬레이터]</div>
+        <!-- 제1강 시뮬레이터 및 강의안 -->
+        <a href="doc3_community/lecture1.html" class="card">
+            <div class="chapter-badge" style="background: var(--emerald-soft); color: var(--emerald-primary);">제1강 강의안</div>
             <div class="card-title">지역사회구조 연구의 이론과 접근방법</div>
             <div class="card-desc">
-                경제적·사회적·문화적·공간적 4대 분석 관점 인터랙티브 대조 및 John Friedmann 중심지-주변지(Core-Periphery) 공간 시뮬레이션
+                경제적·사회적·문화적·공간적 4대 분석 관점 및 11개 학술 단원 기반 강의 페이지
             </div>
             <div class="card-footer">
-                <span>1강 강의안 열람하기 <span class="arrow">→</span></span>
+                <span>1강 강의안 열람하기 →</span>
             </div>
         </a>
 
         <!-- Canvas LMS 바로가기 -->
-        <a href="https://canvas.yu.ac.kr/courses/34586" target="_blank" class="card doc2-card-chart">
-            <div class="chapter-badge">과목 안내 [Canvas LMS 연동]</div>
+        <a href="https://canvas.yu.ac.kr/courses/34586" target="_blank" class="card">
+            <div class="chapter-badge">LMS 연동</div>
             <div class="card-title">영남대학교 Canvas LMS 강의실</div>
             <div class="card-desc">
                 지역사회의 사회적·경제적 구조 변화와 네트워크, 주민 참여 및 의사결정 연구 과목 공식 강의실
             </div>
             <div class="card-footer">
-                <span>Canvas 바로가기 <span class="arrow">→</span></span>
+                <span>Canvas 바로가기 →</span>
             </div>
         </a>
     </div>
 
-
     <!-- 박사 1기 섹션 -->
     <div class="section-header doc1-group" id="sec-doc1">
-        <h2>🎓 박사 1기 과정 <span class="tag tag-doc1">새마을국제개발세미나</span></h2>
+        <h2>박사 1기 과정 <span class="tag tag-doc1">새마을국제개발세미나</span></h2>
     </div>
 
     <div class="grid-container doc1-group" id="grid-doc1">
 
-        <!-- 제1장 (PDF) -->
-        <a href="새마을운동세미나 과제 1주차  새마을운동 개관_22650117_박문식-1.pdf" target="_blank" class="card ch1">
-            <div class="chapter-badge">제 1 주차 [PDF]</div>
+        <a href="새마을운동세미나 과제 1주차  새마을운동 개관_22650117_박문식-1.pdf" target="_blank" class="card">
+            <div class="chapter-badge">제1주차 PDF</div>
             <div class="card-title">새마을운동 개관</div>
             <div class="card-desc">
                 새마을운동의 전반적인 개요와 시작 배경을 정리한 연구 과제
             </div>
-            <div class="card-footer">
-                <span>PDF 열람하기 <span class="arrow">→</span></span>
-            </div>
+            <div class="card-footer"><span>PDF 열람하기 →</span></div>
         </a>
 
-        <!-- 제2장 (PDF) -->
-        <a href="새마을운동세미나 과제 2주차_농지개혁_22650117_박문식.pdf" target="_blank" class="card ch2">
-            <div class="chapter-badge">제 2 주차 [PDF]</div>
+        <a href="새마을운동세미나 과제 2주차_농지개혁_22650117_박문식.pdf" target="_blank" class="card">
+            <div class="chapter-badge">제2주차 PDF</div>
             <div class="card-title">농지개혁</div>
             <div class="card-desc">
                 새마을운동 이전의 농지개혁 과정과 그 사회경제적 의미 분석
             </div>
-            <div class="card-footer">
-                <span>PDF 열람하기 <span class="arrow">→</span></span>
-            </div>
+            <div class="card-footer"><span>PDF 열람하기 →</span></div>
         </a>
 
-        <!-- 제3장 (PDF) -->
-        <a href="새마을운동세미나 과제 3주차 인센티브와 근면 그리고 협력.pdf" target="_blank" class="card ch3">
-            <div class="chapter-badge">제 3 주차 [PDF]</div>
+        <a href="새마을운동세미나 과제 3주차 인센티브와 근면 그리고 협력.pdf" target="_blank" class="card">
+            <div class="chapter-badge">제3주차 PDF</div>
             <div class="card-title">인센티브와 근면 그리고 협력</div>
             <div class="card-desc">
                 인센티브 제도가 농민들의 근면성과 자발적 협력에 미친 영향 고찰
             </div>
-            <div class="card-footer">
-                <span>PDF 열람하기 <span class="arrow">→</span></span>
-            </div>
+            <div class="card-footer"><span>PDF 열람하기 →</span></div>
         </a>
 
-        <!-- 제4장 (PDF) -->
-        <a href="새마을운동세미나 과제 4주차  열망과 마인드셋의 변화.pdf" target="_blank" class="card ch4">
-            <div class="chapter-badge">제 4 주차 [PDF]</div>
+        <a href="새마을운동세미나 과제 4주차  열망과 마인드셋의 변화.pdf" target="_blank" class="card">
+            <div class="chapter-badge">제4주차 PDF</div>
             <div class="card-title">열망과 마인드셋의 변화</div>
             <div class="card-desc">
                 성공에 대한 열망이 농촌 사회의 마인드셋을 어떻게 변화시켰는지 분석
             </div>
-            <div class="card-footer">
-                <span>PDF 열람하기 <span class="arrow">→</span></span>
-            </div>
+            <div class="card-footer"><span>PDF 열람하기 →</span></div>
         </a>
-        
-        <!-- 제5장 -->
-        <a href="chapter5/index.html" class="card ch5">
-            <div class="chapter-badge">제 5 장 [시뮬레이터]</div>
+
+        <a href="chapter5/index.html" class="card">
+            <div class="chapter-badge">제5장 시뮬레이터</div>
             <div class="card-title">전망이론과 마인드셋 효과</div>
             <div class="card-desc">
                 새마을운동과 행동경제학 전망이론을 통한 마인드셋 변화 효과 분석
             </div>
-            <div class="card-footer">
-                <span>열람하기 <span class="arrow">→</span></span>
-            </div>
+            <div class="card-footer"><span>열람하기 →</span></div>
         </a>
 
-        <!-- 제6장 -->
-        <a href="chapter6/index.html" class="card ch6">
-            <div class="chapter-badge">제 6 장 [시뮬레이터]</div>
+        <a href="chapter6/index.html" class="card">
+            <div class="chapter-badge">제6장 시뮬레이터</div>
             <div class="card-title">마을간 경쟁, 차등지원, 그리고 협력</div>
             <div class="card-desc">
                 마을간 경쟁과 차등적 지원이 집단 협력을 도출해낸 기전 분석
             </div>
-            <div class="card-footer">
-                <span>열람하기 <span class="arrow">→</span></span>
-            </div>
+            <div class="card-footer"><span>열람하기 →</span></div>
         </a>
 
-        <!-- 제7장 -->
-        <a href="chapter7/index.html" class="card ch7">
-            <div class="chapter-badge">제 7 장 [시뮬레이터]</div>
+        <a href="chapter7/index.html" class="card">
+            <div class="chapter-badge">제7장 시뮬레이터</div>
             <div class="card-title">정부의 맞대응전략 (Tit-for-Tat)</div>
             <div class="card-desc">
                 정부의 맞대응전략(Tit-for-Tat) 원리를 구현한 인터랙티브 시뮬레이터
             </div>
-            <div class="card-footer">
-                <span>시뮬레이터 실행 <span class="arrow">→</span></span>
-            </div>
+            <div class="card-footer"><span>시뮬레이터 실행 →</span></div>
         </a>
 
-        <!-- 제8장 -->
-        <a href="chapter8/index.html" class="card ch8">
-            <div class="chapter-badge">제 8 장 [시뮬레이터]</div>
+        <a href="chapter8/index.html" class="card">
+            <div class="chapter-badge">제8장 시뮬레이터</div>
             <div class="card-title">새마을지도자 리더십과 마을경쟁</div>
             <div class="card-desc">
                 마을간 경쟁을 촉진시킨 지도자 리더십과 솔선수범 모형 분석
             </div>
-            <div class="card-footer">
-                <span>열람하기 <span class="arrow">→</span></span>
-            </div>
+            <div class="card-footer"><span>열람하기 →</span></div>
         </a>
 
-        <!-- 제9장 -->
-        <a href="chapter9/index.html" class="card ch9">
-            <div class="chapter-badge">제 9 장 [시뮬레이터]</div>
+        <a href="chapter9/index.html" class="card">
+            <div class="chapter-badge">제9장 시뮬레이터</div>
             <div class="card-title">네트워크 상호성과 공간 시뮬레이션</div>
             <div class="card-desc">
                 마틴 노박의 공간진화 죄수의 딜레마 및 동막마을 사례연구 분석
             </div>
-            <div class="card-footer">
-                <span>열람하기 <span class="arrow">→</span></span>
-            </div>
+            <div class="card-footer"><span>열람하기 →</span></div>
         </a>
 
-        <!-- 제10장 -->
-        <a href="chapter10/index.html" class="card ch10">
-            <div class="chapter-badge">제 10 장 [시뮬레이터]</div>
+        <a href="chapter10/index.html" class="card">
+            <div class="chapter-badge">제10장 시뮬레이터</div>
             <div class="card-title">근검절약 정신과 Solow 자본축적</div>
             <div class="card-desc">
                 저축 및 투자의 선순환 구조와 1인당 자본 변화의 Solow 모형 시뮬레이션
             </div>
-            <div class="card-footer">
-                <span>시뮬레이터 실행 <span class="arrow">→</span></span>
-            </div>
+            <div class="card-footer"><span>시뮬레이터 실행 →</span></div>
         </a>
 
-        <!-- 제11장 -->
-        <a href="chapter11/index.html" class="card ch11">
-            <div class="chapter-badge">제 11 장 [시뮬레이터]</div>
+        <a href="chapter11/index.html" class="card">
+            <div class="chapter-badge">제11장 시뮬레이터</div>
             <div class="card-title">내생적 성장이론과 Learning-by-Doing</div>
             <div class="card-desc">
                 현장 실천을 통한 학습과 지식 Spillover 내생적 성장 경로 시뮬레이션
             </div>
-            <div class="card-footer">
-                <span>시뮬레이터 실행 <span class="arrow">→</span></span>
-            </div>
+            <div class="card-footer"><span>시뮬레이터 실행 →</span></div>
         </a>
 
-        <!-- 제12장 -->
-        <a href="chapter12_13/index.html#slide2" class="card ch12">
-            <div class="chapter-badge">제 12 장 [시뮬레이터]</div>
+        <a href="chapter12_13/index.html#slide2" class="card">
+            <div class="chapter-badge">제12장 시뮬레이터</div>
             <div class="card-title">복차사업과 Coase 거래비용이론</div>
             <div class="card-desc">
                 마을 복차사업을 코즈의 거래비용 관점에서 재해석하고 시뮬레이션
-                <span style="display: block; margin-top: 0.5rem; font-size: 0.82rem; color: var(--text-muted); text-decoration: underline; cursor: pointer;" onclick="event.preventDefault(); event.stopPropagation(); window.open('제12장 복차사업과 기업이론.pdf', '_blank')">📄 원문 PDF 열기</span>
             </div>
-            <div class="card-footer">
-                <span>시뮬레이터 실행 <span class="arrow">→</span></span>
-            </div>
+            <div class="card-footer"><span>시뮬레이터 실행 →</span></div>
         </a>
 
-        <!-- 제13장 -->
-        <a href="chapter12_13/index.html#slide3" class="card ch13">
-            <div class="chapter-badge">제 13 장 [시뮬레이터]</div>
+        <a href="chapter12_13/index.html#slide3" class="card">
+            <div class="chapter-badge">제13장 시뮬레이터</div>
             <div class="card-title">여성 역량개발과 내쉬협상 모형</div>
             <div class="card-desc">
                 여성의 가계 내 협상력 제고와 인구학적 전환 분석
-                <span style="display: block; margin-top: 0.5rem; font-size: 0.82rem; color: var(--text-muted); text-decoration: underline; cursor: pointer;" onclick="event.preventDefault(); event.stopPropagation(); window.open('제13장 여성의 역량개발과 경제발전.pdf', '_blank')">📄 원문 PDF 열기</span>
             </div>
-            <div class="card-footer">
-                <span>시뮬레이터 실행 <span class="arrow">→</span></span>
-            </div>
+            <div class="card-footer"><span>시뮬레이터 실행 →</span></div>
         </a>
 
-        <!-- 특별 부록 -->
-        <a href="gudam/index.html" class="card gudam">
+        <a href="gudam/index.html" class="card">
             <div class="chapter-badge">특별 부록</div>
             <div class="card-title">구담교 가설 성공기</div>
             <div class="card-desc">
-                낙동강 400m 대형 교량 공사를 주민 자발 참여로 완수한 감동의 사례
+                낙동강 400m 대형 교량 공사를 주민 자발 참여로 완수한 사례
             </div>
-            <div class="card-footer">
-                <span>스토리 감상하기 <span class="arrow">→</span></span>
-            </div>
+            <div class="card-footer"><span>스토리 감상하기 →</span></div>
         </a>
 
     </div>
