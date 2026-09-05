@@ -423,6 +423,18 @@
                         <input type="range" id="sampleRatioSlider" min="5" max="80" step="5" value="30" style="width: 100%; accent-color: var(--navy-primary); cursor: pointer;" oninput="updateSampleRatio(this.value)">
                     </div>
 
+                    <!-- 계량경제학적 교육 효과 해설 팁 박스 -->
+                    <div style="background: #eff6ff; border-left: 3px solid var(--navy-primary); padding: 0.65rem 0.8rem; border-radius: 6px; margin-bottom: 0.85rem; font-size: 0.8rem; color: var(--text-sub); line-height: 1.5;">
+                        <div style="font-weight: 700; color: var(--navy-primary); margin-bottom: 0.2rem;">
+                            💡 계량경제학적 원리 (표본 오차 및 수렴성 검증)
+                        </div>
+                        • <strong>작은 비율 (10% 내외)</strong>: 표본 수가 적어 기울기 추정치(β̂)의 표준오차가 커지고 산포가 넓어집니다.<br>
+                        • <strong>큰 비율 (50%~80%)</strong>: 표본 오차가 줄어들며 참값(β = 0.60)에 촘촘히 정밀 수렴합니다.
+                        <div id="dynamicRatioTip" style="margin-top: 0.35rem; font-weight: 700; color: var(--navy-primary);">
+                            📌 30% 설정: 강의자료 표준 실습 비율 (표본 18개)
+                        </div>
+                    </div>
+
                     <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 0.8rem;">
                         60개 관측치 중 <strong id="sampleCountInline">18개(30%)</strong>를 무작위로 추출하여 표본 회귀선(SRF)의 <strong>표본오차</strong>를 시뮬레이션합니다.
                     </p>
@@ -670,6 +682,20 @@
             const cltBadge = document.getElementById('cltRatioBadge');
             if (cltBadge) {
                 cltBadge.innerText = `🎯 현재 설정된 1회 추출 비율: ${sampleRatioPercent}% 표본 (${count}개 가구 단위)`;
+            }
+
+            const tipEl = document.getElementById('dynamicRatioTip');
+            if (tipEl) {
+                if (sampleRatioPercent <= 20) {
+                    tipEl.style.color = '#d97706';
+                    tipEl.innerHTML = `📌 <strong>${sampleRatioPercent}% 추출 상태</strong>: 표본 수(${count}개)가 적어 표준오차가 크고 산포가 넓어집니다.`;
+                } else if (sampleRatioPercent >= 50) {
+                    tipEl.style.color = '#047857';
+                    tipEl.innerHTML = `📌 <strong>${sampleRatioPercent}% 추출 상태</strong>: 표본 수(${count}개)가 커서 표본 오차가 급격히 줄고 참값(β=0.60)에 촘촘히 수렴합니다.`;
+                } else {
+                    tipEl.style.color = '#1e3a8a';
+                    tipEl.innerHTML = `📌 <strong>${sampleRatioPercent}% 추출 상태</strong>: 강의자료 기준 표준 실습 비율 (표본 ${count}개).`;
+                }
             }
         }
 
