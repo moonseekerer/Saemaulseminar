@@ -452,6 +452,136 @@
             </div>
         </div>
 
+        <!-- ⚖️ OLS(최소자승법) vs. LAD(최소절대편차법) 이상치(Outlier) 쏠림 현상 비교 시뮬레이터 -->
+        <div class="card" style="margin-bottom: 2rem; border-left: 5px solid #0d9488;">
+            <div class="card-header">
+                <div class="card-title" style="color: #0d9488;">
+                    ⚖️ OLS(최소자승법) vs. LAD(최소절대편차법) 이상치(Outlier) 쏠림 비교 시뮬레이터
+                </div>
+                <span style="font-size: 0.88rem; color: var(--text-muted); font-weight: 600;">강의교재 6p 수록 내용 (&lt;참고: OLS vs. LAD&gt;)</span>
+            </div>
+
+            <!-- 핵심 원리 해설 박스 -->
+            <div style="background: #f0fdf4; border-left: 4px solid #059669; padding: 0.85rem 1rem; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.9rem; color: var(--text-sub); line-height: 1.6;">
+                <div style="font-size: 0.95rem; font-weight: 700; color: #047857; margin-bottom: 0.3rem;">
+                    💡 왜 OLS는 극단치(Outlier)에 끌려가고, LAD는 강건(Robust)한가?
+                </div>
+                • <strong>OLS ($\min \sum e_i^2$)</strong>: 오차를 <strong>제곱</strong>하므로, 멀리 떨어진 극단치 하나만 주입되어도 오차 제곱이 폭발합니다. 이 폭발적 패널티를 줄이기 위해 <strong>회귀선 전체가 극단치 방향으로 크게 쏠리게 됩니다.</strong><br>
+                • <strong>LAD ($\min \sum |e_i|$)</strong>: 오차의 <strong>절대값 합</strong>만을 최소화하므로 극단치에 제곱 패널티가 적용되지 않아, <strong>이상치 존재 시에도 원래의 기울기를 강건하게(Robust) 고수</strong>합니다.
+            </div>
+
+            <!-- 📊 OLS vs LAD 학술 대조 비교표 -->
+            <div style="margin-bottom: 1.5rem; overflow-x: auto; border: 1px solid var(--border-color); border-radius: 8px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+                    <thead>
+                        <tr style="background: #f1f5f9;">
+                            <th style="text-align: left; width: 18%;">비교 항목</th>
+                            <th style="text-align: left; width: 41%; color: var(--navy-primary);">🟦 OLS (Ordinary Least Squares, 최소자승법)</th>
+                            <th style="text-align: left; width: 41%; color: #7e22ce;">🟪 LAD (Least Absolute Deviation, 최소절대편차법)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: left; font-weight: 700; background: #f8fafc;">추정 원리</td>
+                            <td style="text-align: left;"><strong>잔차 제곱합 최소화</strong> ($\min \sum e_i^2$)</td>
+                            <td style="text-align: left;"><strong>잔차 절대값 합 최소화</strong> ($\min \sum |e_i|$)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left; font-weight: 700; background: #f8fafc;">극단치(Outlier) 반응</td>
+                            <td style="text-align: left; color: #dc2626; font-weight: 700;">극단치 방향으로 회귀선이 크게 쏠림 (민감함)</td>
+                            <td style="text-align: left; color: #047857; font-weight: 700;">극단치 영향에 강건함 (원래 기울기 유지, Robust)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left; font-weight: 700; background: #f8fafc;">통계적 효율성</td>
+                            <td style="text-align: left;">가우스-마르코프 정리에 의해 <strong>BLUE (최소분산)</strong> 달성</td>
+                            <td style="text-align: left;">이상치 오염 데이터 존재 시 OLS보다 훨씬 효율적임</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left; font-weight: 700; background: #f8fafc;">수학적 도출</td>
+                            <td style="text-align: left;">미분 가능, 닫힌 1차 수식(Closed-form)으로 바로 계산</td>
+                            <td style="text-align: left;">미분 불가능 지점 존재, 반복 수치 최적화 필요</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left; font-weight: 700; background: #f8fafc;">추천 활용 분야</td>
+                            <td style="text-align: left;">이상치가 없고 정규성이 충족된 일반적인 실습 및 데이터</td>
+                            <td style="text-align: left;">금융/부동산 등 극단적 가치 또는 오염 데이터 분석</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 인터랙티브 이상치 컨트롤 영역 -->
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center; margin-bottom: 0.8rem;">
+                    <button class="sim-btn" style="width: auto; background: #dc2626; padding: 0.6rem 1.2rem;" onclick="injectOutlier(40)">
+                        ⚠️ 극단치 가구 주입 (소득 260만, 소비 40만)
+                    </button>
+                    <button class="reset-btn" style="width: auto; padding: 0.6rem 1.2rem;" onclick="restoreNormalData()">
+                        ↺ 정상 모집단(60개) 복원
+                    </button>
+                    <span id="outlierStatusTag" style="font-size: 0.85rem; font-weight: 700; color: #047857;">
+                        ✅ 현재 상태: 정상 모집단 (60개 가구)
+                    </span>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                    <span style="font-size: 0.85rem; font-weight: 700; color: var(--navy-primary);">
+                        주입된 이상치 소비(Y) 조절: <span id="outlierYValDisplay" style="color: #dc2626; font-size: 1rem;">40 만원</span>
+                    </span>
+                    <input type="range" id="outlierYSlider" min="20" max="240" step="5" value="40" disabled style="width: 200px; accent-color: #dc2626; cursor: pointer;" oninput="adjustOutlierY(this.value)">
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">(이상치 버튼 클릭 후 조절 가능)</span>
+                </div>
+            </div>
+
+            <!-- 두 회귀선 차트 및 수치 대조 표 -->
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; align-items: start;">
+                <!-- OLS vs LAD 차트 -->
+                <div class="chart-wrapper" style="height: 380px;">
+                    <canvas id="olsVsLadChart"></canvas>
+                </div>
+
+                <!-- 수치 대조 결과 카드 -->
+                <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                    <div class="stat-box" style="border-left: 4px solid var(--navy-primary);">
+                        <div class="stat-label">🟦 OLS 회귀식 (최소자승법)</div>
+                        <div id="olsEqDisplay" style="font-size: 0.95rem; font-weight: 700; color: var(--navy-primary); margin-top: 0.3rem;">
+                            Ŷ = 17.00 + 0.6000 · X
+                        </div>
+                        <div id="olsShiftDisplay" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">
+                            기울기 쏠림 변동폭: 0.0000
+                        </div>
+                    </div>
+
+                    <div class="stat-box" style="border-left: 4px solid #7e22ce;">
+                        <div class="stat-label">🟪 LAD 회귀식 (최소절대편차법)</div>
+                        <div id="ladEqDisplay" style="font-size: 0.95rem; font-weight: 700; color: #7e22ce; margin-top: 0.3rem;">
+                            Ŷ = 15.00 + 0.6250 · X
+                        </div>
+                        <div id="ladShiftDisplay" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">
+                            기울기 쏠림 변동폭: 0.0000 (Robust)
+                        </div>
+                    </div>
+
+                    <div class="stat-box">
+                        <div class="stat-label">잔차 제곱합 (Σ e²) 비교</div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 0.3rem; font-size: 0.85rem;">
+                            <span>OLS: <strong id="olsSseText" style="color: var(--navy-primary);">-</strong></span>
+                            <span>LAD: <strong id="ladSseText" style="color: #7e22ce;">-</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="stat-box">
+                        <div class="stat-label">잔차 절대합 (Σ |e|) 비교</div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 0.3rem; font-size: 0.85rem;">
+                            <span>OLS: <strong id="olsSaeText" style="color: var(--navy-primary);">-</strong></span>
+                            <span>LAD: <strong id="ladSaeText" style="color: #7e22ce;">-</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <!-- β̂ 계수 누적 정규분포 수렴 시뮬레이터 섹션 -->
         <div class="card" style="margin-bottom: 2rem; border-left: 5px solid var(--purple-primary);">
             <div class="card-header">
@@ -1127,10 +1257,194 @@
 
         window.onload = function() {
             initMainChart();
+            initOlsVsLadChart();
             initAccChart();
             initCLT20Chart();
             renderTable();
         };
+
+        // ===== OLS vs LAD 이상치 시뮬레이터 로직 =====
+        let olsLadChart = null;
+        let activeOutlierData = null;
+
+        function calculateLAD(data) {
+            let bestLoss = Infinity;
+            let bestBeta = 0.60;
+            let bestAlpha = 17.0;
+
+            for (let b = 0.1; b <= 1.1; b += 0.0005) {
+                const diffs = data.map(d => d.y - b * d.x).sort((p, q) => p - q);
+                const mid = Math.floor(diffs.length / 2);
+                const a = diffs.length % 2 !== 0 ? diffs[mid] : (diffs[mid - 1] + diffs[mid]) / 2;
+
+                let loss = 0;
+                for (let d of data) {
+                    loss += Math.abs(d.y - (a + b * d.x));
+                }
+                if (loss < bestLoss) {
+                    bestLoss = loss;
+                    bestBeta = b;
+                    bestAlpha = a;
+                }
+            }
+            return { alpha: bestAlpha, beta: bestBeta };
+        }
+
+        function initOlsVsLadChart() {
+            const ctx = document.getElementById('olsVsLadChart').getContext('2d');
+            
+            const normalData = fullDataset.map(d => ({ x: d.x, y: d.y, id: d.id }));
+            const olsRes = calculateOLS(fullDataset);
+            const ladRes = calculateLAD(fullDataset);
+
+            const olsLine = [{ x: 70, y: olsRes.alpha + olsRes.beta * 70 }, { x: 270, y: olsRes.alpha + olsRes.beta * 270 }];
+            const ladLine = [{ x: 70, y: ladRes.alpha + ladRes.beta * 70 }, { x: 270, y: ladRes.alpha + ladRes.beta * 270 }];
+
+            olsLadChart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: '모집단 관측치 (60개)',
+                            data: normalData,
+                            backgroundColor: '#1e3a8a',
+                            pointRadius: 5
+                        },
+                        {
+                            label: '⚠️ 주입된 극단치 (Outlier)',
+                            data: [],
+                            backgroundColor: '#dc2626',
+                            borderColor: '#ffffff',
+                            borderWidth: 2,
+                            pointRadius: 9
+                        },
+                        {
+                            label: '🟦 OLS 회귀선 (최소자승법)',
+                            data: olsLine,
+                            type: 'line',
+                            borderColor: '#1e3a8a',
+                            borderWidth: 3,
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            label: '🟪 LAD 회귀선 (최소절대편차법)',
+                            data: ladLine,
+                            type: 'line',
+                            borderColor: '#7e22ce',
+                            borderWidth: 3,
+                            borderDash: [6, 4],
+                            fill: false,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: { family: 'Presentation', size: 12, weight: '600' },
+                                padding: 16,
+                                boxWidth: 16
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: '가구 소득 X (만원)', font: { family: 'Presentation', size: 13, weight: 'bold' } }, min: 60, max: 280, grid: { color: '#e2e8f0' } },
+                        y: { title: { display: true, text: '가구 소비 Y (만원)', font: { family: 'Presentation', size: 13, weight: 'bold' } }, min: 20, max: 240, grid: { color: '#e2e8f0' } }
+                    }
+                }
+            });
+
+            updateOlsVsLadUI(olsRes, ladRes, fullDataset);
+        }
+
+        function injectOutlier(yVal) {
+            activeOutlierData = { id: 61, x: 260.0, y: parseFloat(yVal) };
+            document.getElementById('outlierYSlider').disabled = false;
+            document.getElementById('outlierYSlider').value = yVal;
+            document.getElementById('outlierYValDisplay').innerText = `${yVal} 만원`;
+            document.getElementById('outlierStatusTag').innerHTML = `⚠️ <strong style="color:#dc2626;">극단치 주입됨 (소득 260만, 소비 ${yVal}만)</strong>`;
+            
+            refreshOlsVsLadSimulation();
+        }
+
+        function adjustOutlierY(val) {
+            if (!activeOutlierData) return;
+            activeOutlierData.y = parseFloat(val);
+            document.getElementById('outlierYValDisplay').innerText = `${val} 만원`;
+            document.getElementById('outlierStatusTag').innerHTML = `⚠️ <strong style="color:#dc2626;">극단치 주입됨 (소득 260만, 소비 ${val}만)</strong>`;
+            refreshOlsVsLadSimulation();
+        }
+
+        function restoreNormalData() {
+            activeOutlierData = null;
+            document.getElementById('outlierYSlider').disabled = true;
+            document.getElementById('outlierYValDisplay').innerText = '40 만원';
+            document.getElementById('outlierStatusTag').innerHTML = `✅ 현재 상태: 정상 모집단 (60개 가구)`;
+            refreshOlsVsLadSimulation();
+        }
+
+        function refreshOlsVsLadSimulation() {
+            let dataset = [...fullDataset];
+            if (activeOutlierData) {
+                dataset.push(activeOutlierData);
+                olsLadChart.data.datasets[1].data = [{ x: activeOutlierData.x, y: activeOutlierData.y }];
+            } else {
+                olsLadChart.data.datasets[1].data = [];
+            }
+
+            const olsRes = calculateOLS(dataset);
+            const ladRes = calculateLAD(dataset);
+
+            olsLadChart.data.datasets[2].data = [
+                { x: 70, y: olsRes.alpha + olsRes.beta * 70 },
+                { x: 270, y: olsRes.alpha + olsRes.beta * 270 }
+            ];
+            olsLadChart.data.datasets[3].data = [
+                { x: 70, y: ladRes.alpha + ladRes.beta * 70 },
+                { x: 270, y: ladRes.alpha + ladRes.beta * 270 }
+            ];
+            olsLadChart.update();
+
+            updateOlsVsLadUI(olsRes, ladRes, dataset);
+        }
+
+        function updateOlsVsLadUI(olsRes, ladRes, dataset) {
+            const baseOLS = popOLS.beta; // 0.60
+            const baseLAD = 0.625;
+
+            const olsShift = olsRes.beta - baseOLS;
+            const ladShift = ladRes.beta - baseLAD;
+
+            document.getElementById('olsEqDisplay').innerText = `Ŷ = ${olsRes.alpha.toFixed(2)} + ${olsRes.beta.toFixed(4)} · X`;
+            document.getElementById('olsShiftDisplay').innerText = `기울기 쏠림 변동폭: ${olsShift >= 0 ? '+' : ''}${olsShift.toFixed(4)}`;
+
+            document.getElementById('ladEqDisplay').innerText = `Ŷ = ${ladRes.alpha.toFixed(2)} + ${ladRes.beta.toFixed(4)} · X`;
+            document.getElementById('ladShiftDisplay').innerText = `기울기 쏠림 변동폭: ${ladShift >= 0 ? '+' : ''}${ladShift.toFixed(4)} (Robust)`;
+
+            // SSE & SAE
+            let olsSse = 0, ladSse = 0;
+            let olsSae = 0, ladSae = 0;
+
+            for (let d of dataset) {
+                const eOls = d.y - (olsRes.alpha + olsRes.beta * d.x);
+                const eLad = d.y - (ladRes.alpha + ladRes.beta * d.x);
+                olsSse += eOls * eOls;
+                ladSse += eLad * eLad;
+                olsSae += Math.abs(eOls);
+                ladSae += Math.abs(eLad);
+            }
+
+            document.getElementById('olsSseText').innerText = olsSse.toFixed(1);
+            document.getElementById('ladSseText').innerText = ladSse.toFixed(1);
+
+            document.getElementById('olsSaeText').innerText = olsSae.toFixed(1);
+            document.getElementById('ladSaeText').innerText = ladSae.toFixed(1);
+        }
 
         // ===== 교재 24페이지 균등분포 X (100~200) CLT 시뮬레이터 로직 =====
         let clt20Means = [];
