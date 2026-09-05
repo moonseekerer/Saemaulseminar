@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제1강 회귀분석 및 OLS 표본추출 시뮬레이터 | 계량분석방법론연구</title>
+    <meta name="description" content="소득(X)과 소비(Y) 60개 관측치 데이터 기반 인터랙티브 OLS 회귀분석 및 표본추출 시뮬레이터">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.0.1"></script>
+    
+    <style>
+        /* 프리젠테이션 (Presentation) 웹폰트 선언 */
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-3Light.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-4Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-6SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+        @font-face { font-family: 'Presentation'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-7Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            
+            --navy-primary: #1e3a8a;
+            --navy-hover: #1e40af;
+            --navy-soft: #eff6ff;
+            
+            --emerald-primary: #047857;
+            --emerald-soft: #ecfdf5;
+            
+            --amber-primary: #d97706;
+            --amber-soft: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Presentation', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 2.5rem 1.5rem;
+            background-image: radial-gradient(#cbd5e1 0.75px, transparent 0.75px);
+            background-size: 24px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1040px;
+        }
+
+        /* 네비게이션 상단 바 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #ffffff;
+            color: var(--navy-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--navy-primary);
+            color: #ffffff;
+        }
+
+        /* 헤더 스타일 */
+        header {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--navy-primary);
+            padding: 1.8rem 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .course-tag {
+            display: inline-block;
+            background: var(--navy-soft);
+            color: var(--navy-primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            align-self: flex-start;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: var(--text-sub);
+            font-size: 1.05rem;
+        }
+
+        /* 메인 대시보드 그리드 */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 860px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.6rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* 차트 용기 */
+        .chart-wrapper {
+            position: relative;
+            height: 420px;
+            width: 100%;
+        }
+
+        /* 컨트롤 패널 */
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .stat-box {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--navy-primary);
+            margin-top: 0.2rem;
+        }
+
+        .sim-btn {
+            background: linear-gradient(135deg, var(--navy-primary), var(--navy-hover));
+            color: #ffffff;
+            border: none;
+            padding: 0.85rem 1.2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(30,58,138,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .sim-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(30,58,138,0.3);
+        }
+
+        .reset-btn {
+            background: #f1f5f9;
+            color: var(--text-sub);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+
+        .reset-btn:hover {
+            background: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        /* 슬라이더 컨트롤 */
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        input[type=range] {
+            width: 100%;
+            accent-color: var(--navy-primary);
+        }
+
+        /* 데이터 테이블 영역 */
+        .table-section {
+            margin-top: 2rem;
+        }
+
+        .table-wrapper {
+            max-height: 350px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        th, td {
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: #f1f5f9;
+            color: var(--text-main);
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        tr:hover { background: #f8fafc; }
+        td:nth-child(1), th:nth-child(1) { text-align: center; }
+
+        footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            width: 100%;
+            max-width: 1040px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- 상단 바 -->
+        <div class="top-nav">
+            <a href="../index.html" class="back-btn">← 학업 포털 메인으로 돌아가기</a>
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">영남대학교 대학원 계량분석방법론연구</span>
+        </div>
+
+        <!-- 메인 헤더 -->
+        <header>
+            <span class="course-tag">📊 계량분석방법론연구 (0680-01) - 제 1 강</span>
+            <h1>회귀분석(Regression Analysis) & OLS 시뮬레이터</h1>
+            <p class="subtitle">60개 가구 소득(X) 및 소비(Y) 실습 데이터 기반 모집단 회귀식과 표본추출 시뮬레이션</p>
+        </header>
+
+        <!-- 메인 대시보드 -->
+        <div class="dashboard-grid">
+            
+            <!-- 왼쪽: 인터랙티브 산점도 & 회귀선 차트 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        📈 소득(X)과 소비(Y) 인터랙티브 회귀 산점도
+                    </div>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">마우스를 점 위에 올려 ID 확인 가능</span>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="mainScatterChart"></canvas>
+                </div>
+            </div>
+
+            <!-- 오른쪽: 컨트롤 및 시뮬레이션 패널 -->
+            <div class="control-panel">
+                
+                <!-- 모집단 회귀 추정 결과 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">🎯 모집단 OLS 추정 결과</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                        <div class="stat-box">
+                            <div class="stat-label">모집단 회귀방정식 (PRF)</div>
+                            <div class="stat-value" style="font-size: 1.2rem; color: var(--navy-primary);">
+                                Ŷ = 17.00 + 0.60 · X
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+                            <div class="stat-box">
+                                <div class="stat-label">절편 (α̂)</div>
+                                <div class="stat-value" style="font-size: 1.1rem;">17.00</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">기울기 (β̂)</div>
+                                <div class="stat-value" style="font-size: 1.1rem; color: var(--emerald-primary);">0.60</div>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">결정계수 (R²)</div>
+                            <div class="stat-value" style="font-size: 1.1rem;">0.9052 <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-sub);">(설명력 90.5%)</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🎲 무작위 표본추출 시뮬레이터 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">🎲 30% 표본추출 시뮬레이터</div>
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 1rem;">
+                        60개 전체 관측치 중 18개(30%)를 무작위로 추출하여 표본 회귀선(SRF)의 **표본오차(Sampling Error)**를 시뮬레이션합니다.
+                    </p>
+                    <button class="sim-btn" onclick="runSamplingSimulation()">
+                        🎲 30% 무작위 표본추출 실행
+                    </button>
+                    <div id="sampleResultBox" style="margin-top: 0.8rem; display: none;" class="stat-box">
+                        <div class="stat-label">추출된 표본 회귀방정식 (SRF)</div>
+                        <div id="sampleEqText" style="font-size: 0.95rem; font-weight: 700; color: var(--amber-primary); margin-top: 0.3rem;"></div>
+                    </div>
+                    <button class="reset-btn" onclick="resetSimulation()" style="margin-top: 0.6rem;">전체 모집단 뷰로 초기화</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 하단: 데이터 테이블 -->
+        <div class="card table-section">
+            <div class="card-header">
+                <div class="card-title">📋 60개 가구 관측 데이터셋 상세 보기</div>
+                <span style="font-size: 0.85rem; color: var(--text-muted);" id="dataCountLabel">총 60개 관측치</span>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>관측치 ID</th>
+                            <th>소득 X (만원)</th>
+                            <th>소비 Y (만원)</th>
+                            <th>OLS 예측값 Ŷ</th>
+                            <th>잔차 (e_i = Y - Ŷ)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTableBody">
+                        <!-- JS에서 동적 로드 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            영남대학교 대학원 새마을국제개발학과 | 박사 2기 계량분석방법론연구 | 박문식 연구자
+        </footer>
+
+    </div>
+
+    <script>
+        // 60개 관측치 전체 데이터셋
+        const fullDataset = [
+            {"id": 1, "x": 80.0, "y": 55.0}, {"id": 2, "x": 80.0, "y": 60.0}, {"id": 3, "x": 80.0, "y": 65.0}, {"id": 4, "x": 80.0, "y": 70.0}, {"id": 5, "x": 80.0, "y": 75.0},
+            {"id": 6, "x": 100.0, "y": 65.0}, {"id": 7, "x": 100.0, "y": 70.0}, {"id": 8, "x": 100.0, "y": 74.0}, {"id": 9, "x": 100.0, "y": 80.0}, {"id": 10, "x": 100.0, "y": 85.0}, {"id": 11, "x": 100.0, "y": 88.0},
+            {"id": 12, "x": 120.0, "y": 79.0}, {"id": 13, "x": 120.0, "y": 84.0}, {"id": 14, "x": 120.0, "y": 90.0}, {"id": 15, "x": 120.0, "y": 94.0}, {"id": 16, "x": 120.0, "y": 98.0},
+            {"id": 17, "x": 140.0, "y": 80.0}, {"id": 18, "x": 140.0, "y": 93.0}, {"id": 19, "x": 140.0, "y": 95.0}, {"id": 20, "x": 140.0, "y": 103.0}, {"id": 21, "x": 140.0, "y": 108.0}, {"id": 22, "x": 140.0, "y": 113.0}, {"id": 23, "x": 140.0, "y": 115.0},
+            {"id": 24, "x": 160.0, "y": 102.0}, {"id": 25, "x": 160.0, "y": 107.0}, {"id": 26, "x": 160.0, "y": 110.0}, {"id": 27, "x": 160.0, "y": 116.0}, {"id": 28, "x": 160.0, "y": 118.0}, {"id": 29, "x": 160.0, "y": 125.0},
+            {"id": 30, "x": 180.0, "y": 110.0}, {"id": 31, "x": 180.0, "y": 115.0}, {"id": 32, "x": 180.0, "y": 120.0}, {"id": 33, "x": 180.0, "y": 130.0}, {"id": 34, "x": 180.0, "y": 135.0}, {"id": 35, "x": 180.0, "y": 140.0},
+            {"id": 36, "x": 200.0, "y": 120.0}, {"id": 37, "x": 200.0, "y": 136.0}, {"id": 38, "x": 200.0, "y": 140.0}, {"id": 39, "x": 200.0, "y": 144.0}, {"id": 40, "x": 200.0, "y": 145.0},
+            {"id": 41, "x": 220.0, "y": 135.0}, {"id": 42, "x": 220.0, "y": 137.0}, {"id": 43, "x": 220.0, "y": 140.0}, {"id": 44, "x": 220.0, "y": 152.0}, {"id": 45, "x": 220.0, "y": 157.0}, {"id": 46, "x": 220.0, "y": 160.0}, {"id": 47, "x": 220.0, "y": 162.0},
+            {"id": 48, "x": 240.0, "y": 137.0}, {"id": 49, "x": 240.0, "y": 145.0}, {"id": 50, "x": 240.0, "y": 155.0}, {"id": 51, "x": 240.0, "y": 165.0}, {"id": 52, "x": 240.0, "y": 175.0}, {"id": 53, "x": 240.0, "y": 189.0},
+            {"id": 54, "x": 260.0, "y": 150.0}, {"id": 55, "x": 260.0, "y": 152.0}, {"id": 56, "x": 260.0, "y": 175.0}, {"id": 57, "x": 260.0, "y": 178.0}, {"id": 58, "x": 260.0, "y": 180.0}, {"id": 59, "x": 260.0, "y": 185.0}, {"id": 60, "x": 260.0, "y": 191.0}
+        ];
+
+        // OLS 계산 함수
+        function calculateOLS(data) {
+            const n = data.length;
+            let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+            for (let d of data) {
+                sumX += d.x;
+                sumY += d.y;
+                sumXY += (d.x * d.y);
+                sumX2 += (d.x * d.x);
+            }
+            const beta = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+            const alpha = (sumY - beta * sumX) / n;
+            return { alpha, beta };
+        }
+
+        const popOLS = calculateOLS(fullDataset);
+        let chartInstance = null;
+
+        // 차트 초기화 함수
+        function initChart() {
+            const ctx = document.getElementById('mainScatterChart').getContext('2d');
+            
+            // 데이터 포인트 포맷팅
+            const scatterData = fullDataset.map(d => ({
+                x: d.x,
+                y: d.y,
+                id: d.id,
+                yHat: (popOLS.alpha + popOLS.beta * d.x).toFixed(2),
+                res: (d.y - (popOLS.alpha + popOLS.beta * d.x)).toFixed(2)
+            }));
+
+            const popLineData = [
+                { x: 70, y: popOLS.alpha + popOLS.beta * 70 },
+                { x: 270, y: popOLS.alpha + popOLS.beta * 270 }
+            ];
+
+            chartInstance = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: '모집단 관측치 (60개 가구)',
+                            data: scatterData,
+                            backgroundColor: '#1e3a8a',
+                            borderColor: '#1e3a8a',
+                            pointRadius: 6,
+                            pointHoverRadius: 9,
+                            pointHoverBackgroundColor: '#dc2626'
+                        },
+                        {
+                            label: '모집단 회귀선 (Y = 17 + 0.6X)',
+                            data: popLineData,
+                            type: 'line',
+                            borderColor: '#1e3a8a',
+                            borderWidth: 3,
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            label: '선택된 30% 무작위 표본',
+                            data: [],
+                            backgroundColor: '#d97706',
+                            borderColor: '#ffffff',
+                            borderWidth: 2,
+                            pointRadius: 8,
+                            pointHoverRadius: 11
+                        },
+                        {
+                            label: '표본 회귀선 (SRF)',
+                            data: [],
+                            type: 'line',
+                            borderColor: '#d97706',
+                            borderWidth: 2.5,
+                            borderDash: [6, 4],
+                            fill: false,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleFont: { family: 'Presentation', size: 14, weight: 'bold' },
+                            bodyFont: { family: 'Presentation', size: 13 },
+                            padding: 12,
+                            boxPadding: 6,
+                            callbacks: {
+                                label: function(context) {
+                                    const raw = context.raw;
+                                    if (raw.id !== undefined) {
+                                        return [
+                                            `📌 관측치 번호: ID #${raw.id}`,
+                                            `소득 (X): ${raw.x} 만원`,
+                                            `소비 (Y): ${raw.y} 만원`,
+                                            `회귀 예측값 (Ŷ): ${raw.yHat} 만원`,
+                                            `잔차 (e_i): ${raw.res} 만원`
+                                        ];
+                                    }
+                                    return `${context.dataset.label}: (${raw.x.toFixed(1)}, ${raw.y.toFixed(1)})`;
+                                }
+                            }
+                        },
+                        legend: {
+                            labels: { font: { family: 'Presentation', size: 12, weight: '600' } }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: '가구 소득 X (만원)', font: { family: 'Presentation', size: 13, weight: 'bold' } },
+                            min: 60,
+                            max: 280,
+                            grid: { color: '#e2e8f0' }
+                        },
+                        y: {
+                            title: { display: true, text: '가구 소비 Y (만원)', font: { family: 'Presentation', size: 13, weight: 'bold' } },
+                            min: 40,
+                            max: 200,
+                            grid: { color: '#e2e8f0' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 표본추출 시뮬레이션 실행
+        function runSamplingSimulation() {
+            const sampleSize = 18; // 30% of 60
+            const shuffled = [...fullDataset].sort(() => 0.5 - Math.random());
+            const sampledData = shuffled.slice(0, sampleSize);
+
+            const sampleOLS = calculateOLS(sampledData);
+
+            // 표본 scatter 데이터
+            const sampledFormatted = sampledData.map(d => ({
+                x: d.x,
+                y: d.y,
+                id: d.id,
+                yHat: (sampleOLS.alpha + sampleOLS.beta * d.x).toFixed(2),
+                res: (d.y - (sampleOLS.alpha + sampleOLS.beta * d.x)).toFixed(2)
+            }));
+
+            // 표본 회귀선 데이터
+            const sampleLineData = [
+                { x: 70, y: sampleOLS.alpha + sampleOLS.beta * 70 },
+                { x: 270, y: sampleOLS.alpha + sampleOLS.beta * 270 }
+            ];
+
+            chartInstance.data.datasets[2].data = sampledFormatted;
+            chartInstance.data.datasets[3].data = sampleLineData;
+            chartInstance.update();
+
+            // 결과 박스 업데이트
+            document.getElementById('sampleResultBox').style.display = 'block';
+            document.getElementById('sampleEqText').innerText = 
+                `Ŷ = ${sampleOLS.alpha.toFixed(2)} + ${sampleOLS.beta.toFixed(2)} · X (기울기 차이: ${(sampleOLS.beta - popOLS.beta).toFixed(3)})`;
+        }
+
+        function resetSimulation() {
+            chartInstance.data.datasets[2].data = [];
+            chartInstance.data.datasets[3].data = [];
+            chartInstance.update();
+            document.getElementById('sampleResultBox').style.display = 'none';
+        }
+
+        // 테이블 동적 생성
+        function renderTable() {
+            const tbody = document.getElementById('dataTableBody');
+            tbody.innerHTML = '';
+            fullDataset.forEach(d => {
+                const yHat = (popOLS.alpha + popOLS.beta * d.x).toFixed(2);
+                const res = (d.y - yHat).toFixed(2);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>#${d.id}</strong></td>
+                    <td>${d.x} 만원</td>
+                    <td>${d.y} 만원</td>
+                    <td>${yHat} 만원</td>
+                    <td style="color: ${res >= 0 ? '#047857' : '#dc2626'}">${res} 만원</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.onload = function() {
+            initChart();
+            renderTable();
+        };
+    </script>
+</body>
+</html>
