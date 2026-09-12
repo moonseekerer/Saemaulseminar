@@ -1,12 +1,24 @@
-// sim_engine.js - Core Simulation & Replay Engine
+// sim_engine.js - Large World Simulator with Smooth Camera (Drag, Zoom, Follow)
 
 class VillageSimulator {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
-        this.cols = MAP_CONFIG.cols;
-        this.rows = MAP_CONFIG.rows;
+        this.cols = MAP_CONFIG.cols; // 100
+        this.rows = MAP_CONFIG.rows; // 75
         this.tileSize = MAP_CONFIG.tileSize; // 32
+        this.worldWidth = MAP_CONFIG.worldWidth; // 3200
+        this.worldHeight = MAP_CONFIG.worldHeight; // 2400
+
+        // Camera System
+        this.camera = {
+            x: 1600 - this.canvas.width / 2, // Center around village hall
+            y: 1200 - this.canvas.height / 2,
+            zoom: 0.8, // default zoom (0.4 ~ 1.8)
+            minZoom: 0.35,
+            maxZoom: 2.0,
+            trackingAgentId: null
+        };
 
         // Images cache
         this.charImages = {};
@@ -14,16 +26,16 @@ class VillageSimulator {
         this.loadAssets();
 
         // State
-        this.gameHour = 8.0; // 08:00 AM start
+        this.gameHour = 8.0;
         this.speed = 1.0;
         this.isPaused = false;
         this.isReplayMode = false;
         
-        // Replay history frames
+        // Replay history
         this.history = [];
         this.currentFrameIdx = 0;
 
-        // Active Agents
+        // Agents
         this.agents = AGENTS_ROSTER.map(a => ({
             ...a,
             currX: a.homePos.x,
@@ -34,12 +46,10 @@ class VillageSimulator {
             frame: 0,
             status: '이동 중',
             currAction: '일과 시작',
-            talkTarget: null,
             speech: ''
         }));
 
-        // Interaction & Network Graph Stats
-        this.interactions = [];
+        // Network stats
         this.networkMatrix = {};
         this.agents.forEach(a1 => {
             this.agents.forEach(a2 => {
@@ -50,11 +60,11 @@ class VillageSimulator {
             });
         });
 
-        // Event logs
         this.logs = [];
-
         this.lastTick = performance.now();
         this.animationId = null;
+
+        this.bindEvents();
     }
 
     loadAssets() {
@@ -65,12 +75,87 @@ class VillageSimulator {
             img.src = `assets/characters/${agent.sprite}`;
             img.onload = () => {
                 loadedCount++;
-                if (loadedCount === total) {
-                    this.tilesLoaded = true;
-                }
+                if (loadedCount === total) this.tilesLoaded = true;
             };
             this.charImages[agent.id] = img;
         });
+    }
+
+    bindEvents() {
+        let isDragging = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        // Mouse Drag to Pan
+        this.canvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            lastX = e.clientX;
+            lastY = e.clientY;
+            this.camera.trackingAgentId = null; // stop tracking on manual drag
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const dx = (e.clientX - lastX) / this.camera.zoom;
+            const dy = (e.clientY - lastY) / this.camera.zoom;
+            this.camera.x -= dx;
+            this.camera.y -= dy;
+            lastX = e.clientX;
+            lastY = e.clientY;
+            this.clampCamera();
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // Wheel to Zoom centered on mouse
+        this.canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const rect = this.canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            const prevZoom = this.camera.zoom;
+            const zoomDelta = e.deltaY < 0 ? 1.15 : 0.87;
+            let nextZoom = prevZoom * zoomDelta;
+            nextZoom = Math.max(this.camera.minZoom, Math.min(this.camera.maxZoom, nextZoom));
+
+            // Adjust camera position so mouse point remains fixed
+            const worldMouseX = this.camera.x + mouseX / prevZoom;
+            const worldMouseY = this.camera.y + mouseY / prevZoom;
+
+            this.camera.zoom = nextZoom;
+            this.camera.x = worldMouseX - mouseX / nextZoom;
+            this.camera.y = worldMouseY - mouseY / nextZoom;
+            this.clampCamera();
+        }, { passive: false });
+
+        // Click to select/track agent
+        this.canvas.addEventListener('click', (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            const clickX = this.camera.x + (e.clientX - rect.left) / this.camera.zoom;
+            const clickY = this.camera.y + (e.clientY - rect.top) / this.camera.zoom;
+
+            // Find clicked agent
+            const clicked = this.agents.find(a => {
+                const ax = a.currX * this.tileSize;
+                const ay = a.currY * this.tileSize;
+                return Math.hypot(clickX - (ax + 16), clickY - (ay + 16)) < 24;
+            });
+
+            if (clicked) {
+                this.camera.trackingAgentId = clicked.id;
+                this.addLog(`${clicked.name} 추적 카메라를 활성화했습니다.`);
+            }
+        });
+    }
+
+    clampCamera() {
+        const viewW = this.canvas.width / this.camera.zoom;
+        const viewH = this.canvas.height / this.camera.zoom;
+        this.camera.x = Math.max(0, Math.min(this.worldWidth - viewW, this.camera.x));
+        this.camera.y = Math.max(0, Math.min(this.worldHeight - viewH, this.camera.y));
     }
 
     start() {
@@ -85,6 +170,18 @@ class VillageSimulator {
                 }
             }
 
+            // Update camera if tracking
+            if (this.camera.trackingAgentId) {
+                const target = this.agents.find(a => a.id === this.camera.trackingAgentId);
+                if (target) {
+                    const tx = target.currX * this.tileSize + 16 - (this.canvas.width / 2) / this.camera.zoom;
+                    const ty = target.currY * this.tileSize + 16 - (this.canvas.height / 2) / this.camera.zoom;
+                    this.camera.x += (tx - this.camera.x) * 0.1;
+                    this.camera.y += (ty - this.camera.y) * 0.1;
+                    this.clampCamera();
+                }
+            }
+
             this.render();
             this.animationId = requestAnimationFrame(loop);
         };
@@ -92,17 +189,14 @@ class VillageSimulator {
     }
 
     update(dt) {
-        // Time progress: 1 real second = 0.05 game hour
         this.gameHour += (dt * 0.05 * this.speed);
         if (this.gameHour >= 18.0) {
             this.gameHour = 18.0;
             this.isPaused = true;
-            this.addLog('마을 공식 일과(18:00)가 종료되었습니다. 리플레이로 되돌려볼 수 있습니다.');
+            this.addLog('마을 공식 일과(18:00)가 종료되었습니다. 리플레이 슬라이더로 되돌려볼 수 있습니다.');
         }
 
-        // Update each agent
         this.agents.forEach(agent => {
-            // Check schedule
             const task = [...agent.schedule].reverse().find(s => s.time <= this.gameHour);
             if (task) {
                 agent.targetX = task.x;
@@ -110,31 +204,29 @@ class VillageSimulator {
                 agent.currAction = task.action;
             }
 
-            // Move towards target
             const dx = agent.targetX - agent.currX;
             const dy = agent.targetY - agent.currY;
             const dist = Math.hypot(dx, dy);
 
-            if (dist > 0.1) {
+            if (dist > 0.15) {
                 agent.status = '이동 중';
-                const moveDist = Math.min(dist, dt * 1.5 * this.speed);
+                // Travel speed slightly higher for large 100x75 world
+                const moveDist = Math.min(dist, dt * 2.8 * this.speed);
                 agent.currX += (dx / dist) * moveDist;
                 agent.currY += (dy / dist) * moveDist;
 
-                // Set direction
                 if (Math.abs(dx) > Math.abs(dy)) {
                     agent.dir = dx > 0 ? 'right' : 'left';
                 } else {
                     agent.dir = dy > 0 ? 'down' : 'up';
                 }
-                agent.frame = (agent.frame + dt * 4 * this.speed) % 3;
+                agent.frame = (agent.frame + dt * 5 * this.speed) % 3;
             } else {
                 agent.status = '활동 중';
                 agent.frame = 0;
             }
         });
 
-        // Proximity check for dialogue
         this.checkInteractions();
     }
 
@@ -145,8 +237,9 @@ class VillageSimulator {
                 const a2 = this.agents[j];
                 const d = Math.hypot(a1.currX - a2.currX, a1.currY - a2.currY);
 
-                if (d < 1.2 && !a1.speech && !a2.speech) {
-                    if (Math.random() < 0.03) {
+                // Proximity range in larger world: within 2.0 tiles
+                if (d < 2.0 && !a1.speech && !a2.speech) {
+                    if (Math.random() < 0.04) {
                         this.triggerDialogue(a1, a2);
                     }
                 }
@@ -156,10 +249,10 @@ class VillageSimulator {
 
     triggerDialogue(a1, a2) {
         const dialogList = [
-            { t1: a2.name + "님, 오늘 날씨가 많이 가무네요. 수로 쪽은 어떠신지요?", t2: "그러게 말입니다. 상류에서 물길을 좀 열어줘야 할 텐데 걱정입니다." },
-            { t1: a2.name + "님, 이번 군청 지원사업 서류 제출하셨나요?", t2: "네 이장님, 부녀회와 함께 로컬 가공품 쪽으로 신청해두었습니다." },
-            { t1: "오상회 구판장 앞에 다들 모여서 수로 공사 얘기 나누던데요.", t2: "오후 2시에 회관 앞마당에서 모이기로 했으니 꼭 나오세요." },
-            { t1: "청년 온실 관수 센서는 잘 돌아가나요?", t2: "네 어르신, 전통 수로와 연계해서 물 낭비 없도록 신경 쓰고 있습니다." }
+            { t1: a2.name + "님, 올해 수로 쪽 유량이 많이 줄었는데 보셨습니까?", t2: "네, 산비탈 과수원과 스마트온실까지 물이 제대로 닿을지 걱정입니다." },
+            { t1: a2.name + "님, 오후 2시에 회관 앞마당에서 수로 총회 열린다더군요.", t2: "군청 자부담 분담금 문제 때문에 다들 목소리를 높일 것 같습니다." },
+            { t1: "구판장 앞 평상에 다들 모여서 이번 로컬 가공품 얘기 나누고 있습니다.", t2: "부녀회와 청년들이 판로를 넓히려면 협동이 필요하겠지요." },
+            { t1: "온실 스마트 센서 관수 효율이 꽤 괜찮다고 들었습니다.", t2: "전통 논 농가 어르신들과도 기술을 공유해 물 낭비를 줄이고자 합니다." }
         ];
         const pick = dialogList[Math.floor(Math.random() * dialogList.length)];
         
@@ -173,17 +266,13 @@ class VillageSimulator {
         const key = [a1.id, a2.id].sort().join('-');
         this.networkMatrix[key] = (this.networkMatrix[key] || 0) + 1;
 
-        if (window.updateNetworkGraph) {
-            window.updateNetworkGraph(this.networkMatrix);
-        }
-        if (window.updateLogsUI) {
-            window.updateLogsUI(this.logs);
-        }
+        if (window.updateNetworkGraph) window.updateNetworkGraph(this.networkMatrix);
+        if (window.updateLogsUI) window.updateLogsUI(this.logs);
 
         setTimeout(() => {
             a1.speech = '';
             a2.speech = '';
-        }, 4000);
+        }, 4500);
     }
 
     recordFrame() {
@@ -231,7 +320,12 @@ class VillageSimulator {
         const ctx = this.ctx;
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // 1. Draw base terrain grid
+        ctx.save();
+        // Camera Transform
+        ctx.scale(this.camera.zoom, this.camera.zoom);
+        ctx.translate(-this.camera.x, -this.camera.y);
+
+        // 1. Draw Visible Terrain Tiles
         this.renderTerrain(ctx);
 
         // 2. Draw Landmark Zones
@@ -240,27 +334,34 @@ class VillageSimulator {
         // 3. Draw Agents
         this.renderAgents(ctx);
 
-        // 4. Draw HUD time
+        ctx.restore();
+
+        // 4. Draw HUD (Screen Space)
         this.renderHUD(ctx);
     }
 
     renderTerrain(ctx) {
         const ts = this.tileSize;
-        for (let r = 0; r < this.rows; r++) {
-            for (let c = 0; c < this.cols; c++) {
+        const startCol = Math.max(0, Math.floor(this.camera.x / ts));
+        const endCol = Math.min(this.cols, Math.ceil((this.camera.x + this.canvas.width / this.camera.zoom) / ts));
+        const startRow = Math.max(0, Math.floor(this.camera.y / ts));
+        const endRow = Math.min(this.rows, Math.ceil((this.camera.y + this.canvas.height / this.camera.zoom) / ts));
+
+        for (let r = startRow; r < endRow; r++) {
+            for (let c = startCol; c < endCol; c++) {
                 const type = VILLAGE_GRID[r][c];
                 if (type === 0) {
-                    ctx.fillStyle = (r + c) % 2 === 0 ? '#7cb342' : '#8bc34a'; // Grass
+                    ctx.fillStyle = (r + c) % 2 === 0 ? '#689f38' : '#7cb342'; // Grass
                 } else if (type === 1) {
-                    ctx.fillStyle = '#d7ccc8'; // Road / Path
+                    ctx.fillStyle = '#bcaaa4'; // Dirt Path
                 } else if (type === 2) {
-                    ctx.fillStyle = '#29b6f6'; // Water
+                    ctx.fillStyle = '#0288d1'; // Water Canal
                 } else if (type === 3) {
-                    ctx.fillStyle = '#aed581'; // Crops
+                    ctx.fillStyle = '#9ccc65'; // Crops
                 }
                 ctx.fillRect(c * ts, r * ts, ts, ts);
 
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.04)';
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.03)';
                 ctx.strokeRect(c * ts, r * ts, ts, ts);
             }
         }
@@ -274,24 +375,25 @@ class VillageSimulator {
             const zw = zone.w * ts;
             const zh = zone.h * ts;
 
-            ctx.fillStyle = zone.color + '22';
+            ctx.fillStyle = zone.color + '26';
             ctx.fillRect(zx, zy, zw, zh);
 
             ctx.strokeStyle = zone.accent || zone.color;
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 3;
             ctx.strokeRect(zx, zy, zw, zh);
 
-            ctx.fillStyle = 'rgba(30, 41, 59, 0.85)';
-            ctx.fillRect(zx + 4, zy + 4, zw - 8, 22);
+            // Banner
+            ctx.fillStyle = 'rgba(18, 22, 31, 0.88)';
+            ctx.fillRect(zx + 6, zy + 6, zw - 12, 26);
 
             ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 12px Pretendard, sans-serif';
+            ctx.font = 'bold 13px Pretendard, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText(zone.name, zx + zw / 2, zy + 19);
+            ctx.fillText(zone.name, zx + zw / 2, zy + 24);
 
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-            ctx.font = '10px Pretendard, sans-serif';
-            ctx.fillText(zone.subtitle, zx + zw / 2, zy + zh - 6);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+            ctx.font = '11px Pretendard, sans-serif';
+            ctx.fillText(zone.subtitle, zx + zw / 2, zy + zh - 8);
         });
     }
 
@@ -310,10 +412,10 @@ class VillageSimulator {
                 const sw = img.naturalWidth / 3;
                 const sh = img.naturalHeight / 4;
 
-                ctx.drawImage(img, colIdx * sw, rowIdx * sh, sw, sh, px - 4, py - 12, 40, 44);
+                ctx.drawImage(img, colIdx * sw, rowIdx * sh, sw, sh, px - 6, py - 16, 44, 48);
             } else {
                 ctx.beginPath();
-                ctx.arc(px + 16, py + 16, 12, 0, Math.PI * 2);
+                ctx.arc(px + 16, py + 16, 14, 0, Math.PI * 2);
                 ctx.fillStyle = agent.color;
                 ctx.fill();
                 ctx.strokeStyle = '#ffffff';
@@ -321,26 +423,35 @@ class VillageSimulator {
                 ctx.stroke();
             }
 
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.8)';
-            const tagW = ctx.measureText(agent.name).width + 8;
-            ctx.fillRect(px + 16 - tagW / 2, py - 20, tagW, 14);
+            // Tracking indicator
+            if (this.camera.trackingAgentId === agent.id) {
+                ctx.strokeStyle = '#63b3ed';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(px - 10, py - 20, 52, 56);
+            }
+
+            // Name Tag
+            ctx.fillStyle = 'rgba(18, 22, 31, 0.85)';
+            const tagW = ctx.measureText(agent.name).width + 12;
+            ctx.fillRect(px + 16 - tagW / 2, py - 24, tagW, 16);
 
             ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 10px Pretendard, sans-serif';
+            ctx.font = 'bold 11px Pretendard, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText(agent.name, px + 16, py - 9);
+            ctx.fillText(agent.name, px + 16, py - 12);
 
+            // Speech Bubble
             if (agent.speech) {
-                this.renderSpeechBubble(ctx, px + 16, py - 25, agent.speech);
+                this.renderSpeechBubble(ctx, px + 16, py - 30, agent.speech);
             }
         });
     }
 
     renderSpeechBubble(ctx, x, y, text) {
-        ctx.font = '11px Pretendard, sans-serif';
+        ctx.font = '12px Pretendard, sans-serif';
         const metrics = ctx.measureText(text);
-        const bw = Math.min(220, metrics.width + 16);
-        const bh = 24;
+        const bw = Math.min(260, metrics.width + 20);
+        const bh = 28;
 
         ctx.fillStyle = '#ffffff';
         ctx.strokeStyle = '#1e293b';
@@ -352,33 +463,35 @@ class VillageSimulator {
         ctx.stroke();
 
         ctx.beginPath();
-        ctx.moveTo(x - 5, y - 6);
+        ctx.moveTo(x - 6, y - 6);
         ctx.lineTo(x, y);
-        ctx.lineTo(x + 5, y - 6);
+        ctx.lineTo(x + 6, y - 6);
         ctx.fillStyle = '#ffffff';
         ctx.fill();
         ctx.stroke();
 
         ctx.fillStyle = '#0f172a';
         ctx.textAlign = 'center';
-        ctx.fillText(text.length > 22 ? text.slice(0, 20) + '...' : text, x, y - 14);
+        ctx.fillText(text.length > 24 ? text.slice(0, 22) + '...' : text, x, y - 16);
     }
 
     renderHUD(ctx) {
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-        ctx.fillRect(10, 10, 190, 42);
-        ctx.strokeStyle = '#475569';
+        // Upper left HUD
+        ctx.fillStyle = 'rgba(18, 22, 31, 0.9)';
+        ctx.fillRect(14, 14, 250, 48);
+        ctx.strokeStyle = '#2d3748';
         ctx.lineWidth = 1;
-        ctx.strokeRect(10, 10, 190, 42);
+        ctx.strokeRect(14, 14, 250, 48);
 
-        ctx.fillStyle = '#38bdf8';
-        ctx.font = 'bold 15px Pretendard, sans-serif';
+        ctx.fillStyle = '#63b3ed';
+        ctx.font = 'bold 14px Pretendard, sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText(`마을 시각: ${this.getFormattedTime()}`, 20, 32);
+        ctx.fillText(`마을 시각: ${this.getFormattedTime()}`, 26, 36);
 
-        ctx.fillStyle = '#94a3b8';
+        ctx.fillStyle = '#a0aec0';
         ctx.font = '11px Pretendard, sans-serif';
-        ctx.fillText(this.isReplayMode ? '[리플레이 탐색 모드]' : `배속: ${this.speed}x | 에이전트: 12인`, 20, 46);
+        const zoomPct = Math.round(this.camera.zoom * 100);
+        ctx.fillText(`배속: ${this.speed}x | 줌: ${zoomPct}% | 드래그 이동/휠 확대축소`, 26, 52);
     }
 
     getFormattedTime() {
@@ -398,7 +511,7 @@ class VillageSimulator {
         const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.history));
         const a = document.createElement('a');
         a.href = dataStr;
-        a.download = `saemaul_simulation_${Date.now()}.json`;
+        a.download = `saemaul_simulation_large_${Date.now()}.json`;
         a.click();
     }
 }

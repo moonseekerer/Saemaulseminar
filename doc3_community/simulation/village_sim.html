@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>농촌 지역사회 행위자 시뮬레이터 (Saemaul-Smallville)</title>
+    <title>농촌 지역사회 행위자 시뮬레이터 (Saemaul-Smallville 대형 월드)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -11,18 +11,17 @@
             background-color: #12161f;
             color: #d1d5db;
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-            padding: 24px;
+            padding: 20px;
             line-height: 1.5;
         }
 
-        /* Header: 간결하고 사실 중심의 학술 레이블 */
         header {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            padding-bottom: 14px;
+            padding-bottom: 12px;
             border-bottom: 1px solid #2d3748;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
         .title-block h1 {
             font-size: 18px;
@@ -36,15 +35,14 @@
             margin-top: 3px;
         }
 
-        /* Control Bar: 정갈한 기능 버튼 */
         .controls {
             display: flex;
             align-items: center;
             gap: 8px;
             background-color: #1a202c;
             border: 1px solid #2d3748;
-            padding: 10px 14px;
-            margin-bottom: 18px;
+            padding: 8px 12px;
+            margin-bottom: 16px;
             flex-wrap: wrap;
         }
         .btn {
@@ -55,13 +53,20 @@
             font-size: 12px;
             cursor: pointer;
         }
-        .btn:hover {
-            background-color: #4a5568;
-        }
+        .btn:hover { background-color: #4a5568; }
         .btn-active {
             background-color: #2b6cb0;
             border-color: #3182ce;
             color: #ffffff;
+        }
+
+        .select-agent {
+            background-color: #2d3748;
+            color: #e5e7eb;
+            border: 1px solid #4a5568;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
         }
 
         .timeline-ctrl {
@@ -73,7 +78,7 @@
             color: #a0aec0;
         }
         .timeline-ctrl input[type="range"] {
-            width: 200px;
+            width: 180px;
             accent-color: #4299e1;
             cursor: pointer;
         }
@@ -84,30 +89,29 @@
             min-width: 44px;
         }
 
-        /* Main Workspace: 1024px 지도 + 우측 분석 패널 */
         .workspace {
             display: grid;
-            grid-template-columns: 1024px 1fr;
-            gap: 20px;
+            grid-template-columns: 1080px 1fr;
+            gap: 16px;
             align-items: start;
         }
 
         .canvas-frame {
             border: 1px solid #2d3748;
             background-color: #0d1117;
-            width: 1024px;
-            height: 768px;
+            width: 1080px;
+            height: 780px;
+            position: relative;
+            cursor: grab;
         }
-        #villageCanvas {
-            display: block;
-        }
+        .canvas-frame:active { cursor: grabbing; }
+        #villageCanvas { display: block; }
 
-        /* Analysis Side: 표와 문단 중심 */
         .analysis-panel {
             display: flex;
             flex-direction: column;
             gap: 16px;
-            height: 768px;
+            height: 780px;
         }
         .section-title {
             font-size: 13px;
@@ -115,13 +119,13 @@
             color: #e2e8f0;
             padding-bottom: 6px;
             border-bottom: 1px solid #2d3748;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
         }
 
         .data-table-container {
-            height: 310px;
+            height: 320px;
             overflow-y: auto;
             border: 1px solid #2d3748;
             background-color: #1a202c;
@@ -146,9 +150,7 @@
             border-bottom: 1px solid #232a3b;
             color: #e2e8f0;
         }
-        table.data-table tr:hover {
-            background-color: #202738;
-        }
+        table.data-table tr:hover { background-color: #202738; }
 
         .log-container {
             flex: 1;
@@ -186,11 +188,11 @@
 
     <header>
         <div class="title-block">
-            <h1>농촌 행위자 상호작용 시뮬레이터 (Saemaul-Smallville)</h1>
-            <p>스탠포드 생성형 에이전트 인지 구조 기반 12인 지역사회 관계망 실증 모델</p>
+            <h1>농촌 행위자 상호작용 시뮬레이터 (Saemaul-Smallville 대형 월드)</h1>
+            <p>100x75 대형 그리드 (3200x2400px) 기반 동적 카메라 시뮬레이션</p>
         </div>
         <div>
-            <button class="btn" onclick="sim.exportHistoryJSON()">시뮬레이션 기록 내보내기 (JSON)</button>
+            <button class="btn" onclick="sim.exportHistoryJSON()">기록 내보내기 (JSON)</button>
         </div>
     </header>
 
@@ -201,8 +203,25 @@
         <button class="btn" id="btnSpd5" onclick="setSpeed(5.0)">5배속</button>
         <button class="btn" onclick="resetSim()">초기화 (08:00)</button>
 
+        <span style="font-size: 12px; color: #a0aec0; margin-left: 10px;">카메라 추적:</span>
+        <select class="select-agent" id="agentTracker" onchange="trackAgent(this.value)">
+            <option value="">(자유 시점)</option>
+            <option value="agent_kim">김이장 (마을회관)</option>
+            <option value="agent_park">박부녀 (회관광장)</option>
+            <option value="agent_jung">정노인 (전통논)</option>
+            <option value="agent_choi">최총무 (행정실무)</option>
+            <option value="agent_lee">이지훈 (스마트온실)</option>
+            <option value="agent_kang">강수연 (청년카페)</option>
+            <option value="agent_cho">조민우 (귀농초보)</option>
+            <option value="agent_han">한유진 (프리랜서)</option>
+            <option value="agent_oh">오상회 (구판장)</option>
+            <option value="agent_lin">린 (다문화농가)</option>
+            <option value="agent_yoon">윤축산 (외곽축사)</option>
+            <option value="agent_bae">배과수 (산비탈과수원)</option>
+        </select>
+
         <div class="timeline-ctrl">
-            <span>리플레이 시점:</span>
+            <span>리플레이:</span>
             <input type="range" id="replaySlider" min="0" max="0" value="0" oninput="onSliderInput(this.value)">
             <span id="replayLabel" class="time-display">08:00</span>
         </div>
@@ -210,7 +229,7 @@
 
     <div class="workspace">
         <div class="canvas-frame">
-            <canvas id="villageCanvas" width="1024" height="768"></canvas>
+            <canvas id="villageCanvas" width="1080" height="780"></canvas>
         </div>
 
         <div class="analysis-panel">
@@ -247,7 +266,7 @@
                             <span>08:00</span>
                             <span class="log-actors">시스템</span>
                         </div>
-                        <div class="log-text">시뮬레이션을 시작합니다. 12인의 행위자가 각자의 주거지에서 일과 거점으로 이동합니다.</div>
+                        <div class="log-text">대형 월드 시뮬레이션을 시작합니다. 마우스 드래그로 맵을 둘러보고 휠로 확대/축소할 수 있습니다.</div>
                     </div>
                 </div>
             </div>
@@ -284,6 +303,13 @@
 
         function resetSim() {
             location.reload();
+        }
+
+        function trackAgent(agentId) {
+            sim.camera.trackingAgentId = agentId || null;
+            if (agentId) {
+                sim.camera.zoom = 1.2; // Zoom in when tracking
+            }
         }
 
         function onSliderInput(val) {
