@@ -284,6 +284,121 @@
             line-height: 1.6;
         }
 
+        /* 다운로드 바 */
+        .download-bar {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            padding-top: 1rem;
+            margin-top: 1.2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 6px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+            background: #ffffff;
+            color: var(--text-sub);
+            transition: all 0.15s ease;
+        }
+
+        .download-btn:hover {
+            background: #f8fafc;
+            color: var(--text-main);
+        }
+
+        .download-btn.btn-pdf {
+            background: #fffbeb;
+            color: var(--primary);
+            border-color: #fde68a;
+        }
+
+        .download-btn.btn-pdf:hover {
+            background: #fef3c7;
+        }
+
+        /* 좌측 플로팅 네비게이터 */
+        .side-nav {
+            position: fixed;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.75rem 0.55rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            width: 205px;
+            transition: all 0.3s ease;
+        }
+
+        .side-nav-title {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            padding: 0.2rem 0.5rem 0.4rem 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 0.15rem;
+            letter-spacing: -0.01em;
+        }
+
+        .side-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.42rem 0.6rem;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .side-nav-item:hover {
+            background: #fffbeb;
+            color: var(--primary);
+        }
+
+        .side-nav-item.active {
+            background: var(--primary);
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .nav-idx {
+            font-size: 0.72rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-weight: 700;
+            color: var(--text-muted);
+            min-width: 1.3rem;
+        }
+
+        .side-nav-item.active .nav-idx {
+            color: #fef08a;
+        }
+
+        @media (max-width: 1360px) {
+            .side-nav {
+                display: none;
+            }
+        }
+
         footer {
             margin-top: 3rem;
             padding-top: 1.5rem;
@@ -296,6 +411,23 @@
 </head>
 <body>
 
+    <!-- 좌측 플로팅 네비게이터 -->
+    <nav class="side-nav">
+        <div class="side-nav-title">1주차 강의 목차</div>
+        <a href="#sec-header" class="side-nav-item active" data-target="sec-header">
+            <span class="nav-idx">00</span> 강의 개요
+        </a>
+        <a href="#sec-econ-soc" class="side-nav-item" data-target="sec-econ-soc">
+            <span class="nav-idx">01</span> 경제학 vs 사회연대경제
+        </a>
+        <a href="#sec-investment-value" class="side-nav-item" data-target="sec-investment-value">
+            <span class="nav-idx">02</span> 투자와 효율적 프론티어
+        </a>
+        <a href="#sec-yunus-microfinance" class="side-nav-item" data-target="sec-yunus-microfinance">
+            <span class="nav-idx">03</span> 소액금융 vs 새마을운동
+        </a>
+    </nav>
+
     <div class="container">
         
         <nav class="top-nav">
@@ -303,12 +435,16 @@
             <span style="color: var(--text-muted);">영남대학교 대학원 새마을국제개발학과 | 소액금융과 새마을운동 (0681-01)</span>
         </nav>
 
-        <header>
-            <div class="course-meta">1주차 강의안</div>
+        <header id="sec-header">
+            <div class="course-meta">1주차 강의안 &amp; 사회연대경제론</div>
             <h1>소액금융 개론: 경제학 vs 사회학과 투자의 경제학</h1>
             <p class="header-sub">
-                경제학과 사회학의 분석 관점 비교, 투자의 정의(현재 자원 투입을 통한 미래 가치 획득), 투자의 2대 축(Risk & Return) 및 기회 창출 프레임워크 정리
+                경제학과 사회학의 분석 관점 비교, 투자의 정의(현재 자원 투입을 통한 미래 가치 획득), 투자의 2대 축(Risk &amp; Return), 효율적 프론티어 시뮬레이터 및 1주차 공식 강의 교재 《사회연대경제론》의 핵심 개념을 정리한 강의안입니다.
             </p>
+            <div class="download-bar">
+                <a href="사회연대경제론_1주차-1.pdf" target="_blank" class="download-btn btn-pdf">1주차 공식 강의안 다운로드 (PDF, 46p) ↗</a>
+                <a href="index.html" class="download-btn">교과목 포털 안내</a>
+            </div>
         </header>
 
         <!-- 목차 -->
@@ -724,6 +860,25 @@
 
             draw();
         }
+
+        // 좌측 플로팅 네비게이터 스크롤 스파이 (Scroll-Spy)
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('header[id], section[id^="sec-"]');
+            const navItems = document.querySelectorAll('.side-nav-item');
+            let current = 'sec-header';
+            sections.forEach(sec => {
+                const top = sec.offsetTop - 180;
+                if (window.scrollY >= top) {
+                    current = sec.getAttribute('id');
+                }
+            });
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-target') === current) {
+                    item.classList.add('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
