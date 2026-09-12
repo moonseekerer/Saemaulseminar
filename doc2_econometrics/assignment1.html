@@ -273,16 +273,105 @@
             font-size: 0.8rem;
             color: var(--text-muted);
         }
+
+        /* 좌측 플로팅 네비게이터 CSS */
+        .side-nav {
+            position: fixed;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 0.8rem 0.6rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            width: 195px;
+            transition: all 0.3s ease;
+        }
+
+        .side-nav-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            padding: 0.2rem 0.6rem 0.5rem 0.6rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 0.2rem;
+        }
+
+        .side-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.7rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-sub);
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .side-nav-item:hover {
+            background: var(--navy-soft);
+            color: var(--navy-primary);
+        }
+
+        .side-nav-item.active {
+            background: var(--navy-primary);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 2px 6px rgba(30,58,138,0.25);
+        }
+
+        .side-icon {
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 1320px) {
+            .side-nav {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- 좌측 플로팅 네비게이션 바 -->
+    <nav class="side-nav">
+        <div class="side-nav-title">과제 목차 탐색</div>
+        <a href="#sec-header" class="side-nav-item active" data-target="sec-header">
+            <span class="side-icon">📥</span> 과제 및 자료
+        </a>
+        <a href="#sec-scatter" class="side-nav-item" data-target="sec-scatter">
+            <span class="side-icon">📊</span> 문항 1·2 산점도
+        </a>
+        <a href="#sec-ols" class="side-nav-item" data-target="sec-ols">
+            <span class="side-icon">📋</span> 문항 3 OLS 추정
+        </a>
+        <a href="#sec-outliers" class="side-nav-item" data-target="sec-outliers">
+            <span class="side-icon">⚖️</span> 문항 4·5 극단치
+        </a>
+        <a href="#sec-sampling" class="side-nav-item" data-target="sec-sampling">
+            <span class="side-icon">📈</span> 문항 6 표본분포
+        </a>
+    </nav>
+
     <div class="container">
         <div class="top-nav">
-            <a href="../index.html" class="back-btn">← 학업 & 연구 포털 메인으로 돌아가기</a>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <a href="../index.html" class="back-btn">← 메인 포털</a>
+                <a href="index.html" class="back-btn" style="color: var(--navy-primary);">교과목 포털</a>
+                <a href="lecture1.html" class="back-btn" style="color: var(--emerald-primary);">제1강 시뮬레이터 ↗</a>
+            </div>
             <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">영남대학교 대학원 계량분석방법론연구 (0680-01)</span>
         </div>
 
-        <header>
+        <header id="sec-header">
             <div class="header-tag">제1장 연구과제 실습실</div>
             <h1>SNS 사용시간과 청소년 스트레스 지수 회귀분석</h1>
             <p>
@@ -297,7 +386,7 @@
         </header>
 
         <!-- 1 & 2번 문항 -->
-        <div class="section-box">
+        <div class="section-box" id="sec-scatter">
             <div class="section-title">
                 <span>문항 1 & 2. 데이터 산점도(Scatter Plot) 및 회귀선 관찰</span>
                 <span class="question-badge">N = 300</span>
@@ -315,7 +404,7 @@
         </div>
 
         <!-- 3번 문항 -->
-        <div class="section-box">
+        <div class="section-box" id="sec-ols">
             <div class="section-title">
                 <span>문항 3. OLS 회귀방정식 추정 및 통계량 해석</span>
                 <span class="question-badge">Y = α + βX + u</span>
@@ -369,7 +458,7 @@
         </div>
 
         <!-- 4 & 5번 문항 -->
-        <div class="section-box">
+        <div class="section-box" id="sec-outliers">
             <div class="section-title">
                 <span>문항 4 & 5. 극단치(Outlier) 식별, 잔차 표준화 및 제거 전후 비교</span>
                 <span class="question-badge">|Standardized Residual| &gt; 2</span>
@@ -442,7 +531,7 @@
         </div>
 
         <!-- 6번 문항 -->
-        <div class="section-box">
+        <div class="section-box" id="sec-sampling">
             <div class="section-title">
                 <span>문항 6. 모집단(PRF) 가정 하 50명 표본추출 100회 시뮬레이션</span>
                 <span class="question-badge">N=300 (PRF) vs n=50 (SRF)</span>
@@ -729,6 +818,25 @@
             });
             initScatter();
             initHist();
+        });
+
+        // 좌측 플로팅 네비게이터 스크롤 스파이 (Scroll-Spy)
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('header[id], div[id^="sec-"]');
+            const navItems = document.querySelectorAll('.side-nav-item');
+            let current = 'sec-header';
+            sections.forEach(sec => {
+                const top = sec.offsetTop - 200;
+                if (window.scrollY >= top) {
+                    current = sec.getAttribute('id');
+                }
+            });
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-target') === current) {
+                    item.classList.add('active');
+                }
+            });
         });
     </script>
 </body>
