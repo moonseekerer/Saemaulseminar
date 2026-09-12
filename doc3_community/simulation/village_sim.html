@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>농촌 지역사회 행위자 시뮬레이터 (Saemaul-Smallville 대형 월드)</title>
+    <title>농촌 지역사회 행위자 시뮬레이터 (Saemaul-Smallville 자율 모드)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -125,7 +125,7 @@
         }
 
         .data-table-container {
-            height: 320px;
+            height: 330px;
             overflow-y: auto;
             border: 1px solid #2d3748;
             background-color: #1a202c;
@@ -188,8 +188,8 @@
 
     <header>
         <div class="title-block">
-            <h1>농촌 행위자 상호작용 시뮬레이터 (Saemaul-Smallville 대형 월드)</h1>
-            <p>100x75 대형 그리드 (3200x2400px) 기반 동적 카메라 시뮬레이션</p>
+            <h1>농촌 행위자 상호작용 시뮬레이터 (Saemaul-Smallville)</h1>
+            <p>12인 행위자의 자율 동기 및 호혜성(Reciprocity)에 의한 창발적 상호작용 실증 모델</p>
         </div>
         <div>
             <button class="btn" onclick="sim.exportHistoryJSON()">기록 내보내기 (JSON)</button>
@@ -203,9 +203,9 @@
         <button class="btn" id="btnSpd5" onclick="setSpeed(5.0)">5배속</button>
         <button class="btn" onclick="resetSim()">초기화 (08:00)</button>
 
-        <span style="font-size: 12px; color: #a0aec0; margin-left: 10px;">카메라 추적:</span>
+        <span style="font-size: 12px; color: #a0aec0; margin-left: 10px;">행위자 추적:</span>
         <select class="select-agent" id="agentTracker" onchange="trackAgent(this.value)">
-            <option value="">(자유 시점)</option>
+            <option value="">(자유 카메라)</option>
             <option value="agent_kim">김이장 (마을회관)</option>
             <option value="agent_park">박부녀 (회관광장)</option>
             <option value="agent_jung">정노인 (전통논)</option>
@@ -235,17 +235,17 @@
         <div class="analysis-panel">
             <div>
                 <div class="section-title">
-                    <span>행위자 간 접촉 및 사회적 관계망 집계</span>
+                    <span>사회적 자본 및 관계망 지표 (도킨스 호혜성 모델)</span>
                     <span id="totalContacts" style="color: #63b3ed; font-weight: normal;">총 접촉: 0회</span>
                 </div>
                 <div class="data-table-container">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>에이전트 A</th>
-                                <th>에이전트 B</th>
+                                <th>행위자 쌍</th>
                                 <th>접촉 빈도</th>
-                                <th>유대 단계</th>
+                                <th>신뢰 점수</th>
+                                <th>태도 국면</th>
                             </tr>
                         </thead>
                         <tbody id="networkBody">
@@ -257,7 +257,7 @@
 
             <div style="flex: 1; display: flex; flex-direction: column;">
                 <div class="section-title">
-                    <span>상호작용 및 담론 로그</span>
+                    <span>자율 담론 및 동선 변경 로그</span>
                     <span style="font-weight: normal; color: #718096;">시간순 기록</span>
                 </div>
                 <div class="log-container" id="logStream">
@@ -266,7 +266,7 @@
                             <span>08:00</span>
                             <span class="log-actors">시스템</span>
                         </div>
-                        <div class="log-text">대형 월드 시뮬레이션을 시작합니다. 마우스 드래그로 맵을 둘러보고 휠로 확대/축소할 수 있습니다.</div>
+                        <div class="log-text">자율 에이전트 시뮬레이션을 시작합니다. 주민을 클릭하면 머릿속 기억 스트림을 실시간 조회할 수 있습니다.</div>
                     </div>
                 </div>
             </div>
@@ -308,7 +308,9 @@
         function trackAgent(agentId) {
             sim.camera.trackingAgentId = agentId || null;
             if (agentId) {
-                sim.camera.zoom = 1.2; // Zoom in when tracking
+                sim.camera.zoom = 1.2;
+                const ag = sim.agents.find(a => a.id === agentId);
+                if (ag) sim.inspectAgentState(ag);
             }
         }
 
@@ -340,28 +342,34 @@
             `).join('');
         };
 
-        window.updateNetworkGraph = function(matrix) {
+        window.updateNetworkGraph = function(graph) {
             const tbody = document.getElementById('networkBody');
-            const sorted = Object.entries(matrix)
-                .filter(([k, v]) => v > 0)
-                .sort((a, b) => b[1] - a[1]);
+            const entries = Object.entries(graph)
+                .filter(([k, v]) => v.count > 0)
+                .sort((a, b) => b[1].count - a[1].count);
 
-            const sum = sorted.reduce((acc, c) => acc + c[1], 0);
-            document.getElementById('totalContacts').innerText = `총 접촉: ${sum}회`;
+            const total = entries.reduce((acc, c) => acc + c[1].count, 0);
+            document.getElementById('totalContacts').innerText = `총 접촉: ${total}회`;
 
-            if (sorted.length === 0) return;
+            if (entries.length === 0) return;
 
-            tbody.innerHTML = sorted.slice(0, 15).map(([pair, count]) => {
+            tbody.innerHTML = entries.slice(0, 15).map(([pair, data]) => {
                 const [id1, id2] = pair.split('-');
                 const ag1 = AGENTS_ROSTER.find(a => a.id === id1) || { name: id1 };
                 const ag2 = AGENTS_ROSTER.find(a => a.id === id2) || { name: id2 };
-                const tieLevel = count >= 4 ? '밀접 유대' : (count >= 2 ? '단순 접촉' : '초기 접촉');
+                
+                let trustColor = '#a0aec0';
+                if (data.trust > 0) trustColor = '#48bb78';
+                else if (data.trust < 0) trustColor = '#f56565';
+
                 return `
                     <tr>
-                        <td>${ag1.name}</td>
-                        <td>${ag2.name}</td>
-                        <td style="font-variant-numeric: tabular-nums;">${count}회</td>
-                        <td style="color: ${count >= 4 ? '#68d391' : '#a0aec0'};">${tieLevel}</td>
+                        <td><strong>${ag1.name}</strong> ↔ <strong>${ag2.name}</strong></td>
+                        <td style="font-variant-numeric: tabular-nums;">${data.count}회</td>
+                        <td style="color: ${trustColor}; font-weight: bold; font-variant-numeric: tabular-nums;">
+                            ${data.trust > 0 ? '+' + data.trust : data.trust}
+                        </td>
+                        <td style="color: ${trustColor};">${data.sentiment}</td>
                     </tr>
                 `;
             }).join('');

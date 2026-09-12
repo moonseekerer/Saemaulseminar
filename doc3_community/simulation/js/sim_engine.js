@@ -1,9 +1,9 @@
-// sim_engine.js - Stanford Generative Agents Memory Stream & Retrieval Engine
+// sim_engine.js - Emergent Autonomous Multi-Agent Simulation Engine (No hardcoded scripts)
 
 class MemoryStream {
     constructor(agentId) {
         this.agentId = agentId;
-        this.records = []; // [{ id, time, type: 'obs'|'dial'|'ref', text, importance, target }]
+        this.records = []; // [{ id, time, type, text, importance, target }]
     }
 
     add(time, type, text, importance = 5, target = null) {
@@ -17,94 +17,97 @@ class MemoryStream {
         });
     }
 
-    // Retrieval: Recency + Importance + Relevance
     retrieve(currTime, queryTargetId, topK = 3) {
         if (this.records.length === 0) return [];
-
         const scored = this.records.map(rec => {
-            // Recency decay: 0.995 ^ (delta hours * 10)
             const deltaH = Math.max(0, currTime - rec.time);
             const recency = Math.pow(0.95, deltaH);
-
-            // Importance: normalized 0 ~ 1
             const importance = (rec.importance || 5) / 10.0;
-
-            // Relevance: target match bonus
             let relevance = 0.2;
             if (rec.target === queryTargetId) relevance = 1.0;
-            else if (rec.text.includes(queryTargetId)) relevance = 0.8;
+            else if (rec.text.includes(queryTargetId)) relevance = 0.7;
 
-            const score = 0.3 * recency + 0.3 * importance + 0.4 * relevance;
-            return { ...rec, score };
+            return { ...rec, score: 0.3 * recency + 0.3 * importance + 0.4 * relevance };
         });
-
         scored.sort((a, b) => b.score - a.score);
         return scored.slice(0, topK);
     }
 }
 
-// 12인 고유 초기 기억 (Seed Memories)
-const INITIAL_MEMORIES = {
-    agent_kim: [
-        { text: "군청 수로 정비 사업비 5억 원 지원이 확정되었으나 마을 자부담 20% 분담금 합의가 시급하다.", importance: 9, target: "town" },
-        { text: "정노인과 어르신들이 관행 수로 방식을 고집해 청년 스마트팜 도입에 반대할까 염려스럽다.", importance: 7, target: "agent_jung" },
-        { text: "오상회 구판장에서 주민들의 솔직한 여론을 먼저 떠보고자 한다.", importance: 6, target: "agent_oh" }
-    ],
-    agent_park: [
-        { text: "청년 창업가 강수연과 협력하여 사과 가공 젤리를 부녀회 로컬장터에서 판매할 계획이다.", importance: 8, target: "agent_kang" },
-        { text: "마을 내 외지인과 원주민 간의 오해를 풀고 공동체 화합을 이끌어야 한다.", importance: 8, target: "town" },
-        { text: "오상회 구판장은 마을 어르신들이 모이는 정보의 핵심 사랑방이다.", importance: 6, target: "agent_oh" }
-    ],
-    agent_jung: [
-        { text: "수십 년간 농사지어 온 다랭이논에 용수가 부족해지면 올해 벼농사는 끝장이다.", importance: 9, target: "town" },
-        { text: "스마트팜이니 뭐니 하는 청년들이 지하수를 독점해 논물이 마르는 것은 아닌지 의심스럽다.", importance: 8, target: "agent_lee" },
-        { text: "귀농 초보 조민우가 예의 바르게 농사 기술을 물어오면 기꺼이 가르쳐줄 용의가 있다.", importance: 6, target: "agent_cho" }
-    ],
-    agent_choi: [
-        { text: "마을회관 창고 농기계 관리와 오후 수로 총회 실무 준비를 도맡아야 한다.", importance: 7, target: "agent_kim" },
-        { text: "스마트온실 이지훈과 정노인 어르신 사이에서 현실적인 타협안을 조율하고자 한다.", importance: 8, target: "agent_lee" },
-        { text: "축사 악취 민원이 총회에서 터져 나오지 않도록 윤축산과 사전 교감이 필요하다.", importance: 7, target: "agent_yoon" }
-    ],
-    agent_lee: [
-        { text: "ICT 연동 스마트 관수 센서 데이터를 보면 전통 수로의 누수율이 40%에 달한다.", importance: 9, target: "town" },
-        { text: "단순 콘크리트 수로 개보수보다 지능형 압력 관수 파이프라인 매설이 훨씬 경제적이다.", importance: 8, target: "agent_kim" },
-        { text: "정노인 어르신에게 스마트 관수 기술이 논농사에도 유리함을 입증해야 한다.", importance: 8, target: "agent_jung" }
-    ],
-    agent_kang: [
-        { text: "로컬 청년 공방에서 만든 특산물 가공품을 마을 구판장과 온라인에 입점시키는 것이 목표다.", importance: 8, target: "agent_oh" },
-        { text: "부녀회장님의 신뢰를 얻어야 마을 어르신들의 텃세를 극복하고 판로를 열 수 있다.", importance: 9, target: "agent_park" },
-        { text: "한유진 디자이너에게 카페 로고와 패키지 디자인 의뢰를 부탁했다.", importance: 6, target: "agent_han" }
-    ],
-    agent_cho: [
-        { text: "귀농 첫해라 벼 도열병과 물꼬 잡는 법을 몰라 정노인 어르신의 도움이 절실하다.", importance: 9, target: "agent_jung" },
-        { text: "스마트팜 이지훈 대표에게 청년 창업 지원금 수령 절차를 자문받고 싶다.", importance: 7, target: "agent_lee" },
-        { text: "친환경 유기농 쌀로 지역사회에 건강한 농산물을 공급하고 싶다.", importance: 6, target: "town" }
-    ],
-    agent_han: [
-        { text: "조용한 시골에서 프리랜서 디자인 업무를 하며 프라이버시를 지키고 싶다.", importance: 7, target: "town" },
-        { text: "강수연 대표의 로컬푸드 브랜드 패키지 디자인 작업 마감이 임박했다.", importance: 8, target: "agent_kang" },
-        { text: "마을 총회 갈등이 어떻게 전개되는지 관찰하는 것이 꽤 흥미롭다.", importance: 5, target: "town" }
-    ],
-    agent_oh: [
-        { text: "마을 외상 장부 수금도 중요하지만, 수로 공사로 도로가 파헤쳐지면 구판장 손님이 줄까 걱정이다.", importance: 8, target: "agent_kim" },
-        { text: "청년들의 로컬 가공품을 구판장에 위탁 판매하면 수수료 수입이 쏠쏠할 것 같다.", importance: 7, target: "agent_kang" },
-        { text: "동네 모든 소문은 내 평상을 거쳐 가므로 정보를 쥐고 거래를 조율해야 한다.", importance: 7, target: "town" }
-    ],
-    agent_lin: [
-        { text: "성실하게 복합 시설 채소를 가꾸어 구판장과 공방에 신선한 농산물을 납품하고자 한다.", importance: 8, target: "agent_oh" },
-        { text: "부녀회 봉사활동에 꾸준히 참여해 마을 주민들과 진정한 가족이 되고 싶다.", importance: 8, target: "agent_park" },
-        { text: "수로 공사 시 우리 하우스 쪽 지선 관로도 함께 연결되기를 간절히 바란다.", importance: 7, target: "town" }
-    ],
-    agent_yoon: [
-        { text: "마을 사람들이 축사 냄새로 민원을 넣지만, 이번 수로 공사에 정화조 배수로가 빠지면 결코 찬성할 수 없다.", importance: 9, target: "agent_kim" },
-        { text: "총무 최씨가 내 입장을 마을회관에 잘 전달해주길 기대하고 있다.", importance: 7, target: "agent_choi" },
-        { text: "사료값 인상으로 축산 농가 유지가 갈수록 벅차다.", importance: 6, target: "town" }
-    ],
-    agent_bae: [
-        { text: "산비탈 사과 과수원은 해발고도가 높아 물이 끝까지 올라오지 않아 가뭄 때마다 큰 피해를 본다.", importance: 9, target: "town" },
-        { text: "평야 논에만 물을 대는 식의 공사라면 자부담 분담금을 단 한 푼도 낼 수 없다.", importance: 9, target: "agent_kim" },
-        { text: "수원지 상류 관정 밸브 개방 여부를 매일 아침 직접 확인해야 직성이 풀린다.", importance: 8, target: "town" }
-    ]
+// 12인의 내면 페르소나 및 핵심 관심사 (Core Drives & Traits)
+const AGENT_COGNITION_PROFILES = {
+    agent_kim: {
+        desire: "마을 사업 성사 및 리더십 유지",
+        stanceOnWater: "균등 분담 및 사업비 확보 우선",
+        trustThreshold: 0.6,
+        concerns: ["자부담금 확보", "총회 파행 방지", "군청 기한 준수"]
+    },
+    agent_park: {
+        desire: "마을 화합 및 부녀회 공동 수익",
+        stanceOnWater: "상생 타협 및 로컬 장터 연계",
+        trustThreshold: 0.7,
+        concerns: ["어르신-청년 소통", "판로 확보", "김장 행사"]
+    },
+    agent_jung: {
+        desire: "전통 논 벼 수확 보전 및 기득권 수호",
+        stanceOnWater: "전통 관개 용수 우선 보장",
+        trustThreshold: 0.3,
+        concerns: ["논 물마름", "외지인 지하수 낭비", "관행 유지"]
+    },
+    agent_choi: {
+        desire: "원만한 실무 집행 및 민원 조기 수습",
+        stanceOnWater: "현실적 타협안 및 절충",
+        trustThreshold: 0.5,
+        concerns: ["축사 악취 민원", "총회 진행", "기계 점검"]
+    },
+    agent_lee: {
+        desire: "스마트 농업 확대 및 물 이용 효율화",
+        stanceOnWater: "데이터 기반 스마트 관수 전환",
+        trustThreshold: 0.6,
+        concerns: ["수로 누수율 40%", "온실 전력/센서", "영농비 절감"]
+    },
+    agent_kang: {
+        desire: "청년 가공 창업 성공 및 판로 개척",
+        stanceOnWater: "마을 기금 조성을 통한 갈등 완화",
+        trustThreshold: 0.7,
+        concerns: ["사과잼 납품처", "어르신 시선", "온라인 판매"]
+    },
+    agent_cho: {
+        desire: "초보 영농 정착 및 친환경 벼농사 성공",
+        stanceOnWater: "안정적 용수 공급 및 선도농가 조언",
+        trustThreshold: 0.5,
+        concerns: ["병충해", "물꼬 높이", "초기 자금 부족"]
+    },
+    agent_han: {
+        desire: "조용한 작업 환경 및 마을 디자인 참여",
+        stanceOnWater: "합리적 공론화 관망",
+        trustThreshold: 0.4,
+        concerns: ["원격 마감", "소음", "마을 브랜드 가치"]
+    },
+    agent_oh: {
+        desire: "구판장 매출 증대 및 외상값 회수",
+        stanceOnWater: "공사로 인한 도로 통행 차단 반대",
+        trustThreshold: 0.5,
+        concerns: ["평상 손님 유지", "외상 장부", "수수료 수익"]
+    },
+    agent_lin: {
+        desire: "안정적 시설 채소 영농 및 지역사회 융합",
+        stanceOnWater: "하우스 지선 관로 연결",
+        trustThreshold: 0.6,
+        concerns: ["가족 생계", "용수 배분 차별", "채소 신선도"]
+    },
+    agent_yoon: {
+        desire: "축산 농가 생존 및 악취 민원 해소",
+        stanceOnWater: "정화조 배수로 공사 동시 시행 필수",
+        trustThreshold: 0.3,
+        concerns: ["사료값 상승", "민원 성토", "배수로 배제"]
+    },
+    agent_bae: {
+        desire: "산비탈 과수원 용수 확보 및 낙과 방지",
+        stanceOnWater: "고지대 가압 펌프 없이는 결사 반대",
+        trustThreshold: 0.3,
+        concerns: ["가뭄 고사", "평야 논 편중", "과수원 폐원 위기"]
+    }
 };
 
 class VillageSimulator {
@@ -138,19 +141,26 @@ class VillageSimulator {
         this.history = [];
         this.currentFrameIdx = 0;
 
-        // Pair Dialogue Cooldown Map: { 'agent_kim-agent_park': lastSpokenGameHour }
+        // Dynamic State Tracker: { pairKey: { count, trustScore: -5 ~ +5, lastSpoken } }
+        this.socialGraph = {};
+
+        // Cooldown between conversations
         this.cooldownMap = {};
 
-        // Active Agents with MemoryStream
+        // Initialize Agents with Autonomy
         this.agents = AGENTS_ROSTER.map(a => {
             const memStream = new MemoryStream(a.id);
-            // Seed initial memories
-            const seeds = INITIAL_MEMORIES[a.id] || [];
-            seeds.forEach(s => memStream.add(7.5, 'obs', s.text, s.importance, s.target));
+            const prof = AGENT_COGNITION_PROFILES[a.id] || {};
+
+            // Initial seed observations (자연어 기억)
+            memStream.add(7.5, 'obs', `${a.name}의 주 관심사: ${prof.desire}`, 8, 'self');
+            memStream.add(7.6, 'obs', `용수 문제에 대한 입장: ${prof.stanceOnWater}`, 8, 'water');
 
             return {
                 ...a,
                 memory: memStream,
+                cognition: prof,
+                trustIndex: 0, // Individual overall social trust
                 currX: a.homePos.x,
                 currY: a.homePos.y,
                 targetX: a.workPos.x,
@@ -160,16 +170,19 @@ class VillageSimulator {
                 status: '이동 중',
                 currAction: '일과 시작',
                 speech: '',
-                isConversing: false
+                isConversing: false,
+                autonomousDecisions: 0
             };
         });
 
-        this.networkMatrix = {};
+        // Initialize Graph pairs
         this.agents.forEach(a1 => {
             this.agents.forEach(a2 => {
                 if (a1.id !== a2.id) {
                     const key = [a1.id, a2.id].sort().join('-');
-                    this.networkMatrix[key] = 0;
+                    if (!this.socialGraph[key]) {
+                        this.socialGraph[key] = { count: 0, trust: 0, sentiment: '중립' };
+                    }
                 }
             });
         });
@@ -250,23 +263,22 @@ class VillageSimulator {
             const clicked = this.agents.find(a => {
                 const ax = a.currX * this.tileSize;
                 const ay = a.currY * this.tileSize;
-                return Math.hypot(clickX - (ax + 16), clickY - (ay + 16)) < 28;
+                return Math.hypot(clickX - (ax + 16), clickY - (ay + 16)) < 30;
             });
 
             if (clicked) {
                 this.camera.trackingAgentId = clicked.id;
                 const selectElem = document.getElementById('agentTracker');
                 if (selectElem) selectElem.value = clicked.id;
-                this.addLog(`${clicked.name} 추적 카메라를 활성화했습니다.`);
-                this.showAgentMemoryDetail(clicked);
+                this.inspectAgentState(clicked);
             }
         });
     }
 
-    showAgentMemoryDetail(agent) {
+    inspectAgentState(agent) {
         const topMems = agent.memory.records.slice(-4).reverse();
-        const memText = topMems.map(m => `• [${m.type === 'dial' ? '대화' : '성찰'}] ${m.text}`).join('\n');
-        this.addLog(`[${agent.name} 인지 상태]\n${memText}`);
+        const memLines = topMems.map(m => `[${m.time.toFixed(1)}h] ${m.text}`).join('\n• ');
+        this.addLog(`=== ${agent.name} (${agent.role}) 실시간 상태 ===\n• 현재 심리: ${agent.cognition.desire}\n• 누적 신뢰 지수: ${agent.trustIndex}\n• 최근 기억 스트림:\n• ${memLines}`);
     }
 
     clampCamera() {
@@ -310,29 +322,30 @@ class VillageSimulator {
         if (this.gameHour >= 18.0) {
             this.gameHour = 18.0;
             this.isPaused = true;
-            this.addLog('마을 공식 일과(18:00)가 종료되었습니다. 리플레이 슬라이더로 되돌려볼 수 있습니다.');
+            this.addLog('오늘 일과(18:00)가 종료되었습니다. 발생한 자율 상호작용 결과를 검토하거나 리플레이로 되돌려볼 수 있습니다.');
         }
 
+        // Agent movement & Autonomous Route Adjustment
         this.agents.forEach(agent => {
-            const task = [...agent.schedule].reverse().find(s => s.time <= this.gameHour);
-            if (task) {
-                agent.targetX = task.x;
-                agent.targetY = task.y;
-                agent.currAction = task.action;
-            }
-
-            // If conversing, pause movement temporarily
             if (agent.isConversing) {
                 agent.status = '대화 중';
                 agent.frame = 0;
                 return;
             }
 
+            // Normal schedule goal
+            const task = [...agent.schedule].reverse().find(s => s.time <= this.gameHour);
+            if (task && agent.currAction !== task.action) {
+                agent.targetX = task.x;
+                agent.targetY = task.y;
+                agent.currAction = task.action;
+            }
+
             const dx = agent.targetX - agent.currX;
             const dy = agent.targetY - agent.currY;
             const dist = Math.hypot(dx, dy);
 
-            if (dist > 0.15) {
+            if (dist > 0.2) {
                 agent.status = '이동 중';
                 const moveDist = Math.min(dist, dt * 2.8 * this.speed);
                 agent.currX += (dx / dist) * moveDist;
@@ -363,50 +376,96 @@ class VillageSimulator {
 
                 const d = Math.hypot(a1.currX - a2.currX, a1.currY - a2.currY);
 
-                // Proximity distance within 2.2 tiles
+                // Proximity range
                 if (d < 2.2) {
                     const pairKey = [a1.id, a2.id].sort().join('-');
                     const lastSpoken = this.cooldownMap[pairKey] || 0;
 
-                    // Cooldown check: at least 1.0 game hour (approx 20 seconds at 1x speed)
-                    if (this.gameHour - lastSpoken >= 1.0) {
-                        this.triggerDialogue(a1, a2, pairKey);
+                    // Cooldown: at least 0.8 game hour
+                    if (this.gameHour - lastSpoken >= 0.8) {
+                        this.triggerAutonomousEncounter(a1, a2, pairKey);
                     }
                 }
             }
         }
     }
 
-    triggerDialogue(a1, a2, pairKey) {
+    // Emergent Encounter: Generates dynamic dialogue & mutates state + next destination
+    triggerAutonomousEncounter(a1, a2, pairKey) {
         this.cooldownMap[pairKey] = this.gameHour;
 
-        // Retrieve relevant memories
+        const graph = this.socialGraph[pairKey];
+        graph.count++;
+
+        // 1. Retrieve memories from each agent regarding the other
         const memA = a1.memory.retrieve(this.gameHour, a2.id, 2);
         const memB = a2.memory.retrieve(this.gameHour, a1.id, 2);
 
-        // Generate contextual dialogue based on roles and retrieved memory
-        const { textA, textB } = this.generateContextualUtterance(a1, a2, memA, memB);
+        // 2. Determine interaction mood based on Dawkins Altruism / Reciprocity & Trust
+        // Positive alignment: mutual gain | Negative alignment: conflicting interest
+        let isCooperative = false;
+        let trustDelta = 0;
+
+        // Interest overlap logic
+        const commonInterest = (a1.group === a2.group) || (graph.trust > 0);
+        const isConflictPair = (a1.id === 'agent_bae' && a2.id === 'agent_kim') ||
+                               (a1.id === 'agent_jung' && a2.id === 'agent_lee') ||
+                               (a1.id === 'agent_yoon' && a2.id === 'agent_choi');
+
+        if (isConflictPair && graph.count === 1) {
+            // Initial encounter on conflict topic: aggressive stance
+            isCooperative = false;
+            trustDelta = -1;
+        } else if (graph.trust > 1 || (Math.random() < 0.6 && !isConflictPair)) {
+            // Cooperative negotiation
+            isCooperative = true;
+            trustDelta = +1;
+        } else {
+            // Self-interested bargaining
+            isCooperative = (Math.random() > 0.4);
+            trustDelta = isCooperative ? +1 : -1;
+        }
+
+        graph.trust = Math.max(-5, Math.min(5, graph.trust + trustDelta));
+        graph.sentiment = graph.trust > 1 ? '호의적' : (graph.trust < -1 ? '경계/대립' : '탐색 중');
+
+        a1.trustIndex += trustDelta;
+        a2.trustIndex += trustDelta;
+
+        // 3. Dynamically compose utterances based on internal state
+        const topic = this.pickDynamicTopic(a1, a2);
+        const { textA, textB, rerouteTarget } = this.synthesizeDialogue(a1, a2, topic, isCooperative, graph.trust);
 
         a1.speech = textA;
         a2.speech = textB;
         a1.isConversing = true;
         a2.isConversing = true;
 
-        // Face each other
         if (a1.currX < a2.currX) { a1.dir = 'right'; a2.dir = 'left'; }
         else { a1.dir = 'left'; a2.dir = 'right'; }
 
-        // Store new dialogue into both memory streams (Stanford Architecture)
-        a1.memory.add(this.gameHour, 'dial', `${a2.name}에게 "${textA}"라고 말했고, "${textB}"라는 답변을 들었다.`, 7, a2.id);
-        a2.memory.add(this.gameHour, 'dial', `${a1.name}에게 "${textA}"라는 말을 듣고, "${textB}"라고 응답했다.`, 7, a1.id);
+        // 4. Memory Stream update (Natural language record)
+        const recordA = `${a2.name}와 ${topic}에 대해 ${isCooperative ? '의견을 모았다' : '입장 차이를 확인했다'}: "${textA}"`;
+        const recordB = `${a1.name}에게 "${textB}"라고 답함. 상대 태도: ${isCooperative ? '협조적' : '비협조적'}`;
+
+        a1.memory.add(this.gameHour, 'dial', recordA, Math.abs(trustDelta) * 4 + 4, a2.id);
+        a2.memory.add(this.gameHour, 'dial', recordB, Math.abs(trustDelta) * 4 + 4, a1.id);
+
+        // 5. Autonomous Re-routing: If dynamic reaction requires movement
+        if (rerouteTarget && Math.random() < 0.5) {
+            const chosen = Math.random() < 0.5 ? a1 : a2;
+            chosen.targetX = rerouteTarget.x;
+            chosen.targetY = rerouteTarget.y;
+            chosen.currAction = rerouteTarget.reason;
+            chosen.autonomousDecisions++;
+            this.addLog(`[자율 동선 변경] ${chosen.name}이(가) 대화 후 "${rerouteTarget.reason}"(으)로 이동 경로를 변경했습니다.`);
+        }
 
         const timeStr = this.getFormattedTime();
         this.logs.unshift({ time: timeStr, from: a1.name, to: a2.name, msg: textA });
         this.logs.unshift({ time: timeStr, from: a2.name, to: a1.name, msg: textB });
 
-        this.networkMatrix[pairKey] = (this.networkMatrix[pairKey] || 0) + 1;
-
-        if (window.updateNetworkGraph) window.updateNetworkGraph(this.networkMatrix);
+        if (window.updateNetworkGraph) window.updateNetworkGraph(this.socialGraph);
         if (window.updateLogsUI) window.updateLogsUI(this.logs);
 
         setTimeout(() => {
@@ -414,68 +473,39 @@ class VillageSimulator {
             a2.speech = '';
             a1.isConversing = false;
             a2.isConversing = false;
-        }, 5000);
+        }, 4800);
     }
 
-    generateContextualUtterance(a1, a2, memA, memB) {
-        // Specific contextual pairings
-        const pKey = [a1.id, a2.id].sort().join('-');
+    pickDynamicTopic(a1, a2) {
+        const topics = [
+            "수로 분담금 분배", "가뭄 취입보 수량", "스마트 관수 도입",
+            "로컬푸드 가공품 판로", "축사 배수로 정비", "친환경 농법 노하우"
+        ];
+        if (a1.cognition.concerns && a2.cognition.concerns) {
+            const overlap = a1.cognition.concerns.find(c => a2.cognition.concerns.includes(c));
+            if (overlap) return overlap;
+        }
+        return topics[Math.floor(Math.random() * topics.length)];
+    }
 
-        if (pKey === 'agent_kim-agent_park') {
-            return {
-                textA: "박 회장, 오후 회관 총회 때 부녀회 쪽에서도 수로 분담금 안건에 힘을 좀 실어주시오.",
-                textB: "이장님, 청년 가공공방 지원과 연계된다면 부녀회원들도 적극 찬성할 분위기입니다."
-            };
-        }
-        if (pKey === 'agent_jung-agent_lee') {
-            return {
-                textA: "이 대표, 자네 온실에서 지하수 많이 뽑아 쓰면 아래쪽 논 물길이 마르는 건 알고 있나?",
-                textB: "어르신, 저희는 빗물 재활용과 정밀 센서를 써서 일반 관수보다 물을 40% 덜 씁니다."
-            };
-        }
-        if (pKey === 'agent_bae-agent_kim') {
-            return {
-                textA: "이장님, 산비탈 과수원까지 관수 파이프가 안 오면 자부담 분담금 낼 이유가 전혀 없습니다.",
-                textB: "배 대표, 이번 군청 설계에 고지대 가압 펌프 예산도 포함되어 있으니 총회에서 확인하시오."
-            };
-        }
-        if (pKey === 'agent_cho-agent_jung') {
-            return {
-                textA: "어르신, 친환경 논에 우렁이를 넣었는데 물높이를 어느 정도로 맞춰야 할지 여쭙고 싶습니다.",
-                textB: "물꼬는 손가락 두 마디 높이로 잔잔하게 유지해야 풀이 안 올라오네. 오후에 내가 한번 봐주마."
-            };
-        }
-        if (pKey === 'agent_kang-agent_oh') {
-            return {
-                textA: "점주님, 공방에서 생산한 사과 잼 시제품인데 구판장 매대 한편에 놓아주실 수 있을까요?",
-                textB: "포장이 깔끔하네. 외지 관광객들도 자주 찾으니 평상 옆 눈에 잘 띄는 곳에 두세."
-            };
-        }
-        if (pKey === 'agent_choi-agent_yoon') {
-            return {
-                textA: "윤 대표님, 오늘 총회에서 정화조 배수로 지원 건 공식 건의할 테니 감정 상하지 마십시오.",
-                textB: "최 총무 말만 믿겠네. 축산 농가도 마을 구성원인데 악취 민원만 받으면 억울하지."
-            };
-        }
-        if (pKey === 'agent_han-agent_kang') {
-            return {
-                textA: "강 대표님, 의뢰하신 로컬 농산물 패키지 폰트 시안 나왔는데 카페에서 확인해보시겠어요?",
-                textB: "고맙습니다 한 디자이너님! 덕분에 이번 로컬푸드 박람회 출품 준비가 순조롭습니다."
-            };
-        }
-        if (pKey === 'agent_lin-agent_park') {
-            return {
-                textA: "회장님, 이번 회관 김장 나눔 행사 때 제가 하우스에서 키운 특용 배추도 함께 보태겠습니다.",
-                textB: "린 새댁, 매번 마을 일에 앞장서줘서 고마워요. 이따 회관에서 차 한잔 같이해요."
-            };
+    synthesizeDialogue(a1, a2, topic, isCooperative, trustLevel) {
+        let textA = "";
+        let textB = "";
+        let rerouteTarget = null;
+
+        if (isCooperative) {
+            textA = `${a2.name}님, ${topic} 문제는 서로 조금씩 양보하면 합의점을 찾을 수 있을 것 같습니다.`;
+            textB = `동감입니다 ${a1.name}님. 우리 쪽에서도 ${a1.cognition.desire} 측면을 고려해 대안을 제시하겠습니다.`;
+            // Cooperative outcome might prompt joint check at plaza
+            rerouteTarget = { x: 48, y: 42, reason: `${topic} 확인을 위해 회관 앞마당으로 이동` };
+        } else {
+            textA = `${a2.name}님, ${topic}에 대해 우리 입장이 반영되지 않으면 이번 총회 결정을 따르기 어렵습니다.`;
+            textB = `각자 처한 사정이 다르니 일방적인 요구만 하실 수는 없지 않습니까.`;
+            // Conflict might prompt reporting to village head or store gathering
+            rerouteTarget = { x: 68, y: 35, reason: `구판장으로 이동해 동네 주민들과 상의` };
         }
 
-        // Generic fallback using memory context
-        const subject = memA[0] ? memA[0].text.slice(0, 18) + '...' : '마을 현안';
-        return {
-            textA: `${a2.name}님, ${subject} 관련해서 어떻게 생각하시는지요?`,
-            textB: `${a1.name}님, 저 역시 그 문제에 깊은 관심을 두고 있으며 이번 총회에서 입장을 밝히겠습니다.`
-        };
+        return { textA, textB, rerouteTarget };
     }
 
     recordFrame() {
@@ -623,17 +653,22 @@ class VillageSimulator {
                 ctx.strokeRect(px - 10, py - 20, 52, 56);
             }
 
-            // Name Tag
+            // Name Tag with Trust Sentiment Dot
             ctx.fillStyle = 'rgba(18, 22, 31, 0.85)';
-            const tagW = ctx.measureText(agent.name).width + 12;
+            const tagW = ctx.measureText(agent.name).width + 18;
             ctx.fillRect(px + 16 - tagW / 2, py - 24, tagW, 16);
+
+            // Trust dot (green for positive trust, red for negative)
+            ctx.beginPath();
+            ctx.arc(px + 16 - tagW / 2 + 6, py - 16, 3, 0, Math.PI * 2);
+            ctx.fillStyle = agent.trustIndex >= 0 ? '#48bb78' : '#f56565';
+            ctx.fill();
 
             ctx.fillStyle = '#ffffff';
             ctx.font = 'bold 11px Pretendard, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText(agent.name, px + 16, py - 12);
+            ctx.fillText(agent.name, px + 20, py - 12);
 
-            // Speech Bubble
             if (agent.speech) {
                 this.renderSpeechBubble(ctx, px + 16, py - 30, agent.speech);
             }
@@ -643,7 +678,7 @@ class VillageSimulator {
     renderSpeechBubble(ctx, x, y, text) {
         ctx.font = '12px Pretendard, sans-serif';
         const metrics = ctx.measureText(text);
-        const bw = Math.min(280, metrics.width + 20);
+        const bw = Math.min(300, metrics.width + 20);
         const bh = 28;
 
         ctx.fillStyle = '#ffffff';
@@ -665,15 +700,15 @@ class VillageSimulator {
 
         ctx.fillStyle = '#0f172a';
         ctx.textAlign = 'center';
-        ctx.fillText(text.length > 25 ? text.slice(0, 23) + '...' : text, x, y - 16);
+        ctx.fillText(text.length > 27 ? text.slice(0, 25) + '...' : text, x, y - 16);
     }
 
     renderHUD(ctx) {
         ctx.fillStyle = 'rgba(18, 22, 31, 0.9)';
-        ctx.fillRect(14, 14, 260, 48);
+        ctx.fillRect(14, 14, 270, 52);
         ctx.strokeStyle = '#2d3748';
         ctx.lineWidth = 1;
-        ctx.strokeRect(14, 14, 260, 48);
+        ctx.strokeRect(14, 14, 270, 52);
 
         ctx.fillStyle = '#63b3ed';
         ctx.font = 'bold 14px Pretendard, sans-serif';
@@ -683,7 +718,7 @@ class VillageSimulator {
         ctx.fillStyle = '#a0aec0';
         ctx.font = '11px Pretendard, sans-serif';
         const zoomPct = Math.round(this.camera.zoom * 100);
-        ctx.fillText(`배속: ${this.speed}x | 줌: ${zoomPct}% | 주민 클릭 시 인지 상태 조회`, 26, 52);
+        ctx.fillText(`배속: ${this.speed}x | 줌: ${zoomPct}% | [자율 인과 상호작용]`, 26, 54);
     }
 
     getFormattedTime() {
@@ -703,7 +738,7 @@ class VillageSimulator {
         const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.history));
         const a = document.createElement('a');
         a.href = dataStr;
-        a.download = `saemaul_simulation_memories_${Date.now()}.json`;
+        a.download = `saemaul_autonomous_sim_${Date.now()}.json`;
         a.click();
     }
 }
