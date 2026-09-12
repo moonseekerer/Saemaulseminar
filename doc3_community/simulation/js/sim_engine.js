@@ -1,4 +1,4 @@
-// sim_engine.js - Multi-Day Scenario Execution Engine with Direct LLM Simulated Cognition
+// sim_engine.js - Multi-Day Scenario Engine with Pixel Landmark Graphics & Toggle
 
 class MemoryStream {
     constructor(agentId) {
@@ -53,6 +53,10 @@ class VillageSimulator {
             trackingAgentId: null
         };
 
+        // Visual Display Toggles
+        this.showPixelBuildings = true; // 건물 도트 그래픽 켜기/끄기
+        this.showZoneOverlays = true;   // 구역 테두리 및 현판 켜기/끄기
+
         this.charImages = {};
         this.tilesLoaded = false;
         this.loadAssets();
@@ -87,16 +91,13 @@ class VillageSimulator {
         const dayData = MULTI_DAY_SIM_DATA[dayKey];
         if (!dayData) return;
 
-        // Clone dialogues to trigger queue
         this.dialogueTriggerQueue = [...dayData.dialogues];
 
-        // Initialize / carry over agents
         this.agents = AGENTS_ROSTER.map(a => {
             const memStream = (this.agents && this.agents.find(old => old.id === a.id)) 
                 ? this.agents.find(old => old.id === a.id).memory 
                 : new MemoryStream(a.id);
 
-            // Add day's overview observation
             memStream.add(7.8, 'obs', `[${dayData.title}] ${dayData.description}`, 8, 'town');
 
             const sched = dayData.schedule[a.id] || a.schedule;
@@ -119,7 +120,6 @@ class VillageSimulator {
             };
         });
 
-        // Initialize graph if empty
         if (Object.keys(this.socialGraph).length === 0) {
             this.agents.forEach(a1 => {
                 this.agents.forEach(a2 => {
@@ -268,7 +268,6 @@ class VillageSimulator {
             this.triggerEndOfDayReflection();
         }
 
-        // 1. Move Agents according to their Day's schedule
         this.agents.forEach(agent => {
             if (agent.isConversing) {
                 agent.status = '대화 중';
@@ -305,7 +304,6 @@ class VillageSimulator {
             }
         });
 
-        // 2. Check and fire scheduled autonomous dialogues from the simulation data
         this.checkScheduledDialogue();
     }
 
@@ -334,7 +332,6 @@ class VillageSimulator {
         if (a1.currX < a2.currX) { a1.dir = 'right'; a2.dir = 'left'; }
         else { a1.dir = 'left'; a2.dir = 'right'; }
 
-        // Update pair stats
         const pairKey = [a1.id, a2.id].sort().join('-');
         const graph = this.socialGraph[pairKey] || { count: 0, trust: 0, sentiment: '' };
         graph.count++;
@@ -342,7 +339,6 @@ class VillageSimulator {
         graph.sentiment = dia.sentiment;
         this.socialGraph[pairKey] = graph;
 
-        // Record to MemoryStream
         a1.memory.add(this.gameHour, 'dial', `${a2.name}와 대화: "${dia.line1}"`, 8, a2.id);
         a2.memory.add(this.gameHour, 'dial', `${a1.name}와 대화: "${dia.line2}"`, 8, a1.id);
 
@@ -424,12 +420,25 @@ class VillageSimulator {
         ctx.scale(this.camera.zoom, this.camera.zoom);
         ctx.translate(-this.camera.x, -this.camera.y);
 
+        // 1. 기본 지형 타일 (풀밭, 길, 물, 논밭)
         this.renderTerrain(ctx);
-        this.renderZones(ctx);
+
+        // 2. 구역 도트 픽셀 그래픽 (ON / OFF 가능)
+        if (this.showPixelBuildings && window.PixelLandmarkRenderer) {
+            this.renderPixelBuildings(ctx);
+        }
+
+        // 3. 구역 영역 선 및 이름 배너 (ON / OFF 가능)
+        if (this.showZoneOverlays) {
+            this.renderZones(ctx);
+        }
+
+        // 4. 주민 에이전트 스프라이트 및 말풍선
         this.renderAgents(ctx);
 
         ctx.restore();
 
+        // 5. 화면 고정 HUD
         this.renderHUD(ctx);
     }
 
@@ -459,6 +468,27 @@ class VillageSimulator {
         }
     }
 
+    renderPixelBuildings(ctx) {
+        const ts = this.tileSize;
+        const R = PixelLandmarkRenderer;
+
+        VILLAGE_ZONES.forEach(zone => {
+            const zx = zone.x * ts;
+            const zy = zone.y * ts;
+            const zw = zone.w * ts;
+            const zh = zone.h * ts;
+
+            if (zone.id === 'hall') R.drawHall(ctx, zx, zy, zw, zh);
+            else if (zone.id === 'greenhouse') R.drawGreenhouse(ctx, zx, zy, zw, zh);
+            else if (zone.id === 'store') R.drawStore(ctx, zx, zy, zw, zh);
+            else if (zone.id === 'cafe') R.drawCafe(ctx, zx, zy, zw, zh);
+            else if (zone.id === 'cattle') R.drawCattle(ctx, zx, zy, zw, zh);
+            else if (zone.id === 'orchard') R.drawOrchard(ctx, zx, zy, zw, zh);
+            else if (zone.id === 'plaza') R.drawPlaza(ctx, zx, zy, zw, zh);
+            else if (zone.id === 'residential') R.drawResidential(ctx, zx, zy, zw, zh);
+        });
+    }
+
     renderZones(ctx) {
         const ts = this.tileSize;
         VILLAGE_ZONES.forEach(zone => {
@@ -467,24 +497,22 @@ class VillageSimulator {
             const zw = zone.w * ts;
             const zh = zone.h * ts;
 
-            ctx.fillStyle = zone.color + '26';
+            ctx.fillStyle = zone.color + '18';
             ctx.fillRect(zx, zy, zw, zh);
 
             ctx.strokeStyle = zone.accent || zone.color;
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 2;
             ctx.strokeRect(zx, zy, zw, zh);
 
-            ctx.fillStyle = 'rgba(18, 22, 31, 0.88)';
-            ctx.fillRect(zx + 6, zy + 6, zw - 12, 26);
+            // 상단 간결한 네임 라벨
+            ctx.fillStyle = 'rgba(18, 22, 31, 0.85)';
+            const labelW = ctx.measureText(zone.name).width + 20;
+            ctx.fillRect(zx + 6, zy + 6, labelW, 20);
 
             ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 13px Pretendard, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText(zone.name, zx + zw / 2, zy + 24);
-
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
-            ctx.font = '11px Pretendard, sans-serif';
-            ctx.fillText(zone.subtitle, zx + zw / 2, zy + zh - 8);
+            ctx.font = 'bold 11px Pretendard, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(zone.name, zx + 16, zy + 20);
         });
     }
 
@@ -580,7 +608,7 @@ class VillageSimulator {
         ctx.fillStyle = '#a0aec0';
         ctx.font = '11px Pretendard, sans-serif';
         const zoomPct = Math.round(this.camera.zoom * 100);
-        ctx.fillText(`배속: ${this.speed}x | 줌: ${zoomPct}% | LLM 실제 추론 데이터셋`, 26, 54);
+        ctx.fillText(`배속: ${this.speed}x | 줌: ${zoomPct}% | 도트 건물 [${this.showPixelBuildings ? 'ON' : 'OFF'}]`, 26, 54);
     }
 
     getFormattedTime() {

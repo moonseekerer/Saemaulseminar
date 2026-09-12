@@ -35,7 +35,6 @@
             margin-top: 3px;
         }
 
-        /* Day Selector Tabs */
         .day-tabs {
             display: flex;
             gap: 6px;
@@ -90,6 +89,15 @@
             background-color: #2b6cb0;
             border-color: #3182ce;
             color: #ffffff;
+        }
+        .btn-toggle-on {
+            background-color: #276749;
+            border-color: #38a169;
+            color: #ffffff;
+        }
+        .btn-toggle-off {
+            background-color: #4a5568;
+            color: #a0aec0;
         }
 
         .select-agent {
@@ -249,11 +257,15 @@
         <button class="btn" id="btnSpd1" onclick="setSpeed(1.0)">1배속</button>
         <button class="btn" id="btnSpd2" onclick="setSpeed(2.0)">2배속</button>
         <button class="btn" id="btnSpd5" onclick="setSpeed(5.0)">5배속</button>
-        <button class="btn" onclick="resetCurrentDay()">당일 초기화 (08:00)</button>
+        <button class="btn" onclick="resetCurrentDay()">당일 초기화</button>
 
-        <span style="font-size: 12px; color: #a0aec0; margin-left: 10px;">카메라 추적:</span>
+        <span style="font-size: 12px; color: #a0aec0; margin-left: 6px;">시각화 토글:</span>
+        <button class="btn btn-toggle-on" id="btnToggleBuildings" onclick="toggleBuildings()">도트 건물 [ON]</button>
+        <button class="btn btn-toggle-on" id="btnToggleZones" onclick="toggleZones()">구역 라벨 [ON]</button>
+
+        <span style="font-size: 12px; color: #a0aec0; margin-left: 6px;">추적:</span>
         <select class="select-agent" id="agentTracker" onchange="trackAgent(this.value)">
-            <option value="">(자유 카메라)</option>
+            <option value="">(자유 시점)</option>
             <option value="agent_kim">김이장 (마을회관)</option>
             <option value="agent_park">박부녀 (회관광장)</option>
             <option value="agent_jung">정노인 (전통논)</option>
@@ -323,6 +335,7 @@
 
     <script src="js/map_data.js"></script>
     <script src="js/agents_data.js"></script>
+    <script src="js/pixel_buildings.js"></script>
     <script src="js/sim_scenarios.js"></script>
     <script src="js/sim_engine.js"></script>
 
@@ -333,6 +346,20 @@
         const btnPlay = document.getElementById('btnPlayPause');
         const slider = document.getElementById('replaySlider');
         const replayLabel = document.getElementById('replayLabel');
+        const btnBld = document.getElementById('btnToggleBuildings');
+        const btnZon = document.getElementById('btnToggleZones');
+
+        function toggleBuildings() {
+            sim.showPixelBuildings = !sim.showPixelBuildings;
+            btnBld.innerText = `도트 건물 [${sim.showPixelBuildings ? 'ON' : 'OFF'}]`;
+            btnBld.className = sim.showPixelBuildings ? 'btn btn-toggle-on' : 'btn btn-toggle-off';
+        }
+
+        function toggleZones() {
+            sim.showZoneOverlays = !sim.showZoneOverlays;
+            btnZon.innerText = `구역 라벨 [${sim.showZoneOverlays ? 'ON' : 'OFF'}]`;
+            btnZon.className = sim.showZoneOverlays ? 'btn btn-toggle-on' : 'btn btn-toggle-off';
+        }
 
         function switchDay(dayKey) {
             ['tabDay1', 'tabDay2', 'tabDay3'].forEach(id => document.getElementById(id).className = 'day-tab-btn');
