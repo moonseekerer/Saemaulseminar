@@ -470,7 +470,6 @@ class VillageSimulator {
 
     renderPixelBuildings(ctx) {
         const ts = this.tileSize;
-        const R = PixelLandmarkRenderer;
 
         VILLAGE_ZONES.forEach(zone => {
             const zx = zone.x * ts;
@@ -478,14 +477,23 @@ class VillageSimulator {
             const zw = zone.w * ts;
             const zh = zone.h * ts;
 
-            if (zone.id === 'hall') R.drawHall(ctx, zx, zy, zw, zh);
-            else if (zone.id === 'greenhouse') R.drawGreenhouse(ctx, zx, zy, zw, zh);
-            else if (zone.id === 'store') R.drawStore(ctx, zx, zy, zw, zh);
-            else if (zone.id === 'cafe') R.drawCafe(ctx, zx, zy, zw, zh);
-            else if (zone.id === 'cattle') R.drawCattle(ctx, zx, zy, zw, zh);
-            else if (zone.id === 'orchard') R.drawOrchard(ctx, zx, zy, zw, zh);
-            else if (zone.id === 'plaza') R.drawPlaza(ctx, zx, zy, zw, zh);
-            else if (zone.id === 'residential') R.drawResidential(ctx, zx, zy, zw, zh);
+            // 1. 고성능 사전 베이킹 LandmarkEngine 우선 렌더링
+            if (window.landmarkEngine && window.landmarkEngine.draw(ctx, zone.id, zx, zy, zw, zh)) {
+                return;
+            }
+
+            // 2. 레거시 폴백: PixelLandmarkRenderer
+            if (window.PixelLandmarkRenderer) {
+                const R = PixelLandmarkRenderer;
+                if (zone.id === 'hall' && R.drawHall) R.drawHall(ctx, zx, zy, zw, zh);
+                else if (zone.id === 'greenhouse' && R.drawGreenhouse) R.drawGreenhouse(ctx, zx, zy, zw, zh);
+                else if (zone.id === 'store' && R.drawStore) R.drawStore(ctx, zx, zy, zw, zh);
+                else if (zone.id === 'cafe' && R.drawCafe) R.drawCafe(ctx, zx, zy, zw, zh);
+                else if (zone.id === 'cattle' && R.drawCattle) R.drawCattle(ctx, zx, zy, zw, zh);
+                else if (zone.id === 'orchard' && R.drawOrchard) R.drawOrchard(ctx, zx, zy, zw, zh);
+                else if (zone.id === 'plaza' && R.drawPlaza) R.drawPlaza(ctx, zx, zy, zw, zh);
+                else if (zone.id === 'residential' && R.drawResidential) R.drawResidential(ctx, zx, zy, zw, zh);
+            }
         });
     }
 
