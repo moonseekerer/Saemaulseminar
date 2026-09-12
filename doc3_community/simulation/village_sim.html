@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>농촌 지역사회 행위자 시뮬레이터 (Saemaul-Smallville 자율 모드)</title>
+    <title>농촌 행위자 상호작용 시뮬레이터 (Saemaul-Smallville)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -11,7 +11,7 @@
             background-color: #12161f;
             color: #d1d5db;
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-            padding: 20px;
+            padding: 18px 22px;
             line-height: 1.5;
         }
 
@@ -21,7 +21,7 @@
             align-items: flex-end;
             padding-bottom: 12px;
             border-bottom: 1px solid #2d3748;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         .title-block h1 {
             font-size: 18px;
@@ -35,6 +35,38 @@
             margin-top: 3px;
         }
 
+        /* Day Selector Tabs */
+        .day-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            background-color: #161d2b;
+            padding: 6px;
+            border: 1px solid #2d3748;
+        }
+        .day-tab-btn {
+            flex: 1;
+            background-color: #1a202c;
+            color: #9ca3af;
+            border: 1px solid #2d3748;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.15s;
+        }
+        .day-tab-btn:hover {
+            background-color: #242c3d;
+            color: #e5e7eb;
+        }
+        .day-tab-btn.active {
+            background-color: #1e293b;
+            color: #63b3ed;
+            border-color: #3182ce;
+            font-weight: 600;
+        }
+
         .controls {
             display: flex;
             align-items: center;
@@ -42,7 +74,7 @@
             background-color: #1a202c;
             border: 1px solid #2d3748;
             padding: 8px 12px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             flex-wrap: wrap;
         }
         .btn {
@@ -100,7 +132,7 @@
             border: 1px solid #2d3748;
             background-color: #0d1117;
             width: 1080px;
-            height: 780px;
+            height: 750px;
             position: relative;
             cursor: grab;
         }
@@ -110,8 +142,8 @@
         .analysis-panel {
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            height: 780px;
+            gap: 14px;
+            height: 750px;
         }
         .section-title {
             font-size: 13px;
@@ -125,7 +157,7 @@
         }
 
         .data-table-container {
-            height: 330px;
+            height: 310px;
             overflow-y: auto;
             border: 1px solid #2d3748;
             background-color: #1a202c;
@@ -189,21 +221,37 @@
     <header>
         <div class="title-block">
             <h1>농촌 행위자 상호작용 시뮬레이터 (Saemaul-Smallville)</h1>
-            <p>12인 행위자의 자율 동기 및 호혜성(Reciprocity)에 의한 창발적 상호작용 실증 모델</p>
+            <p id="daySubtitle">1일차: 가뭄 발생과 수로 분쟁의 태동 — 생성형 에이전트 인과 시뮬레이션</p>
         </div>
         <div>
             <button class="btn" onclick="sim.exportHistoryJSON()">기록 내보내기 (JSON)</button>
         </div>
     </header>
 
+    <!-- Multi-Day Tabs -->
+    <div class="day-tabs">
+        <button class="day-tab-btn active" id="tabDay1" onclick="switchDay('day1')">
+            <div><strong>1일차</strong> 가뭄과 소문 확산</div>
+            <div style="font-size: 11px; color: #718096; margin-top: 2px;">수원지 고갈 및 이해관계 갈등 표출</div>
+        </button>
+        <button class="day-tab-btn" id="tabDay2" onclick="switchDay('day2')">
+            <div><strong>2일차</strong> 마을총회 (12인 전원 집결)</div>
+            <div style="font-size: 11px; color: #718096; margin-top: 2px;">회관 앞마당 분담금 및 노선 정면 대립</div>
+        </button>
+        <button class="day-tab-btn" id="tabDay3" onclick="switchDay('day3')">
+            <div><strong>3일차</strong> 상생 협약과 사회적 자본</div>
+            <div style="font-size: 11px; color: #718096; margin-top: 2px;">호혜적 양보와 공동체 협동 규범 타결</div>
+        </button>
+    </div>
+
     <div class="controls">
         <button class="btn btn-active" id="btnPlayPause" onclick="togglePlay()">일시정지</button>
         <button class="btn" id="btnSpd1" onclick="setSpeed(1.0)">1배속</button>
         <button class="btn" id="btnSpd2" onclick="setSpeed(2.0)">2배속</button>
         <button class="btn" id="btnSpd5" onclick="setSpeed(5.0)">5배속</button>
-        <button class="btn" onclick="resetSim()">초기화 (08:00)</button>
+        <button class="btn" onclick="resetCurrentDay()">당일 초기화 (08:00)</button>
 
-        <span style="font-size: 12px; color: #a0aec0; margin-left: 10px;">행위자 추적:</span>
+        <span style="font-size: 12px; color: #a0aec0; margin-left: 10px;">카메라 추적:</span>
         <select class="select-agent" id="agentTracker" onchange="trackAgent(this.value)">
             <option value="">(자유 카메라)</option>
             <option value="agent_kim">김이장 (마을회관)</option>
@@ -229,13 +277,13 @@
 
     <div class="workspace">
         <div class="canvas-frame">
-            <canvas id="villageCanvas" width="1080" height="780"></canvas>
+            <canvas id="villageCanvas" width="1080" height="750"></canvas>
         </div>
 
         <div class="analysis-panel">
             <div>
                 <div class="section-title">
-                    <span>사회적 자본 및 관계망 지표 (도킨스 호혜성 모델)</span>
+                    <span>사회적 자본 및 호혜성 관계망 (누적 지표)</span>
                     <span id="totalContacts" style="color: #63b3ed; font-weight: normal;">총 접촉: 0회</span>
                 </div>
                 <div class="data-table-container">
@@ -245,7 +293,7 @@
                                 <th>행위자 쌍</th>
                                 <th>접촉 빈도</th>
                                 <th>신뢰 점수</th>
-                                <th>태도 국면</th>
+                                <th>관계 국면</th>
                             </tr>
                         </thead>
                         <tbody id="networkBody">
@@ -257,8 +305,8 @@
 
             <div style="flex: 1; display: flex; flex-direction: column;">
                 <div class="section-title">
-                    <span>자율 담론 및 동선 변경 로그</span>
-                    <span style="font-weight: normal; color: #718096;">시간순 기록</span>
+                    <span>실시간 담론 및 성찰 기록 (LLM 생성 추론)</span>
+                    <span style="font-weight: normal; color: #718096;">시간순 출력</span>
                 </div>
                 <div class="log-container" id="logStream">
                     <div class="log-entry">
@@ -266,7 +314,7 @@
                             <span>08:00</span>
                             <span class="log-actors">시스템</span>
                         </div>
-                        <div class="log-text">자율 에이전트 시뮬레이션을 시작합니다. 주민을 클릭하면 머릿속 기억 스트림을 실시간 조회할 수 있습니다.</div>
+                        <div class="log-text">시뮬레이션을 시작합니다. 마우스 드래그로 맵을 탐색하고 휠로 확대/축소할 수 있습니다.</div>
                     </div>
                 </div>
             </div>
@@ -275,6 +323,7 @@
 
     <script src="js/map_data.js"></script>
     <script src="js/agents_data.js"></script>
+    <script src="js/sim_scenarios.js"></script>
     <script src="js/sim_engine.js"></script>
 
     <script>
@@ -284,6 +333,27 @@
         const btnPlay = document.getElementById('btnPlayPause');
         const slider = document.getElementById('replaySlider');
         const replayLabel = document.getElementById('replayLabel');
+
+        function switchDay(dayKey) {
+            ['tabDay1', 'tabDay2', 'tabDay3'].forEach(id => document.getElementById(id).className = 'day-tab-btn');
+            if (dayKey === 'day1') document.getElementById('tabDay1').className = 'day-tab-btn active';
+            if (dayKey === 'day2') document.getElementById('tabDay2').className = 'day-tab-btn active';
+            if (dayKey === 'day3') document.getElementById('tabDay3').className = 'day-tab-btn active';
+
+            sim.initDay(dayKey);
+            sim.isPaused = false;
+            sim.isReplayMode = false;
+            btnPlay.innerText = '일시정지';
+            btnPlay.className = 'btn btn-active';
+        }
+
+        function resetCurrentDay() {
+            sim.initDay(sim.currentDay);
+            sim.isPaused = false;
+            sim.isReplayMode = false;
+            btnPlay.innerText = '일시정지';
+            btnPlay.className = 'btn btn-active';
+        }
 
         function togglePlay() {
             sim.isPaused = !sim.isPaused;
@@ -299,10 +369,6 @@
             if (sp === 1.0) document.getElementById('btnSpd1').className = 'btn btn-active';
             if (sp === 2.0) document.getElementById('btnSpd2').className = 'btn btn-active';
             if (sp === 5.0) document.getElementById('btnSpd5').className = 'btn btn-active';
-        }
-
-        function resetSim() {
-            location.reload();
         }
 
         function trackAgent(agentId) {
@@ -327,6 +393,11 @@
                 slider.value = currIdx;
                 replayLabel.innerText = sim.getFormattedTime();
             }
+        };
+
+        window.updateDayIndicator = function(dayKey, title) {
+            const sub = document.getElementById('daySubtitle');
+            if (sub) sub.innerText = title;
         };
 
         window.updateLogsUI = function(logs) {
