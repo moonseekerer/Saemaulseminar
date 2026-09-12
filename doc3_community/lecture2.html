@@ -172,6 +172,81 @@
             border-color: #bfdbfe;
         }
 
+        /* 좌측 플로팅 네비게이터 */
+        .side-nav {
+            position: fixed;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.75rem 0.55rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .side-nav-title {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            padding: 0.2rem 0.5rem 0.4rem 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 0.15rem;
+            letter-spacing: -0.01em;
+        }
+
+        .side-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.42rem 0.6rem;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .side-nav-item:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .side-nav-item.active {
+            background: var(--primary);
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .nav-idx {
+            font-size: 0.72rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-weight: 700;
+            color: var(--text-muted);
+            min-width: 1.2rem;
+        }
+
+        .side-nav-item.active .nav-idx {
+            color: #fef08a;
+        }
+
+        @media (max-width: 1360px) {
+            .side-nav {
+                display: none;
+            }
+        }
+
         /* 목차 */
         .toc-box {
             background: #ffffff;
@@ -377,6 +452,41 @@
 </head>
 <body>
 
+    <!-- 좌측 플로팅 네비게이터 -->
+    <nav class="side-nav">
+        <div class="side-nav-title">2주차 강의 목차</div>
+        <a href="#sec-header" class="side-nav-item active" data-target="sec-header">
+            <span class="nav-idx">00</span> 강의 개요
+        </a>
+        <a href="#sec-assignment" class="side-nav-item" data-target="sec-assignment">
+            <span class="nav-idx">01</span> 세미나 과제 지침
+        </a>
+        <a href="#sec-functionalism" class="side-nav-item" data-target="sec-functionalism">
+            <span class="nav-idx">02</span> 구조기능주의·조직망
+        </a>
+        <a href="#sec-social-capital" class="side-nav-item" data-target="sec-social-capital">
+            <span class="nav-idx">03</span> 사회자본·거래비용
+        </a>
+        <a href="#sec-collective-action" class="side-nav-item" data-target="sec-collective-action">
+            <span class="nav-idx">04</span> 집단행동·오스트롬
+        </a>
+        <a href="#sec-power-resilience" class="side-nav-item" data-target="sec-power-resilience">
+            <span class="nav-idx">05</span> 권력구조·회복력
+        </a>
+        <a href="#sec-economic-structure" class="side-nav-item" data-target="sec-economic-structure">
+            <span class="nav-idx">06</span> 경제구조·순수익
+        </a>
+        <a href="#sec-localization" class="side-nav-item" data-target="sec-localization">
+            <span class="nav-idx">07</span> 현지 맥락화 전략
+        </a>
+        <a href="#sec-methodology" class="side-nav-item" data-target="sec-methodology">
+            <span class="nav-idx">08</span> 연구방법론의 철학
+        </a>
+        <a href="#sec-timeline-archive" class="side-nav-item" data-target="sec-timeline-archive">
+            <span class="nav-idx">09</span> 120분 타임라인
+        </a>
+    </nav>
+
     <div class="container">
         
         <div class="top-nav">
@@ -389,7 +499,7 @@
             <span style="font-size: 0.84rem; color: var(--text-muted); font-weight: 600;">영남대학교 대학원 새마을국제개발학과 | 과목코드: 0682-01</span>
         </div>
 
-        <header>
+        <header id="sec-header">
             <span class="course-tag">2주차 강의노트 &amp; 세미나 가이드</span>
             <h1>지역사회구조의 심화 이론과 거버넌스:<br>사회자본, 집단행동 및 현지 맥락화</h1>
             <p class="header-sub">
@@ -766,6 +876,25 @@
                     {left: '$', right: '$', display: false},
                     {left: '\\(', right: '\\)', display: false}
                 ]
+            });
+        });
+
+        // 좌측 플로팅 네비게이터 스크롤 스파이 (Scroll-Spy)
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('header[id], section[id^="sec-"]');
+            const navItems = document.querySelectorAll('.side-nav-item');
+            let current = 'sec-header';
+            sections.forEach(sec => {
+                const top = sec.offsetTop - 180;
+                if (window.scrollY >= top) {
+                    current = sec.getAttribute('id');
+                }
+            });
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-target') === current) {
+                    item.classList.add('active');
+                }
             });
         });
     </script>
