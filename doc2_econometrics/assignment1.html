@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제1장 연구과제 실습실: SNS사용시간과 스트레스 분석 | 계량분석방법론연구</title>
+    <meta name="description" content="300명 학생 대상 SNS사용시간(X)과 스트레스 지수(Y) 데이터 기반 OLS 회귀분석, 극단치 식별 및 표본분포 시뮬레이터">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #334155;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --navy-primary: #1e3a8a;
+            --navy-soft: #eff6ff;
+            --blue-primary: #2563eb;
+            --emerald-primary: #047857;
+            --emerald-soft: #ecfdf5;
+            --red-primary: #dc2626;
+            --red-soft: #fef2f2;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1060px;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #ffffff;
+            color: var(--navy-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: var(--navy-primary);
+            color: #ffffff;
+        }
+
+        header {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--blue-primary);
+            padding: 1.8rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .header-tag {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--blue-primary);
+            background: var(--navy-soft);
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            color: var(--text-sub);
+            margin-bottom: 1.2rem;
+        }
+
+        .download-bar {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.45rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+            transition: all 0.15s;
+        }
+
+        .btn-pdf { background: var(--navy-soft); color: var(--navy-primary); border-color: #bfdbfe; }
+        .btn-pdf:hover { background: #dbeafe; }
+        .btn-xlsx { background: var(--emerald-soft); color: var(--emerald-primary); border-color: #a7f3d0; }
+        .btn-xlsx:hover { background: #d1fae5; }
+
+        .section-box {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question-badge {
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: #f1f5f9;
+            color: #475569;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 420px;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-control {
+            background: #ffffff;
+            color: var(--text-sub);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-control:hover {
+            background: #f1f5f9;
+            color: var(--text-main);
+        }
+
+        .btn-control.active {
+            background: var(--blue-primary);
+            color: #ffffff;
+            border-color: var(--blue-primary);
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin: 1.2rem 0;
+        }
+
+        .stats-table th, .stats-table td {
+            padding: 0.65rem 0.9rem;
+            border: 1px solid var(--border-color);
+            text-align: right;
+        }
+
+        .stats-table th {
+            background: #f8fafc;
+            color: var(--text-sub);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .stats-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .prose {
+            font-size: 0.92rem;
+            color: var(--text-sub);
+            line-height: 1.7;
+            margin-top: 0.8rem;
+        }
+
+        .prose p { margin-bottom: 0.6rem; }
+        .prose strong { color: var(--text-main); }
+
+        .outlier-tag {
+            display: inline-block;
+            background: var(--red-soft);
+            color: var(--red-primary);
+            border: 1px solid #fecaca;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 1px 6px;
+            border-radius: 4px;
+            margin: 2px;
+        }
+
+        .sim-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .sim-grid { grid-template-columns: 1fr; }
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-card .val {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--blue-primary);
+            margin: 0.3rem 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .stat-card .lbl {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-nav">
+            <a href="../index.html" class="back-btn">← 학업 & 연구 포털 메인으로 돌아가기</a>
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">영남대학교 대학원 계량분석방법론연구 (0680-01)</span>
+        </div>
+
+        <header>
+            <div class="header-tag">제1장 연구과제 실습실</div>
+            <h1>SNS 사용시간과 청소년 스트레스 지수 회귀분석</h1>
+            <p>
+                300명의 학생을 대상으로 조사한 SNS 사용시간(X)과 스트레스 지수(Y) 원자료를 기반으로 OLS 모형을 추정하고,
+                극단치(Outlier) 식별 및 잔차 표준화가 추정 결과에 미치는 왜곡 효과를 비교하며, 모집단(PRF) 가정 하 100회 반복 표본추출을 통해 계수의 표본분포와 중심극한정리를 체계적으로 실습합니다.
+            </p>
+            <div class="download-bar">
+                <a href="숙제_1장.pdf" target="_blank" class="download-btn btn-pdf">과제 문제지 다운로드 (PDF)</a>
+                <a href="SNS사용시간과스트레스_1장데이터-1.xlsx" download class="download-btn btn-xlsx">실습 원자료 다운로드 (XLSX)</a>
+                <a href="회귀분석_제1강_해설서.pdf" target="_blank" class="download-btn btn-pdf">제1강 OLS 상세 해설서 (PDF)</a>
+            </div>
+        </header>
+
+        <!-- 1 & 2번 문항 -->
+        <div class="section-box">
+            <div class="section-title">
+                <span>문항 1 & 2. 데이터 산점도(Scatter Plot) 및 회귀선 관찰</span>
+                <span class="question-badge">N = 300</span>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-bottom: 0.8rem;">
+                <button class="btn-control active" id="btnViewFull" onclick="toggleOutlierView(false)">전체 데이터 (N=300)</button>
+                <button class="btn-control" id="btnViewClean" onclick="toggleOutlierView(true)">극단치 12개 제외 (N=288)</button>
+            </div>
+            <div class="chart-container">
+                <canvas id="scatterChart"></canvas>
+            </div>
+            <div class="prose">
+                <p><strong>[변수 간 관계 설명]</strong> 가로축의 SNS 사용시간(X)이 증가함에 따라 세로축의 스트레스 지수(Y)가 전반적으로 비례하여 상승하는 <strong>양(+)의 선형 상관관계</strong>가 뚜렷하게 관찰됩니다. 그러나 추세선의 주된 경로에서 크게 벗어난 다수의 이격점(극단치)이 시각적으로 포착되며, 이는 OLS 추정선의 절편과 기울기 추정에 왜곡 요인으로 작용합니다.</p>
+            </div>
+        </div>
+
+        <!-- 3번 문항 -->
+        <div class="section-box">
+            <div class="section-title">
+                <span>문항 3. OLS 회귀방정식 추정 및 통계량 해석</span>
+                <span class="question-badge">Y = α + βX + u</span>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+                전체 300명 관측치 기반 OLS 추정 회귀식: \[ \hat{Y}_i = 27.3507 + 0.0371 X_i \]
+            </p>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>계수 (Estimate)</th>
+                        <th>표준오차 (Std. Error)</th>
+                        <th>t-통계량 (t-value)</th>
+                        <th>p-value</th>
+                        <th>95% 신뢰구간</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>절편 (\(\alpha\))</td>
+                        <td>27.3507</td>
+                        <td>1.5862</td>
+                        <td>17.2425</td>
+                        <td>&lt; 0.0001</td>
+                        <td>[24.2291, 30.4723]</td>
+                    </tr>
+                    <tr>
+                        <td>기울기 (\(\beta\): SNS시간)</td>
+                        <td>0.0371</td>
+                        <td>0.0016</td>
+                        <td>23.0204</td>
+                        <td>&lt; 0.0001</td>
+                        <td>[0.0339, 0.0403]</td>
+                    </tr>
+                    <tr style="background: #f8fafc;">
+                        <td colspan="6" style="text-align: left; font-size: 0.85rem;">
+                            결정계수 (\(R^2\)): <strong>0.6401</strong> &nbsp;|&nbsp; 
+                            수정 결정계수 (Adj \(R^2\)): <strong>0.6389</strong> &nbsp;|&nbsp; 
+                            F-통계량: <strong>529.94</strong> (p &lt; 0.0001) &nbsp;|&nbsp; 
+                            오차항 표준편차 (\(s_e\)): <strong>11.0444</strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="prose">
+                <p><strong>1. 계수의 경제사회학적 해석:</strong> SNS 사용시간이 1분(또는 1단위) 증가할 때 스트레스 지수는 평균적으로 약 0.0371점 증가합니다. 절편 27.3507점은 SNS를 전혀 사용하지 않을 때(X=0)의 기초 스트레스 수준을 나타냅니다.</p>
+                <p><strong>2. 통계적 유의성 검정:</strong> SNS 사용시간 계수의 t-통계량은 23.02(p &lt; 0.0001)로 유의수준 1% 하에서 귀무가설 \(H_0: \beta = 0\)을 강력히 기각합니다. 이는 관찰된 양의 영향력이 단순 표본오차에 기인할 확률이 사실상 0임을 의미합니다.</p>
+                <p><strong>3. 결정계수(\(R^2\))와 F-통계량:</strong> \(R^2 = 0.6401\)은 청소년 간 스트레스 지수 변동(총 제곱합)의 약 64.01%가 SNS 사용시간 차이에 의해 설명됨을 나타냅니다. 모형 전체의 적합도를 평가하는 F-통계량 역시 529.94로 매우 높은 설명력을 가집니다.</p>
+            </div>
+        </div>
+
+        <!-- 4 & 5번 문항 -->
+        <div class="section-box">
+            <div class="section-title">
+                <span>문항 4 & 5. 극단치(Outlier) 식별, 잔차 표준화 및 제거 전후 비교</span>
+                <span class="question-badge">|Standardized Residual| &gt; 2</span>
+            </div>
+            <div class="prose">
+                <p>
+                    <strong>체계적 극단치 판정 기준:</strong> 잔차를 잔차 표준편차(\(s_e = 11.0444\))로 나눈 표준화 잔차 \(z_i = e_i / s_e\)를 산출했을 때,
+                    정규분포 기준 약 95.4% 신뢰구간을 벗어나는 <strong>\(|z_i| &gt; 2\)</strong>인 12개 관측치를 이상치로 확정 식별했습니다.
+                </p>
+                <div style="margin: 0.6rem 0;">
+                    <strong>판정된 12개 이상치 학생 ID:</strong><br>
+                    <span class="outlier-tag">ID 13 (z=+2.06)</span>
+                    <span class="outlier-tag">ID 44 (z=-5.29)</span>
+                    <span class="outlier-tag">ID 80 (z=-2.85)</span>
+                    <span class="outlier-tag">ID 95 (z=-4.25)</span>
+                    <span class="outlier-tag">ID 98 (z=+3.48)</span>
+                    <span class="outlier-tag">ID 116 (z=+3.04)</span>
+                    <span class="outlier-tag">ID 176 (z=+4.31)</span>
+                    <span class="outlier-tag">ID 192 (z=-5.12)</span>
+                    <span class="outlier-tag">ID 198 (z=+2.20)</span>
+                    <span class="outlier-tag">ID 222 (z=-3.55)</span>
+                    <span class="outlier-tag">ID 249 (z=+2.28)</span>
+                    <span class="outlier-tag">ID 265 (z=-4.83)</span>
+                </div>
+            </div>
+
+            <table class="stats-table" style="margin-top: 1rem;">
+                <thead>
+                    <tr>
+                        <th>비교 지표</th>
+                        <th>원자료 전체 (N=300)</th>
+                        <th>극단치 12개 제거 후 (N=288)</th>
+                        <th>변화 및 추정 왜곡 완화 분석</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>기울기 계수 (\(\hat{\beta}\))</td>
+                        <td>0.03710</td>
+                        <td><strong>0.04021</strong></td>
+                        <td>기울기 8.4% 상승 (하향 편의 완화)</td>
+                    </tr>
+                    <tr>
+                        <td>계수 표준오차 (se)</td>
+                        <td>0.00161</td>
+                        <td><strong>0.00109</strong></td>
+                        <td>표준오차 32.3% 감소 (추정 정밀성 향상)</td>
+                    </tr>
+                    <tr>
+                        <td>결정계수 (\(R^2\))</td>
+                        <td>0.6401</td>
+                        <td><strong>0.8255</strong></td>
+                        <td>설명력 18.54%p 대폭 상승 (적합도 급증)</td>
+                    </tr>
+                    <tr>
+                        <td>오차항 표준편차 (\(s_e\))</td>
+                        <td>11.044</td>
+                        <td><strong>6.671</strong></td>
+                        <td>잔차 분산 대폭 축소 (신뢰성 회복)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="prose">
+                <p><strong>[극단치 제거 시 발생하는 연구 방법론적 고찰 (문항 5-6)]</strong></p>
+                <p>극단치를 기계적으로 삭제하면 통계적 적합도(\(R^2\))와 유의성은 즉각 개선되지만 다음의 중대한 연구 윤리적·통계학적 위험이 수반됩니다:</p>
+                <p>1. <strong>선택 편의(Selection Bias) 및 외적 타당도 저하:</strong> 이상치가 단순 입력 오류(typo)가 아닌 실제 청소년의 특성(예: 높은 회복탄력성으로 SNS를 오래 해도 스트레스가 낮거나, 소량 사용에도 극도의 스트레스를 받는 집단)인 경우, 이를 임의 삭제하면 모집단의 현실적 다양성을 왜곡하게 됩니다.</p>
+                <p>2. <strong>제3의 외생변수 누락(Omitted Variable Bias) 간과:</strong> 이상치는 단순 노이즈가 아니라 가족 지원, 오프라인 교우관계 등 모형에 누락된 핵심 조절변수의 존재를 가리키는 신호일 수 있습니다. 따라서 무조건적 삭제보다는 견고한 회귀분석(Robust Regression) 기법을 적용하거나 통제변수를 추가하는 모형 확장이 권장됩니다.</p>
+            </div>
+        </div>
+
+        <!-- 6번 문항 -->
+        <div class="section-box">
+            <div class="section-title">
+                <span>문항 6. 모집단(PRF) 가정 하 50명 표본추출 100회 시뮬레이션</span>
+                <span class="question-badge">N=300 (PRF) vs n=50 (SRF)</span>
+            </div>
+            <p class="prose">
+                300명의 원자료를 모집단 전체로 규정할 때, 모집단의 참된 모수(PRF)는 <strong>\(\beta = 0.03710\)</strong>입니다.
+                아래 시뮬레이터를 통해 50명의 표본을 무작위 추출하여 추정되는 표본 회귀계수(\(\hat{\beta}\))가 어떻게 분포하는지 실시간으로 관찰할 수 있습니다.
+            </p>
+
+            <div style="display: flex; gap: 0.6rem; margin: 1rem 0; flex-wrap: wrap;">
+                <button class="btn-control active" onclick="runSingleSample()">50명 표본 1회 추출</button>
+                <button class="btn-control" style="background: var(--emerald-primary); color: #fff; border-color: var(--emerald-primary);" onclick="run100Samples()">100회 자동 시뮬레이션 실행</button>
+                <button class="btn-control" onclick="resetSim()">시뮬레이션 초기화</button>
+            </div>
+
+            <div class="sim-grid">
+                <div>
+                    <div class="chart-container" style="height: 280px;">
+                        <canvas id="histChart"></canvas>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; justify-content: center; gap: 0.8rem;">
+                    <div class="stat-card">
+                        <div class="lbl">모집단 참 모수 (True Parameter \(\beta\))</div>
+                        <div class="val" style="color: var(--text-main);">0.03710</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="lbl">누적 표본추출 회수</div>
+                        <div class="val" id="simCountText">0 회</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="lbl">100회 표본 추정계수 평균 \(E(\hat{\beta})\)</div>
+                        <div class="val" id="simMeanText">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="lbl">추정계수 표본오차 \(se(\hat{\beta})\)</div>
+                        <div class="val" id="simStdText">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prose" style="margin-top: 1.2rem;">
+                <p><strong>[표본 회귀분석 계수의 정규분포 적합성 및 통계학적 중요성 (문항 6-3)]</strong></p>
+                <p>1. <strong>불편성(Unbiasedness)의 증명:</strong> 100회의 무작위 표본에서 얻어진 계수들의 평균값 \(E(\hat{\beta})\)은 모집단 참값인 0.0371에 정확히 수렴합니다. 비록 개별 표본추출에서는 표본오차가 발생하지만, 반복 추정치의 중심은 참값과 일치합니다.</p>
+                <p>2. <strong>중심극한정리(CLT)와 가설검정의 토대:</strong> 모집단 잔차의 분포와 무관하게 표본 크기(n=50)가 일정 수준을 넘으면, 가우스-마르코프 정리에 의해 표본 회귀계수의 분포는 대칭 종 모양의 <strong>정규분포(Normal Distribution)</strong>를 따릅니다.</p>
+                <p>3. <strong>학술적 중요성:</strong> 계수가 정규분포를 따른다는 성질이 보장되어야만 t-검정, F-검정, 95% 신뢰구간 도출 등 계량경제학의 모든 통계적 추론(Statistical Inference)이 성립합니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const rawData = [{"id": 1, "x": 1407.0, "y": 88.0}, {"id": 2, "x": 333.0, "y": 48.2}, {"id": 3, "x": 304.0, "y": 41.7}, {"id": 4, "x": 1310.0, "y": 86.2}, {"id": 5, "x": 1021.0, "y": 57.2}, {"id": 6, "x": 310.0, "y": 22.6}, {"id": 7, "x": 287.0, "y": 28.6}, {"id": 8, "x": 690.0, "y": 51.0}, {"id": 9, "x": 626.0, "y": 48.1}, {"id": 10, "x": 1132.0, "y": 76.2}, {"id": 11, "x": 1040.0, "y": 57.0}, {"id": 12, "x": 1347.0, "y": 81.0}, {"id": 13, "x": 1290.0, "y": 98.0}, {"id": 14, "x": 1345.0, "y": 70.0}, {"id": 15, "x": 580.0, "y": 54.2}, {"id": 16, "x": 326.0, "y": 36.4}, {"id": 17, "x": 1276.0, "y": 74.4}, {"id": 18, "x": 651.0, "y": 53.5}, {"id": 19, "x": 704.0, "y": 48.9}, {"id": 20, "x": 1154.0, "y": 78.1}, {"id": 21, "x": 311.0, "y": 39.1}, {"id": 22, "x": 1204.0, "y": 88.4}, {"id": 23, "x": 893.0, "y": 71.7}, {"id": 24, "x": 522.0, "y": 44.9}, {"id": 25, "x": 762.0, "y": 51.6}, {"id": 26, "x": 1542.0, "y": 94.1}, {"id": 27, "x": 1144.0, "y": 62.6}, {"id": 28, "x": 325.0, "y": 43.2}, {"id": 29, "x": 715.0, "y": 57.1}, {"id": 30, "x": 1343.0, "y": 68.5}, {"id": 31, "x": 788.0, "y": 61.9}, {"id": 32, "x": 718.0, "y": 62.1}, {"id": 33, "x": 476.0, "y": 53.5}, {"id": 34, "x": 616.0, "y": 41.0}, {"id": 35, "x": 557.0, "y": 55.1}, {"id": 36, "x": 1118.0, "y": 70.1}, {"id": 37, "x": 1417.0, "y": 84.2}, {"id": 38, "x": 1448.0, "y": 89.8}, {"id": 39, "x": 274.0, "y": 38.7}, {"id": 40, "x": 314.0, "y": 24.6}, {"id": 41, "x": 946.0, "y": 55.3}, {"id": 42, "x": 1558.0, "y": 95.3}, {"id": 43, "x": 1539.0, "y": 87.4}, {"id": 44, "x": 1820.0, "y": 36.5}, {"id": 45, "x": 1596.0, "y": 68.0}, {"id": 46, "x": 1148.0, "y": 65.2}, {"id": 47, "x": 1138.0, "y": 74.1}, {"id": 48, "x": 500.0, "y": 41.2}, {"id": 49, "x": 1093.0, "y": 66.9}, {"id": 50, "x": 832.0, "y": 63.6}, {"id": 51, "x": 273.0, "y": 24.6}, {"id": 52, "x": 612.0, "y": 43.0}, {"id": 53, "x": 687.0, "y": 51.0}, {"id": 54, "x": 686.0, "y": 64.5}, {"id": 55, "x": 369.0, "y": 40.3}, {"id": 56, "x": 1282.0, "y": 74.8}, {"id": 57, "x": 275.0, "y": 31.7}, {"id": 58, "x": 862.0, "y": 65.0}, {"id": 59, "x": 1377.0, "y": 79.7}, {"id": 60, "x": 1380.0, "y": 86.0}, {"id": 61, "x": 1429.0, "y": 90.3}, {"id": 62, "x": 698.0, "y": 56.3}, {"id": 63, "x": 694.0, "y": 50.9}, {"id": 64, "x": 653.0, "y": 51.8}, {"id": 65, "x": 1476.0, "y": 83.9}, {"id": 66, "x": 994.0, "y": 79.4}, {"id": 67, "x": 1569.0, "y": 82.9}, {"id": 68, "x": 897.0, "y": 51.4}, {"id": 69, "x": 1404.0, "y": 71.0}, {"id": 70, "x": 969.0, "y": 65.4}, {"id": 71, "x": 1369.0, "y": 89.0}, {"id": 72, "x": 252.0, "y": 41.4}, {"id": 73, "x": 993.0, "y": 75.2}, {"id": 74, "x": 536.0, "y": 38.3}, {"id": 75, "x": 541.0, "y": 49.5}, {"id": 76, "x": 885.0, "y": 59.1}, {"id": 77, "x": 657.0, "y": 43.4}, {"id": 78, "x": 714.0, "y": 46.6}, {"id": 79, "x": 800.0, "y": 50.5}, {"id": 80, "x": 420.0, "y": 11.5}, {"id": 81, "x": 333.0, "y": 35.8}, {"id": 82, "x": 1039.0, "y": 59.5}, {"id": 83, "x": 337.0, "y": 38.6}, {"id": 84, "x": 575.0, "y": 48.9}, {"id": 85, "x": 1337.0, "y": 69.4}, {"id": 86, "x": 1387.0, "y": 84.4}, {"id": 87, "x": 1196.0, "y": 74.4}, {"id": 88, "x": 1194.0, "y": 73.5}, {"id": 89, "x": 979.0, "y": 71.6}, {"id": 90, "x": 688.0, "y": 50.5}, {"id": 91, "x": 1159.0, "y": 75.9}, {"id": 92, "x": 301.0, "y": 27.6}, {"id": 93, "x": 319.0, "y": 35.2}, {"id": 94, "x": 695.0, "y": 42.0}, {"id": 95, "x": 1120.0, "y": 22.0}, {"id": 96, "x": 910.0, "y": 70.5}, {"id": 97, "x": 1191.0, "y": 65.7}, {"id": 98, "x": 680.0, "y": 91.0}, {"id": 99, "x": 1120.0, "y": 66.8}, {"id": 100, "x": 498.0, "y": 52.7}, {"id": 101, "x": 1482.0, "y": 84.9}, {"id": 102, "x": 999.0, "y": 55.1}, {"id": 103, "x": 1189.0, "y": 58.4}, {"id": 104, "x": 923.0, "y": 63.2}, {"id": 105, "x": 736.0, "y": 54.7}, {"id": 106, "x": 896.0, "y": 59.8}, {"id": 107, "x": 636.0, "y": 41.1}, {"id": 108, "x": 1116.0, "y": 66.7}, {"id": 109, "x": 924.0, "y": 59.1}, {"id": 110, "x": 568.0, "y": 57.1}, {"id": 111, "x": 987.0, "y": 57.5}, {"id": 112, "x": 853.0, "y": 56.7}, {"id": 113, "x": 1307.0, "y": 72.1}, {"id": 114, "x": 488.0, "y": 51.3}, {"id": 115, "x": 1461.0, "y": 97.3}, {"id": 116, "x": 960.0, "y": 96.5}, {"id": 117, "x": 395.0, "y": 32.6}, {"id": 118, "x": 1126.0, "y": 68.4}, {"id": 119, "x": 1095.0, "y": 74.8}, {"id": 120, "x": 1588.0, "y": 82.1}, {"id": 121, "x": 259.0, "y": 31.8}, {"id": 122, "x": 1333.0, "y": 74.7}, {"id": 123, "x": 1172.0, "y": 62.1}, {"id": 124, "x": 888.0, "y": 66.0}, {"id": 125, "x": 378.0, "y": 38.8}, {"id": 126, "x": 563.0, "y": 57.8}, {"id": 127, "x": 452.0, "y": 43.6}, {"id": 128, "x": 465.0, "y": 39.8}, {"id": 129, "x": 791.0, "y": 52.0}, {"id": 130, "x": 433.0, "y": 54.0}, {"id": 131, "x": 1306.0, "y": 78.7}, {"id": 132, "x": 934.0, "y": 60.2}, {"id": 133, "x": 1107.0, "y": 69.4}, {"id": 134, "x": 424.0, "y": 37.1}, {"id": 135, "x": 1502.0, "y": 90.3}, {"id": 136, "x": 1393.0, "y": 73.3}, {"id": 137, "x": 1461.0, "y": 85.3}, {"id": 138, "x": 1240.0, "y": 89.0}, {"id": 139, "x": 403.0, "y": 33.2}, {"id": 140, "x": 996.0, "y": 65.5}, {"id": 141, "x": 1314.0, "y": 77.8}, {"id": 142, "x": 921.0, "y": 65.6}, {"id": 143, "x": 776.0, "y": 47.9}, {"id": 144, "x": 1322.0, "y": 74.7}, {"id": 145, "x": 1099.0, "y": 72.1}, {"id": 146, "x": 1258.0, "y": 92.9}, {"id": 147, "x": 876.0, "y": 50.0}, {"id": 148, "x": 652.0, "y": 45.0}, {"id": 149, "x": 722.0, "y": 53.3}, {"id": 150, "x": 328.0, "y": 44.0}, {"id": 151, "x": 801.0, "y": 36.0}, {"id": 152, "x": 694.0, "y": 60.1}, {"id": 153, "x": 624.0, "y": 48.8}, {"id": 154, "x": 646.0, "y": 51.5}, {"id": 155, "x": 1379.0, "y": 90.5}, {"id": 156, "x": 1406.0, "y": 77.8}, {"id": 157, "x": 808.0, "y": 62.7}, {"id": 158, "x": 909.0, "y": 61.0}, {"id": 159, "x": 996.0, "y": 63.0}, {"id": 160, "x": 959.0, "y": 70.5}, {"id": 161, "x": 1469.0, "y": 90.4}, {"id": 162, "x": 955.0, "y": 62.3}, {"id": 163, "x": 1283.0, "y": 61.6}, {"id": 164, "x": 889.0, "y": 54.1}, {"id": 165, "x": 1537.0, "y": 99.3}, {"id": 166, "x": 1503.0, "y": 88.0}, {"id": 167, "x": 1598.0, "y": 83.3}, {"id": 168, "x": 481.0, "y": 46.6}, {"id": 169, "x": 448.0, "y": 45.6}, {"id": 170, "x": 1440.0, "y": 77.4}, {"id": 171, "x": 998.0, "y": 62.2}, {"id": 172, "x": 288.0, "y": 34.1}, {"id": 173, "x": 1019.0, "y": 69.1}, {"id": 174, "x": 609.0, "y": 63.8}, {"id": 175, "x": 688.0, "y": 56.4}, {"id": 176, "x": 310.0, "y": 86.5}, {"id": 177, "x": 1368.0, "y": 80.6}, {"id": 178, "x": 770.0, "y": 51.0}, {"id": 179, "x": 438.0, "y": 50.4}, {"id": 180, "x": 431.0, "y": 55.1}, {"id": 181, "x": 368.0, "y": 48.8}, {"id": 182, "x": 718.0, "y": 55.6}, {"id": 183, "x": 1281.0, "y": 77.4}, {"id": 184, "x": 1536.0, "y": 86.6}, {"id": 185, "x": 1267.0, "y": 64.9}, {"id": 186, "x": 460.0, "y": 49.2}, {"id": 187, "x": 1561.0, "y": 90.9}, {"id": 188, "x": 1151.0, "y": 69.4}, {"id": 189, "x": 762.0, "y": 51.9}, {"id": 190, "x": 678.0, "y": 63.8}, {"id": 191, "x": 1279.0, "y": 75.6}, {"id": 192, "x": 1650.0, "y": 32.0}, {"id": 193, "x": 1078.0, "y": 60.4}, {"id": 194, "x": 1167.0, "y": 73.1}, {"id": 195, "x": 474.0, "y": 41.1}, {"id": 196, "x": 574.0, "y": 50.4}, {"id": 197, "x": 588.0, "y": 41.3}, {"id": 198, "x": 773.0, "y": 80.3}, {"id": 199, "x": 1043.0, "y": 66.8}, {"id": 200, "x": 264.0, "y": 29.9}, {"id": 201, "x": 1289.0, "y": 88.5}, {"id": 202, "x": 1152.0, "y": 67.0}, {"id": 203, "x": 1328.0, "y": 71.8}, {"id": 204, "x": 1033.0, "y": 60.8}, {"id": 205, "x": 716.0, "y": 42.1}, {"id": 206, "x": 1086.0, "y": 74.7}, {"id": 207, "x": 464.0, "y": 47.3}, {"id": 208, "x": 884.0, "y": 62.6}, {"id": 209, "x": 831.0, "y": 66.4}, {"id": 210, "x": 409.0, "y": 30.5}, {"id": 211, "x": 349.0, "y": 28.6}, {"id": 212, "x": 409.0, "y": 43.1}, {"id": 213, "x": 909.0, "y": 53.8}, {"id": 214, "x": 810.0, "y": 56.8}, {"id": 215, "x": 1317.0, "y": 76.9}, {"id": 216, "x": 553.0, "y": 47.6}, {"id": 217, "x": 305.0, "y": 26.0}, {"id": 218, "x": 1252.0, "y": 72.8}, {"id": 219, "x": 619.0, "y": 51.3}, {"id": 220, "x": 359.0, "y": 41.8}, {"id": 221, "x": 559.0, "y": 42.1}, {"id": 222, "x": 790.0, "y": 17.5}, {"id": 223, "x": 383.0, "y": 48.6}, {"id": 224, "x": 973.0, "y": 78.2}, {"id": 225, "x": 670.0, "y": 55.5}, {"id": 226, "x": 1385.0, "y": 88.4}, {"id": 227, "x": 933.0, "y": 73.7}, {"id": 228, "x": 546.0, "y": 41.1}, {"id": 229, "x": 1090.0, "y": 67.9}, {"id": 230, "x": 1498.0, "y": 81.1}, {"id": 231, "x": 577.0, "y": 51.0}, {"id": 232, "x": 1014.0, "y": 69.4}, {"id": 233, "x": 360.0, "y": 50.7}, {"id": 234, "x": 308.0, "y": 29.7}, {"id": 235, "x": 822.0, "y": 50.5}, {"id": 236, "x": 279.0, "y": 41.3}, {"id": 237, "x": 620.0, "y": 45.7}, {"id": 238, "x": 1330.0, "y": 84.0}, {"id": 239, "x": 1597.0, "y": 89.6}, {"id": 240, "x": 913.0, "y": 54.6}, {"id": 241, "x": 1029.0, "y": 77.4}, {"id": 242, "x": 1306.0, "y": 73.8}, {"id": 243, "x": 1497.0, "y": 86.0}, {"id": 244, "x": 583.0, "y": 35.1}, {"id": 245, "x": 255.0, "y": 41.1}, {"id": 246, "x": 1345.0, "y": 81.7}, {"id": 247, "x": 857.0, "y": 68.8}, {"id": 248, "x": 852.0, "y": 41.7}, {"id": 249, "x": 1185.0, "y": 96.5}, {"id": 250, "x": 375.0, "y": 52.8}, {"id": 251, "x": 677.0, "y": 44.8}, {"id": 252, "x": 1385.0, "y": 78.3}, {"id": 253, "x": 920.0, "y": 57.3}, {"id": 254, "x": 1402.0, "y": 86.7}, {"id": 255, "x": 1159.0, "y": 67.1}, {"id": 256, "x": 1298.0, "y": 73.1}, {"id": 257, "x": 1335.0, "y": 78.2}, {"id": 258, "x": 1028.0, "y": 70.6}, {"id": 259, "x": 1219.0, "y": 62.5}, {"id": 260, "x": 708.0, "y": 51.3}, {"id": 261, "x": 550.0, "y": 42.9}, {"id": 262, "x": 1501.0, "y": 87.8}, {"id": 263, "x": 1563.0, "y": 91.3}, {"id": 264, "x": 305.0, "y": 39.4}, {"id": 265, "x": 1470.0, "y": 28.5}, {"id": 266, "x": 841.0, "y": 52.6}, {"id": 267, "x": 320.0, "y": 48.3}, {"id": 268, "x": 1551.0, "y": 65.8}, {"id": 269, "x": 835.0, "y": 65.7}, {"id": 270, "x": 993.0, "y": 64.2}, {"id": 271, "x": 1391.0, "y": 68.4}, {"id": 272, "x": 433.0, "y": 43.5}, {"id": 273, "x": 300.0, "y": 33.1}, {"id": 274, "x": 411.0, "y": 55.0}, {"id": 275, "x": 295.0, "y": 35.9}, {"id": 276, "x": 924.0, "y": 56.9}, {"id": 277, "x": 1526.0, "y": 96.6}, {"id": 278, "x": 1411.0, "y": 89.6}, {"id": 279, "x": 460.0, "y": 40.2}, {"id": 280, "x": 361.0, "y": 42.2}, {"id": 281, "x": 1384.0, "y": 87.3}, {"id": 282, "x": 1148.0, "y": 89.4}, {"id": 283, "x": 1423.0, "y": 81.1}, {"id": 284, "x": 393.0, "y": 33.9}, {"id": 285, "x": 1069.0, "y": 73.7}, {"id": 286, "x": 392.0, "y": 51.3}, {"id": 287, "x": 350.0, "y": 41.4}, {"id": 288, "x": 941.0, "y": 60.8}, {"id": 289, "x": 1528.0, "y": 77.7}, {"id": 290, "x": 609.0, "y": 44.1}, {"id": 291, "x": 821.0, "y": 59.9}, {"id": 292, "x": 794.0, "y": 52.7}, {"id": 293, "x": 535.0, "y": 52.1}, {"id": 294, "x": 935.0, "y": 46.9}, {"id": 295, "x": 1489.0, "y": 86.3}, {"id": 296, "x": 1370.0, "y": 89.1}, {"id": 297, "x": 706.0, "y": 70.0}, {"id": 298, "x": 632.0, "y": 46.4}, {"id": 299, "x": 766.0, "y": 55.4}, {"id": 300, "x": 854.0, "y": 65.7}];
+        const outlierIds = [13, 44, 80, 95, 98, 116, 176, 192, 198, 222, 249, 265];
+        
+        let scatterChart = null;
+        let histChart = null;
+        let simBetas = [];
+
+        function initScatter() {
+            const ctx = document.getElementById('scatterChart').getContext('2d');
+            
+            const normalPoints = rawData.filter(d => !outlierIds.includes(d.id)).map(d => ({ x: d.x, y: d.y, id: d.id }));
+            const outlierPoints = rawData.filter(d => outlierIds.includes(d.id)).map(d => ({ x: d.x, y: d.y, id: d.id }));
+
+            const minX = 200, maxX = 1900;
+            const fullLine = [
+                { x: minX, y: 27.3507 + 0.037103 * minX },
+                { x: maxX, y: 27.3507 + 0.037103 * maxX }
+            ];
+
+            const cleanLine = [
+                { x: minX, y: 24.8657 + 0.040212 * minX },
+                { x: maxX, y: 24.8657 + 0.040212 * maxX }
+            ];
+
+            scatterChart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: '정상 관측치 (N=288)',
+                            data: normalPoints,
+                            backgroundColor: 'rgba(37, 99, 235, 0.65)',
+                            borderColor: '#1d4ed8',
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: '극단치 (Outliers 12개)',
+                            data: outlierPoints,
+                            backgroundColor: 'rgba(220, 38, 38, 0.85)',
+                            borderColor: '#991b1b',
+                            pointRadius: 6,
+                            pointHoverRadius: 8
+                        },
+                        {
+                            type: 'line',
+                            label: '원자료 전체 회귀선 (Y = 27.35 + 0.0371X)',
+                            data: fullLine,
+                            borderColor: '#1e3a8a',
+                            borderWidth: 2.5,
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            type: 'line',
+                            label: '극단치 제외 회귀선 (Y = 24.87 + 0.0402X)',
+                            data: cleanLine,
+                            borderColor: '#059669',
+                            borderWidth: 2.5,
+                            borderDash: [6, 4],
+                            fill: false,
+                            pointRadius: 0,
+                            hidden: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'SNS 사용시간 (X_분/일)', font: { size: 12, weight: 'bold' } },
+                            grid: { color: '#f1f5f9' }
+                        },
+                        y: {
+                            title: { display: true, text: '스트레스 지수 (Y_점수)', font: { size: 12, weight: 'bold' } },
+                            grid: { color: '#f1f5f9' }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const raw = context.raw;
+                                    if (raw.id) {
+                                        return `[학생 ID: ${raw.id}] SNS: ${raw.x}분, 스트레스: ${raw.y}점`;
+                                    }
+                                    return `${context.dataset.label}: (${raw.x.toFixed(0)}, ${raw.y.toFixed(1)})`;
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { usePointStyle: true, boxWidth: 8, font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function toggleOutlierView(isCleanOnly) {
+            document.getElementById('btnViewFull').className = isCleanOnly ? 'btn-control' : 'btn-control active';
+            document.getElementById('btnViewClean').className = isCleanOnly ? 'btn-control active' : 'btn-control';
+
+            if (isCleanOnly) {
+                scatterChart.setDatasetVisibility(1, false);
+                scatterChart.setDatasetVisibility(2, false);
+                scatterChart.setDatasetVisibility(3, true);
+            } else {
+                scatterChart.setDatasetVisibility(1, true);
+                scatterChart.setDatasetVisibility(2, true);
+                scatterChart.setDatasetVisibility(3, false);
+            }
+            scatterChart.update();
+        }
+
+        function initHist() {
+            const ctx = document.getElementById('histChart').getContext('2d');
+            histChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '표본 회귀계수(β̂) 빈도수',
+                        data: [],
+                        backgroundColor: 'rgba(37, 99, 235, 0.7)',
+                        borderColor: '#1d4ed8',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { title: { display: true, text: '표본 계수 (β̂ 추정치 구간)', font: { size: 11 } } },
+                        y: { title: { display: true, text: '추출 빈도수 (회)', font: { size: 11 } }, ticks: { stepSize: 2 } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function sample50() {
+            const shuffled = [...rawData].sort(() => 0.5 - Math.random());
+            const sample = shuffled.slice(0, 50);
+
+            const n = 50;
+            let sumX = 0, sumY = 0;
+            sample.forEach(d => { sumX += d.x; sumY += d.y; });
+            const meanX = sumX / n;
+            const meanY = sumY / n;
+
+            let ssXX = 0, ssXY = 0;
+            sample.forEach(d => {
+                ssXX += (d.x - meanX) ** 2;
+                ssXY += (d.x - meanX) * (d.y - meanY);
+            });
+
+            return ssXY / ssXX;
+        }
+
+        function runSingleSample() {
+            const b = sample50();
+            simBetas.push(b);
+            updateHistUI();
+        }
+
+        function run100Samples() {
+            for (let i = 0; i < 100; i++) {
+                simBetas.push(sample50());
+            }
+            updateHistUI();
+        }
+
+        function resetSim() {
+            simBetas = [];
+            updateHistUI();
+        }
+
+        function updateHistUI() {
+            const count = simBetas.length;
+            document.getElementById('simCountText').innerText = `${count} 회`;
+            if (count === 0) {
+                document.getElementById('simMeanText').innerText = '-';
+                document.getElementById('simStdText').innerText = '-';
+                histChart.data.labels = [];
+                histChart.data.datasets[0].data = [];
+                histChart.update();
+                return;
+            }
+
+            const mean = simBetas.reduce((a, b) => a + b, 0) / count;
+            const variance = simBetas.reduce((a, b) => a + (b - mean) ** 2, 0) / (count > 1 ? count - 1 : 1);
+            const std = Math.sqrt(variance);
+
+            document.getElementById('simMeanText').innerText = mean.toFixed(5);
+            document.getElementById('simStdText').innerText = std.toFixed(5);
+
+            const min = 0.024;
+            const max = 0.050;
+            const binCount = 13;
+            const binWidth = (max - min) / binCount;
+
+            const bins = new Array(binCount).fill(0);
+            const labels = [];
+            for (let i = 0; i < binCount; i++) {
+                const bMin = min + i * binWidth;
+                labels.push(`${(bMin * 1000).toFixed(1)}~`);
+            }
+
+            simBetas.forEach(val => {
+                let binIdx = Math.floor((val - min) / binWidth);
+                if (binIdx < 0) binIdx = 0;
+                if (binIdx >= binCount) binIdx = binCount - 1;
+                bins[binIdx]++;
+            });
+
+            histChart.data.labels = labels;
+            histChart.data.datasets[0].data = bins;
+            histChart.update();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false}
+                ]
+            });
+            initScatter();
+            initHist();
+        });
+    </script>
+</body>
+</html>
