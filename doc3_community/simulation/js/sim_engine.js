@@ -20,7 +20,7 @@ class VillageSimulator {
         this.isReplayMode = false;
         
         // Replay history frames
-        this.history = []; // [{ time, agents: [{id, x, y, dir, action}], events: [] }]
+        this.history = [];
         this.currentFrameIdx = 0;
 
         // Active Agents
@@ -30,7 +30,7 @@ class VillageSimulator {
             currY: a.homePos.y,
             targetX: a.workPos.x,
             targetY: a.workPos.y,
-            dir: 'down', // down, left, right, up
+            dir: 'down',
             frame: 0,
             status: '이동 중',
             currAction: '일과 시작',
@@ -39,8 +39,8 @@ class VillageSimulator {
         }));
 
         // Interaction & Network Graph Stats
-        this.interactions = []; // [{ from, to, text, time, trustDelta }]
-        this.networkMatrix = {}; // 'kim_lee': count
+        this.interactions = [];
+        this.networkMatrix = {};
         this.agents.forEach(a1 => {
             this.agents.forEach(a2 => {
                 if (a1.id !== a2.id) {
@@ -62,7 +62,7 @@ class VillageSimulator {
         const total = AGENTS_ROSTER.length;
         AGENTS_ROSTER.forEach(agent => {
             const img = new Image();
-            img.src = ssets/characters/;
+            img.src = `assets/characters/${agent.sprite}`;
             img.onload = () => {
                 loadedCount++;
                 if (loadedCount === total) {
@@ -92,7 +92,7 @@ class VillageSimulator {
     }
 
     update(dt) {
-        // Time progress: 1 real second = 0.05 game hour (1 game hour = 20s at 1x speed)
+        // Time progress: 1 real second = 0.05 game hour
         this.gameHour += (dt * 0.05 * this.speed);
         if (this.gameHour >= 18.0) {
             this.gameHour = 18.0;
@@ -101,7 +101,6 @@ class VillageSimulator {
         }
 
         // Update each agent
-        const hourFloor = Math.floor(this.gameHour);
         this.agents.forEach(agent => {
             // Check schedule
             const task = [...agent.schedule].reverse().find(s => s.time <= this.gameHour);
@@ -135,7 +134,7 @@ class VillageSimulator {
             }
         });
 
-        // Proximity check for dialogue (접촉 감지)
+        // Proximity check for dialogue
         this.checkInteractions();
     }
 
@@ -146,9 +145,7 @@ class VillageSimulator {
                 const a2 = this.agents[j];
                 const d = Math.hypot(a1.currX - a2.currX, a1.currY - a2.currY);
 
-                // If within 1.2 tiles and neither is currently talking
                 if (d < 1.2 && !a1.speech && !a2.speech) {
-                    // 10% chance per second when nearby to trigger greeting/dialogue
                     if (Math.random() < 0.03) {
                         this.triggerDialogue(a1, a2);
                     }
@@ -159,10 +156,10 @@ class VillageSimulator {
 
     triggerDialogue(a1, a2) {
         const dialogList = [
-            { t1: ${a2.name}님, 오늘 날씨가 많이 가무네요. 수로 쪽은 어떠신지요?, t2: 그러게 말입니다. 상류에서 물길을 좀 열어줘야 할 텐데 걱정입니다. },
-            { t1: ${a2.name}님, 이번 군청 지원사업 서류 제출하셨나요?, t2: 네 이장님, 부녀회와 함께 로컬 가공품 쪽으로 신청해두었습니다. },
-            { t1: 오상회 구판장 앞에 다들 모여서 수로 공사 얘기 나누던데요., t2: 오후 2시에 회관 앞마당에서 모이기로 했으니 꼭 나오세요. },
-            { t1: 청년 온실 관수 센서는 잘 돌아가나요?, t2: 네 어르신, 전통 수로와 연계해서 물 낭비 없도록 신경 쓰고 있습니다. }
+            { t1: a2.name + "님, 오늘 날씨가 많이 가무네요. 수로 쪽은 어떠신지요?", t2: "그러게 말입니다. 상류에서 물길을 좀 열어줘야 할 텐데 걱정입니다." },
+            { t1: a2.name + "님, 이번 군청 지원사업 서류 제출하셨나요?", t2: "네 이장님, 부녀회와 함께 로컬 가공품 쪽으로 신청해두었습니다." },
+            { t1: "오상회 구판장 앞에 다들 모여서 수로 공사 얘기 나누던데요.", t2: "오후 2시에 회관 앞마당에서 모이기로 했으니 꼭 나오세요." },
+            { t1: "청년 온실 관수 센서는 잘 돌아가나요?", t2: "네 어르신, 전통 수로와 연계해서 물 낭비 없도록 신경 쓰고 있습니다." }
         ];
         const pick = dialogList[Math.floor(Math.random() * dialogList.length)];
         
@@ -263,7 +260,6 @@ class VillageSimulator {
                 }
                 ctx.fillRect(c * ts, r * ts, ts, ts);
 
-                // Grid border subtle
                 ctx.strokeStyle = 'rgba(0, 0, 0, 0.04)';
                 ctx.strokeRect(c * ts, r * ts, ts, ts);
             }
@@ -278,15 +274,13 @@ class VillageSimulator {
             const zw = zone.w * ts;
             const zh = zone.h * ts;
 
-            // Zone boundary box
-            ctx.fillStyle = zone.color + '22'; // 15% opacity tint
+            ctx.fillStyle = zone.color + '22';
             ctx.fillRect(zx, zy, zw, zh);
 
             ctx.strokeStyle = zone.accent || zone.color;
             ctx.lineWidth = 2;
             ctx.strokeRect(zx, zy, zw, zh);
 
-            // Zone Name Label Banner
             ctx.fillStyle = 'rgba(30, 41, 59, 0.85)';
             ctx.fillRect(zx + 4, zy + 4, zw - 8, 22);
 
@@ -295,7 +289,6 @@ class VillageSimulator {
             ctx.textAlign = 'center';
             ctx.fillText(zone.name, zx + zw / 2, zy + 19);
 
-            // Subtitle
             ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
             ctx.font = '10px Pretendard, sans-serif';
             ctx.fillText(zone.subtitle, zx + zw / 2, zy + zh - 6);
@@ -312,7 +305,6 @@ class VillageSimulator {
 
             const img = this.charImages[agent.id];
             if (img && img.complete && img.naturalWidth > 0) {
-                // Character sheet is 3 cols x 4 rows (96x128 -> 32x32 per frame)
                 const colIdx = Math.floor(agent.frame) % 3;
                 const rowIdx = dirOffsets[agent.dir] || 0;
                 const sw = img.naturalWidth / 3;
@@ -320,7 +312,6 @@ class VillageSimulator {
 
                 ctx.drawImage(img, colIdx * sw, rowIdx * sh, sw, sh, px - 4, py - 12, 40, 44);
             } else {
-                // Fallback token
                 ctx.beginPath();
                 ctx.arc(px + 16, py + 16, 12, 0, Math.PI * 2);
                 ctx.fillStyle = agent.color;
@@ -330,7 +321,6 @@ class VillageSimulator {
                 ctx.stroke();
             }
 
-            // Name Tag
             ctx.fillStyle = 'rgba(15, 23, 42, 0.8)';
             const tagW = ctx.measureText(agent.name).width + 8;
             ctx.fillRect(px + 16 - tagW / 2, py - 20, tagW, 14);
@@ -340,7 +330,6 @@ class VillageSimulator {
             ctx.textAlign = 'center';
             ctx.fillText(agent.name, px + 16, py - 9);
 
-            // Speech Bubble
             if (agent.speech) {
                 this.renderSpeechBubble(ctx, px + 16, py - 25, agent.speech);
             }
@@ -357,13 +346,11 @@ class VillageSimulator {
         ctx.strokeStyle = '#1e293b';
         ctx.lineWidth = 1.5;
 
-        // Rounded rect
         ctx.beginPath();
         ctx.roundRect(x - bw / 2, y - bh - 6, bw, bh, 4);
         ctx.fill();
         ctx.stroke();
 
-        // Pointer triangle
         ctx.beginPath();
         ctx.moveTo(x - 5, y - 6);
         ctx.lineTo(x, y);
@@ -387,11 +374,11 @@ class VillageSimulator {
         ctx.fillStyle = '#38bdf8';
         ctx.font = 'bold 15px Pretendard, sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText(마을 시각: , 20, 32);
+        ctx.fillText(`마을 시각: ${this.getFormattedTime()}`, 20, 32);
 
         ctx.fillStyle = '#94a3b8';
         ctx.font = '11px Pretendard, sans-serif';
-        ctx.fillText(this.isReplayMode ? '[리플레이 탐색 모드]' : 배속: x | 에이전트: 12인, 20, 46);
+        ctx.fillText(this.isReplayMode ? '[리플레이 탐색 모드]' : `배속: ${this.speed}x | 에이전트: 12인`, 20, 46);
     }
 
     getFormattedTime() {
@@ -399,7 +386,7 @@ class VillageSimulator {
         const m = Math.floor((this.gameHour - h) * 60);
         const hh = h < 10 ? '0' + h : h;
         const mm = m < 10 ? '0' + m : m;
-        return ${hh}:;
+        return `${hh}:${mm}`;
     }
 
     addLog(msg) {
@@ -411,7 +398,7 @@ class VillageSimulator {
         const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.history));
         const a = document.createElement('a');
         a.href = dataStr;
-        a.download = saemaul_simulation_.json;
+        a.download = `saemaul_simulation_${Date.now()}.json`;
         a.click();
     }
 }
