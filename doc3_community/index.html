@@ -221,45 +221,50 @@
             </div>
         </section>
 
-        <!-- 과제 전용 안내 섹션 -->
-        <section id="sec-assignment" style="background: #fffbeb; border: 1px solid #fde68a; border-left: 5px solid var(--primary); border-radius: 8px; padding: 1.6rem; margin-bottom: 2.5rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap;">
-                <h2 style="font-size: 1.25rem; font-weight: 700; color: #78350f; border: none; padding: 0; margin: 0;">과제 안내: 자유 주제 논문 요약 및 발표 (비중 60%)</h2>
-                <span style="font-size: 0.82rem; background: #fef3c7; color: #92400e; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 700;">자유 주제 학술 세미나</span>
-            </div>
-            <p style="font-size: 0.94rem; color: #451a03; margin-bottom: 1rem; line-height: 1.65;">
-                본 과제는 지역사회 구조와 연관된 자유 주제 논문 1편을 선정하여 논문 전체(Full Text)를 종합 요약하고 학술 발표를 수행하는 핵심 평가 항목입니다.
-            </p>
+        <!-- 과제 전용 안내 토글 섹션 (기본 접힘 상태) -->
+        <details id="sec-assignment" style="background: #fffbeb; border: 1px solid #fde68a; border-left: 5px solid var(--primary); border-radius: 8px; margin-bottom: 2.5rem; transition: all 0.2s ease;">
+            <summary style="padding: 1.2rem 1.6rem; font-weight: 700; font-size: 1.15rem; color: #78350f; cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center;">
+                <span>과제 안내: 자유 주제 논문 요약 및 발표 (비중 60%) ▶</span>
+                <span style="font-size: 0.82rem; background: #fef3c7; color: #92400e; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 700;">토글하여 펼쳐보기</span>
+            </summary>
+            <div style="padding: 0 1.6rem 1.6rem 1.6rem; border-top: 1px dashed #fcd34d; margin-top: 0.4rem;">
+                <p style="font-size: 0.94rem; color: #451a03; margin-top: 1rem; margin-bottom: 1rem; line-height: 1.65;">
+                    본 과제는 지역사회 구조와 연관된 자유 주제 논문 1편을 선정하여 논문 전체(Full Text)를 종합 요약하고 학술 발표를 수행하는 핵심 평가 항목입니다. 다음 주까지 A4 1장 분량의 연구계획서를 제출해야 합니다.
+                </p>
 
-            <div style="background: #ffffff; border: 1px solid #fcd34d; border-radius: 6px; padding: 1.2rem; margin-bottom: 1rem;">
-                <h3 style="font-size: 1.02rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem;">선정 추천 대표 논문 (AI 마을 형성 및 공동체 구조 연구)</h3>
-                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 0.5rem;">
-                    <tbody>
-                        <tr>
-                            <td style="width: 25%; font-weight: 700; color: var(--text-main); background: #f8fafc;">논문 제목</td>
-                            <td style="font-weight: 600; color: var(--navy);">Generative Agents: Interactive Simulacra of Human Behavior</td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: 700; color: var(--text-main); background: #f8fafc;">저자 및 기관</td>
-                            <td>Joon Sung Park et al. (Stanford University & Google Research, ACM UIST 2023)</td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: 700; color: var(--text-main); background: #f8fafc;">연구 핵심 내용</td>
-                            <td>25명의 생성형 AI 에이전트를 가상 마을(Smallville)에 투입하여 자생적인 정보 전파, 관계형 신뢰 형성, 발렌타인데이 파티 협동 등 <strong>디지털 공간 내 지역사회 구조 및 소통 네트워크 생성 과정</strong>을 실증한 연구.</td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: 700; color: var(--text-main); background: #f8fafc;">과제 부합성</td>
-                            <td>공간(Space) + 사람(People) + 공동체 자원 관리의 메커니즘을 최첨단 AI 에이전트 기반 사회 시뮬레이션(Agent-Based Social Simulation)으로 풀어내어 차별화된 발표 가능.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <div style="background: #ffffff; border: 1px solid #fcd34d; border-radius: 6px; padding: 1.2rem; margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap;">
+                        <h3 style="font-size: 1.02rem; font-weight: 700; color: var(--navy); margin: 0;">선정 추천 대표 논문 (AI 마을 형성 및 공동체 구조 연구)</h3>
+                        <a href="Generative_Agents_Interactive_Simulacra_of_Human_Behavior.pdf" target="_blank" style="font-size: 0.84rem; background: var(--navy); color: #ffffff; padding: 0.3rem 0.7rem; border-radius: 4px; text-decoration: none; font-weight: 600;">PDF 논문 원본 다운로드 📄</a>
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 0.5rem;">
+                        <tbody>
+                            <tr>
+                                <td style="width: 25%; font-weight: 700; color: var(--text-main); background: #f8fafc;">논문 제목</td>
+                                <td style="font-weight: 600; color: var(--navy);">Generative Agents: Interactive Simulacra of Human Behavior</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700; color: var(--text-main); background: #f8fafc;">저자 및 기관</td>
+                                <td>Joon Sung Park et al. (Stanford University & Google Research, ACM UIST 2023)</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700; color: var(--text-main); background: #f8fafc;">연구 핵심 내용</td>
+                                <td>25명의 생성형 AI 에이전트를 가상 마을(Smallville)에 투입하여 자생적인 정보 전파, 관계형 신뢰 형성, 발렌타인데이 파티 협동 등 <strong>디지털 공간 내 지역사회 구조 및 소통 네트워크 생성 과정</strong>을 실증한 연구.</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700; color: var(--text-main); background: #f8fafc;">과제 부합성</td>
+                                <td>공간(Space) + 사람(People) + 공동체 자원 관리의 메커니즘을 최첨단 AI 에이전트 기반 사회 시뮬레이션(Agent-Based Social Simulation)으로 풀어내어 차별화된 발표 가능.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            <div style="font-size: 0.88rem; color: #78350f; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
-                <span>TransLive 실시간 강의 방송: <a href="https://canvas.yu.ac.kr/translive/v/3525934878" target="_blank" style="color: var(--navy); font-weight: 700;">https://canvas.yu.ac.kr/translive/v/3525934878 ↗</a></span>
-                <a href="lecture2.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">2주차 상세 과제 가이드 & 강의안 보기 →</a>
+                <div style="font-size: 0.88rem; color: #78350f; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+                    <span>TransLive 실시간 강의 방송: <a href="https://canvas.yu.ac.kr/translive/v/3525934878" target="_blank" style="color: var(--navy); font-weight: 700;">https://canvas.yu.ac.kr/translive/v/3525934878 ↗</a></span>
+                    <a href="lecture2.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">2주차 상세 과제 가이드 & 연구계획서 보기 →</a>
+                </div>
             </div>
-        </section>
+        </details>
 
         <!-- 15주차 강의 계획 -->
         <section>
