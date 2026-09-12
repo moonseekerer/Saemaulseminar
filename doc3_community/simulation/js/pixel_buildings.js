@@ -1,6 +1,6 @@
 // pixel_buildings.js - Procedural Pixel Art Graphics for Village Landmarks
 
-const PixelLandmarkRenderer = {
+window.PixelLandmarkRenderer = {
     // 1. 마을회관 청사 (16 x 10 타일: 512 x 320 px)
     drawHall(ctx, x, y, w, h) {
         ctx.save();
@@ -8,12 +8,12 @@ const PixelLandmarkRenderer = {
         ctx.fillStyle = "#475569";
         ctx.fillRect(x, y + h - 24, w, 24);
 
-        // 본체 벽면 (단정한 관공서 베이지/연회색 벽돌)
+        // 본체 벽면
         ctx.fillStyle = "#e2e8f0";
         ctx.fillRect(x + 16, y + 60, w - 32, h - 84);
 
-        // 파란색 기와/슬레이트 지붕 (한국 관공서/새마을회관 특유의 청색 박공지붕)
-        ctx.fillStyle = "#1e3a8a"; // 메인 지붕색
+        // 파란색 기와/슬레이트 지붕
+        ctx.fillStyle = "#1e3a8a";
         ctx.beginPath();
         ctx.moveTo(x + 8, y + 60);
         ctx.lineTo(x + w / 2, y + 10);
@@ -21,24 +21,15 @@ const PixelLandmarkRenderer = {
         ctx.closePath();
         ctx.fill();
 
-        // 지붕 처마 그림자 및 테두리
+        // 지붕 처마 테두리
         ctx.strokeStyle = "#0f172a";
         ctx.lineWidth = 3;
         ctx.stroke();
 
-        // 지붕 능선 하이라이트
-        ctx.strokeStyle = "#3b82f6";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(x + 20, y + 55);
-        ctx.lineTo(x + w / 2, y + 16);
-        ctx.lineTo(x + w - 20, y + 55);
-        ctx.stroke();
-
-        // 정문 현판 ("마을회관 청사")
+        // 현판
         ctx.fillStyle = "#1e293b";
         ctx.fillRect(x + w / 2 - 50, y + 70, 100, 24);
-        ctx.fillStyle = "#fbbf24"; // 금색 글씨
+        ctx.fillStyle = "#fbbf24";
         ctx.font = "bold 11px Pretendard, sans-serif";
         ctx.textAlign = "center";
         ctx.fillText("마 을 회 관", x + w / 2, y + 86);
@@ -49,7 +40,7 @@ const PixelLandmarkRenderer = {
         ctx.strokeStyle = "#0f172a";
         ctx.strokeRect(x + w / 2 - 24, y + h - 70, 48, 46);
 
-        // 1층/2층 격자 창문들
+        // 창문들
         ctx.fillStyle = "#93c5fd";
         const winY1 = y + 105;
         const winY2 = y + 155;
@@ -70,7 +61,7 @@ const PixelLandmarkRenderer = {
         ctx.moveTo(x + 36, y + h - 24);
         ctx.lineTo(x + 36, y + 15);
         ctx.stroke();
-        // 깃발
+
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(x + 36, y + 18, 22, 14);
         ctx.fillStyle = "#ef4444";
@@ -81,7 +72,7 @@ const PixelLandmarkRenderer = {
         ctx.restore();
     },
 
-    // 2. 스마트팜 혁신단지 (22 x 14 타일: 704 x 448 px) - 3연동 아치형 비닐하우스/유리온실
+    // 2. 스마트팜 혁신단지 (22 x 14 타일: 704 x 448 px)
     drawGreenhouse(ctx, x, y, w, h) {
         ctx.save();
         const archCount = 3;
@@ -92,40 +83,32 @@ const PixelLandmarkRenderer = {
             const ay = y + 20;
             const ah = h - 40;
 
-            // 반투명 비닐/유리 재질
             ctx.fillStyle = "rgba(224, 242, 254, 0.45)";
+            ctx.fillRect(ax, ay + 20, archW - 10, ah - 20);
+
+            // 아치형 지붕
             ctx.beginPath();
-            ctx.roundRect(ax, ay, archW - 10, ah, [archW / 2, archW / 2, 4, 4]);
+            ctx.arc(ax + (archW - 10) / 2, ay + 25, (archW - 10) / 2, Math.PI, 0, false);
             ctx.fill();
 
-            // 아치형 백색 철골 파이프
             ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
             ctx.lineWidth = 2.5;
+            ctx.strokeRect(ax, ay + 20, archW - 10, ah - 20);
             ctx.stroke();
 
-            // 내부 격자 보강 파이프 (도트 디테일)
-            ctx.strokeStyle = "rgba(186, 230, 253, 0.5)";
-            ctx.lineWidth = 1;
-            for (let ly = ay + 40; ly < ay + ah - 20; ly += 30) {
-                ctx.beginPath();
-                ctx.moveTo(ax + 4, ly);
-                ctx.lineTo(ax + archW - 14, ly);
-                ctx.stroke();
-            }
-
-            // 내부 작물 베드 (녹색 파프리카/딸기 라인)
+            // 내부 작물 베드
             ctx.fillStyle = "#15803d";
             ctx.fillRect(ax + 12, ay + ah - 55, archW - 34, 12);
             ctx.fillRect(ax + 12, ay + ah - 35, archW - 34, 12);
 
-            // 환기 팬 (Ventilation Fan)
+            // 환기 팬
             ctx.fillStyle = "#64748b";
             ctx.beginPath();
             ctx.arc(ax + (archW - 10) / 2, ay + 35, 10, 0, Math.PI * 2);
             ctx.fill();
         }
 
-        // 스마트 제어실 컨테이너 박스
+        // 스마트 제어실 컨테이너
         ctx.fillStyle = "#0284c7";
         ctx.fillRect(x + w - 110, y + h - 90, 95, 70);
         ctx.strokeStyle = "#0369a1";
@@ -142,14 +125,12 @@ const PixelLandmarkRenderer = {
     // 3. 오상회 구판장 및 버스정류장 (14 x 9 타일: 448 x 288 px)
     drawStore(ctx, x, y, w, h) {
         ctx.save();
-        // 구판장 본체 (적벽돌 슬라브 건물)
         ctx.fillStyle = "#b45309";
         ctx.fillRect(x + 20, y + 40, w - 150, h - 60);
         ctx.strokeStyle = "#78350f";
         ctx.lineWidth = 2;
         ctx.strokeRect(x + 20, y + 40, w - 150, h - 60);
 
-        // 줄무늬 차양막 (레트로 주황/흰색 차양)
         const awningW = w - 140;
         const segW = awningW / 8;
         for (let i = 0; i < 8; i++) {
@@ -157,7 +138,6 @@ const PixelLandmarkRenderer = {
             ctx.fillRect(x + 15 + i * segW, y + 30, segW, 20);
         }
 
-        // 간판 ("오 상 회")
         ctx.fillStyle = "#fef08a";
         ctx.fillRect(x + 40, y + 10, 120, 22);
         ctx.fillStyle = "#b91c1c";
@@ -165,12 +145,12 @@ const PixelLandmarkRenderer = {
         ctx.textAlign = "center";
         ctx.fillText("오 상 회 구 판 장", x + 100, y + 25);
 
-        // 평상 (시골 평상 도트 텍스처)
+        // 평상
         ctx.fillStyle = "#d97706";
         ctx.fillRect(x + w - 115, y + 80, 90, 60);
         ctx.strokeStyle = "#92400e";
         ctx.strokeRect(x + w - 115, y + 80, 90, 60);
-        // 평상 나무 틈새 선
+
         for (let py = y + 95; py < y + 140; py += 15) {
             ctx.beginPath();
             ctx.moveTo(x + w - 115, py);
@@ -181,7 +161,7 @@ const PixelLandmarkRenderer = {
         ctx.font = "10px Pretendard, sans-serif";
         ctx.fillText("쉼터 평상", x + w - 70, y + 74);
 
-        // 시골 빨간 우체통
+        // 우체통
         ctx.fillStyle = "#dc2626";
         ctx.fillRect(x + w - 120, y + 170, 14, 26);
         ctx.fillStyle = "#ffffff";
@@ -193,11 +173,9 @@ const PixelLandmarkRenderer = {
     // 4. 청년 로컬공방 & 카페 (12 x 8 타일: 384 x 256 px)
     drawCafe(ctx, x, y, w, h) {
         ctx.save();
-        // 세련된 목조 테라스 건물
         ctx.fillStyle = "#44403c";
         ctx.fillRect(x + 15, y + 35, w - 30, h - 50);
 
-        // 삼각 지붕
         ctx.fillStyle = "#78716c";
         ctx.beginPath();
         ctx.moveTo(x + 5, y + 35);
@@ -206,13 +184,11 @@ const PixelLandmarkRenderer = {
         ctx.closePath();
         ctx.fill();
 
-        // 통유리창
         ctx.fillStyle = "rgba(125, 211, 252, 0.6)";
         ctx.fillRect(x + 30, y + 55, w - 60, h - 85);
         ctx.strokeStyle = "#d6d3d1";
         ctx.strokeRect(x + 30, y + 55, w - 60, h - 85);
 
-        // 간판
         ctx.fillStyle = "#1c1917";
         ctx.fillRect(x + w / 2 - 50, y + 42, 100, 18);
         ctx.fillStyle = "#facc15";
@@ -220,14 +196,10 @@ const PixelLandmarkRenderer = {
         ctx.textAlign = "center";
         ctx.fillText("청년 로컬공방·카페", x + w / 2, y + 55);
 
-        // 야외 파라솔 & 원형 테이블
+        // 파라솔
         ctx.fillStyle = "#f97316";
         ctx.beginPath();
         ctx.arc(x + 40, y + h - 35, 18, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = "#ffffff";
-        ctx.beginPath();
-        ctx.arc(x + 40, y + h - 35, 6, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.restore();
@@ -236,34 +208,31 @@ const PixelLandmarkRenderer = {
     // 5. 외곽 한우 축산단지 (22 x 18 타일: 704 x 576 px)
     drawCattle(ctx, x, y, w, h) {
         ctx.save();
-        // 붉은색 트러스 축사 지붕
         const barnW = w - 40;
         const barnH = h - 100;
         ctx.fillStyle = "#7f1d1d";
         ctx.fillRect(x + 20, y + 20, barnW, 35);
 
-        // 나무 기둥들 (개방형 축사)
         ctx.fillStyle = "#78350f";
         for (let bx = x + 30; bx < x + barnW + 10; bx += 50) {
             ctx.fillRect(bx, y + 55, 12, barnH);
         }
 
-        // 사료통 (건초 더미)
         ctx.fillStyle = "#ca8a04";
         ctx.fillRect(x + 30, y + barnH + 40, barnW - 20, 20);
 
-        // 둥근 곤포 사일리지 (하얀 공룡알)
+        // 사일리지
         ctx.fillStyle = "#f8fafc";
         ctx.strokeStyle = "#94a3b8";
         ctx.lineWidth = 1.5;
-        [x + barnW - 60, x + barnW - 30, x + barnW].forEach((sx, idx) => {
+        [x + barnW - 60, x + barnW - 30, x + barnW].forEach((sx) => {
             ctx.beginPath();
             ctx.arc(sx, y + h - 45, 15, 0, Math.PI * 2);
             ctx.fill();
             ctx.stroke();
         });
 
-        // 분뇨/퇴비사 격리 구역
+        // 퇴비사
         ctx.fillStyle = "#3f2c22";
         ctx.fillRect(x + 25, y + h - 65, 80, 45);
         ctx.strokeStyle = "#573a2e";
@@ -280,7 +249,6 @@ const PixelLandmarkRenderer = {
     // 6. 산비탈 과수원 (24 x 16 타일: 768 x 512 px)
     drawOrchard(ctx, x, y, w, h) {
         ctx.save();
-        // 사과/배 나무들 (도트 형태 분산 배치)
         const rows = 4;
         const cols = 5;
         const stepX = (w - 40) / cols;
@@ -291,17 +259,14 @@ const PixelLandmarkRenderer = {
                 const tx = x + 25 + c * stepX;
                 const ty = y + 25 + r * stepY;
 
-                // 나무 줄기
                 ctx.fillStyle = "#713f12";
                 ctx.fillRect(tx - 3, ty + 5, 6, 15);
 
-                // 풍성한 녹색 잎
                 ctx.fillStyle = "#15803d";
                 ctx.beginPath();
                 ctx.arc(tx, ty, 14, 0, Math.PI * 2);
                 ctx.fill();
 
-                // 빨간 사과 도트 열매
                 ctx.fillStyle = "#dc2626";
                 ctx.beginPath();
                 ctx.arc(tx - 5, ty - 3, 3, 0, Math.PI * 2);
@@ -311,7 +276,6 @@ const PixelLandmarkRenderer = {
             }
         }
 
-        // 검정색 고압 점적관수 호스 라인
         ctx.strokeStyle = "#171717";
         ctx.lineWidth = 1.5;
         for (let r = 0; r < rows; r++) {
@@ -328,11 +292,9 @@ const PixelLandmarkRenderer = {
     // 7. 잔디광장 및 쉼터 정자 (12 x 8 타일: 384 x 256 px)
     drawPlaza(ctx, x, y, w, h) {
         ctx.save();
-        // 팔각 정자 (전통 목조 정자 쉼터)
         const cx = x + w / 2;
         const cy = y + h / 2;
 
-        // 마루 바닥
         ctx.fillStyle = "#d97706";
         ctx.beginPath();
         ctx.arc(cx, cy, 32, 0, Math.PI * 2);
@@ -341,8 +303,7 @@ const PixelLandmarkRenderer = {
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // 8각형 전통 기와 지붕
-        ctx.fillStyle = "#065f46"; // 짙은 녹청색 기와
+        ctx.fillStyle = "#065f46";
         ctx.beginPath();
         for (let i = 0; i < 8; i++) {
             const rad = (i * Math.PI) / 4;
@@ -357,7 +318,6 @@ const PixelLandmarkRenderer = {
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // 지붕 꼭대기 절병통 (금색)
         ctx.fillStyle = "#facc15";
         ctx.beginPath();
         ctx.arc(cx, cy, 5, 0, Math.PI * 2);
@@ -369,7 +329,6 @@ const PixelLandmarkRenderer = {
     // 8. 주민 주거 가옥단지 (24 x 16 타일: 768 x 512 px)
     drawResidential(ctx, x, y, w, h) {
         ctx.save();
-        // 4개의 아담한 시골 단독주택 (기와/슬레이트 지붕)
         const houses = [
             { ox: 30, oy: 20, color: "#1e3a8a", name: "김이장 댁" },
             { ox: 220, oy: 20, color: "#991b1b", name: "박부녀 댁" },
@@ -381,13 +340,11 @@ const PixelLandmarkRenderer = {
             const hx = x + house.ox;
             const hy = y + house.oy;
 
-            // 벽면
             ctx.fillStyle = "#f1f5f9";
             ctx.fillRect(hx, hy + 25, 120, 65);
             ctx.strokeStyle = "#94a3b8";
             ctx.strokeRect(hx, hy + 25, 120, 65);
 
-            // 박공 지붕
             ctx.fillStyle = house.color;
             ctx.beginPath();
             ctx.moveTo(hx - 6, hy + 25);
@@ -396,11 +353,10 @@ const PixelLandmarkRenderer = {
             ctx.closePath();
             ctx.fill();
 
-            // 문과 창문
             ctx.fillStyle = "#78350f";
-            ctx.fillRect(hx + 45, hy + 50, 24, 40); // 나무문
+            ctx.fillRect(hx + 45, hy + 50, 24, 40);
             ctx.fillStyle = "#93c5fd";
-            ctx.fillRect(hx + 85, hy + 45, 20, 20); // 창문
+            ctx.fillRect(hx + 85, hy + 45, 20, 20);
         });
 
         ctx.restore();
