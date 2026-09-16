@@ -268,11 +268,11 @@
                         $$\hat{Y}_i = 27.3507 + 0.037107 \cdot X_i$$
                     </div>
                     <ul class="slide-points" style="font-size: 0.92rem; margin-top: 0.6rem;">
-                        <li><strong>기울기 ($\hat{\beta} = 0.0371$):</strong> SNS 연간 이용시간이 100시간 증가할 때 스트레스 지수는 평균 3.71점 유의하게 상승.</li>
-                        <li><strong>절편 ($\hat{\alpha} = 27.35$):</strong> SNS를 전혀 이용하지 않는 학생($X=0$)의 기초 기댓값.</li>
-                        <li><strong>결정계수 ($R^2 = 0.6401$):</strong> 스트레스 변동의 64.0%를 SNS 사용시간이 설명.</li>
-                        <li><strong>검정 통계량:</strong> $t=23.02$, $F(1, 298)=529.94$ ($p < 0.0001$).</li>
-                        <li><strong>핵심 관찰:</strong> 전체적인 양(+)의 상관관계 속에서 추세선과 크게 이격된 양극단 관측치들이 확인됨.</li>
+                        <li><strong>기울기 ($\hat{\beta} = 0.0371$):</strong> SNS 연간 이용시간 100시간 증가 시 스트레스 지수 평균 3.71점 유의하게 상승.</li>
+                        <li><strong>절편 ($\hat{\alpha} = 27.35$):</strong> SNS 비이용 학생($X=0$)의 기초 기댓값 의미.</li>
+                        <li><strong>결정계수 ($R^2 = 0.6401$):</strong> 스트레스 총변동의 64.0%를 SNS 사용시간이 설명함.</li>
+                        <li><strong>검정 통계량:</strong> $t=23.02$, $F(1, 298)=529.94$ ($p < 0.0001$)로 통계적 유의성 확정.</li>
+                        <li><strong>핵심 관찰:</strong> 양(+)의 선형 관계 속에서 추세선과 크게 이격된 양극단 관측치 존재 확인.</li>
                     </ul>
                 </div>
             </div>
@@ -313,7 +313,7 @@
                         </tbody>
                     </table>
                     <div style="font-size: 0.82rem; color: var(--text-sub); line-height: 1.4;">
-                        <strong>방법론적 경고:</strong> 단순 삭제 시 <em>선택 편향(Selection Bias)</em> 발생. 회복탄력성 등 누락변수의 존재를 시사하므로 다중회귀 확장이 타당함.
+                        <strong>방법론적 유의점:</strong> 단순 삭제 시 <em>선택 편향(Selection Bias)</em> 발생. 회복탄력성 등 누락변수의 존재를 시사하므로 다중회귀모형 확장이 바람직함.
                     </div>
                 </div>
             </div>
@@ -336,16 +336,16 @@
                 </div>
                 <div>
                     <ul class="slide-points" style="font-size: 0.9rem;">
-                        <li><strong>모집단 참 모수 (PRF):</strong> $\beta = 0.037107$ (300명 전수 계수)</li>
+                        <li><strong>모집단 참 모수 (PRF):</strong> $\beta = 0.037107$ (300명 전수 OLS 계수)</li>
                         <li><strong>단일 표본 ($n=50$):</strong> $\hat{\beta}_{sample} = 0.04117$ (표본오차 $+0.00406$)</li>
                         <li><strong>100회 반복추출 평균:</strong>
                             <div class="stat-highlight-box" style="font-weight: 700; color: var(--emerald-accent);">
                                 $$E[\hat{\beta}] = 0.037528 \approx \beta (0.037107)$$
-                                <em>"표본평균이 참 모수로 정확히 수렴: <strong>불편성(Unbiasedness)</strong> 입증"</em>
+                                <em>"표본평균이 참 모수로 정확히 수렴: <strong>불편성(Unbiasedness)</strong> 실증"</em>
                             </div>
                         </li>
-                        <li><strong>정규성 수렴:</strong> 표본계수들의 분포가 종 모양(Bell-curve) 정규분포를 따름.</li>
-                        <li><strong>계량경제학적 의의:</strong> 오차항 정규성이 불분명해도 CLT에 의해 추정량이 정규성을 획득하므로 <strong>$t$-검정 및 신뢰구간의 통계적 정당성이 보장</strong>됨.</li>
+                        <li><strong>정규성 수렴:</strong> 표본계수들의 분포가 종 모양(Bell-curve) 정규분포 형성.</li>
+                        <li><strong>계량경제학적 의의:</strong> 오차항 정규성이 불분명해도 CLT에 의해 추정량이 정규성을 획득하므로 <strong>$t$-검정 및 신뢰구간의 통계적 정당성 확보</strong>.</li>
                     </ul>
                 </div>
             </div>
@@ -368,14 +368,14 @@
                     <p style="font-size: 0.88rem; color: var(--text-sub); line-height: 1.6;">
                         • SNS 연간 이용시간은 청소년 스트레스 지수를 통계적으로 매우 유의하게 증가시킴 ($p < 0.0001$).<br>
                         • 100시간당 스트레스 약 3.71점 증가 (설명력 64%).<br>
-                        • 특이치 제거 시 설명력은 82.5%까지 상승하나 자의적 삭제 지양 필요.
+                        • 특이치 제거 시 설명력 82.5%까지 상승하나 자의적 삭제 지양 필요.
                     </p>
                 </div>
                 <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 1.2rem;">
                     <h4 style="color: var(--navy-primary); margin-bottom: 0.6rem; font-size: 1.05rem;">2. 계량 방법론적 시사점</h4>
                     <p style="font-size: 0.88rem; color: var(--text-sub); line-height: 1.6;">
                         • <strong>잔차 진단:</strong> 선형성 가정과 특이치 영향력 검토의 필수성 확인.<br>
-                        • <strong>CLT 실증:</strong> 유한 표본 반복 추출을 통해 OLS 추정량의 점근적 정규성과 가설검정 타당성 증명.
+                        • <strong>CLT 실증:</strong> 유한 표본 반복 추출을 통해 OLS 추정량의 점근적 정규성과 가설검정 타당성 입증.
                     </p>
                 </div>
             </div>
