@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제1장 과제 발표 브리핑: SNS 사용시간과 스트레스 회귀분석</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --slide-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #334155;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --navy-primary: #1e3a8a;
+            --blue-accent: #2563eb;
+            --emerald-accent: #047857;
+            --red-accent: #dc2626;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", sans-serif;
+            background-color: var(--bg-color);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .presentation-wrapper {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* 컨트롤 상단 바 */
+        .pres-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .pres-nav-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-slide {
+            background: #1e293b;
+            color: #ffffff;
+            border: 1px solid #334155;
+            padding: 0.4rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-slide:hover {
+            background: var(--blue-accent);
+            border-color: var(--blue-accent);
+        }
+
+        /* 메인 슬라이드 카드 */
+        .slide-card {
+            background: var(--slide-bg);
+            color: var(--text-main);
+            border-radius: 12px;
+            min-height: 560px;
+            padding: 2.2rem 2.6rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .slide-card.active {
+            display: flex;
+        }
+
+        .slide-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .slide-topic {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--blue-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .slide-title {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--navy-primary);
+            margin-top: 0.2rem;
+        }
+
+        .slide-number {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: #f1f5f9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .slide-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* 2단 슬라이드 레이아웃 */
+        .slide-grid-2 {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 1.8rem;
+            align-items: center;
+        }
+
+        .slide-img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+
+        .slide-points {
+            font-size: 0.98rem;
+            line-height: 1.65;
+            color: var(--text-sub);
+        }
+
+        .slide-points li {
+            margin-bottom: 0.8rem;
+        }
+
+        .slide-points strong {
+            color: var(--text-main);
+        }
+
+        .stat-highlight-box {
+            background: #f8fafc;
+            border-left: 4px solid var(--navy-primary);
+            padding: 0.8rem 1rem;
+            border-radius: 4px;
+            margin: 0.6rem 0;
+            font-size: 0.92rem;
+        }
+
+        /* 발표자 노트 (Speaker Note) */
+        .speaker-notes-container {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 1rem 1.4rem;
+        }
+
+        .notes-header {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #38bdf8;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .notes-body {
+            font-size: 0.88rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .key-badge {
+            background: #0284c7;
+            color: #ffffff;
+            font-size: 0.75rem;
+            padding: 1px 6px;
+            border-radius: 3px;
+            margin-right: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="presentation-wrapper">
+    <div class="pres-header">
+        <div><strong>영남대학교 대학원 계량분석방법론연구</strong> | 제1장 실습 과제 발표</div>
+        <div class="pres-nav-btns">
+            <button class="btn-slide" onclick="prevSlide()">◀ 이전</button>
+            <span id="slideIndicator" style="display: inline-flex; align-items: center; padding: 0 0.5rem; font-weight: 700;">1 / 5</span>
+            <button class="btn-slide" onclick="nextSlide()">다음 ▶</button>
+            <a href="assignment1.html" class="btn-slide" style="text-decoration: none; background: #047857; border-color: #047857;">실습실 ↗</a>
+            <a href="assignment1_report.pdf" target="_blank" class="btn-slide" style="text-decoration: none; background: #1e3a8a; border-color: #1e3a8a;">과제 PDF ↗</a>
+        </div>
+    </div>
+
+    <!-- SLIDE 1 -->
+    <div class="slide-card active" id="slide-1">
+        <div class="slide-top">
+            <div>
+                <div class="slide-topic">Week 1 Presentation • Overview</div>
+                <div class="slide-title">SNS 연간 사용시간과 청소년 스트레스 지수 회귀분석</div>
+            </div>
+            <div class="slide-number">Slide 01</div>
+        </div>
+        <div class="slide-content">
+            <div class="slide-grid-2">
+                <div>
+                    <h3 style="font-size: 1.25rem; color: var(--navy-primary); margin-bottom: 0.8rem;">분석 배경 및 기본 연구모형</h3>
+                    <ul class="slide-points">
+                        <li><strong>분석 대상:</strong> 중학생 300명 전수 관측 표본자료 ($N=300$)</li>
+                        <li><strong>독립변수 ($X$):</strong> SNS 연간 이용시간 (단위: 시간/년, 평균 987시간)</li>
+                        <li><strong>종속변수 ($Y$):</strong> 스트레스 지수 (0~100점 척도, 평균 63.98점)</li>
+                        <li><strong>단순회귀 모형:</strong>
+                            <div class="stat-highlight-box" style="margin-top: 0.5rem;">
+                                $$Y_i = \alpha + \beta X_i + u_i$$
+                                <em>"SNS 이용시간 증가가 학생들의 스트레스 지수에 미치는 선형적 영향 추정"</em>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <img src="chart1_scatter_regression.png" alt="산점도" class="slide-img">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide-card" id="slide-2">
+        <div class="slide-top">
+            <div>
+                <div class="slide-topic">Problem 1 & 2 • Empirical Estimation</div>
+                <div class="slide-title">기초 OLS 회귀분석 추정 결과 및 관계 고찰</div>
+            </div>
+            <div class="slide-number">Slide 02</div>
+        </div>
+        <div class="slide-content">
+            <div class="slide-grid-2">
+                <div>
+                    <img src="chart1_scatter_regression.png" alt="산점도 및 회귀선" class="slide-img">
+                </div>
+                <div>
+                    <div class="stat-highlight-box" style="font-size: 1.05rem; font-weight: 700; color: var(--navy-primary);">
+                        $$\hat{Y}_i = 27.3507 + 0.037107 \cdot X_i$$
+                    </div>
+                    <ul class="slide-points" style="font-size: 0.92rem; margin-top: 0.6rem;">
+                        <li><strong>기울기 ($\hat{\beta} = 0.0371$):</strong> SNS 연간 이용시간이 100시간 증가할 때 스트레스 지수는 평균 3.71점 유의하게 상승.</li>
+                        <li><strong>절편 ($\hat{\alpha} = 27.35$):</strong> SNS를 전혀 이용하지 않는 학생($X=0$)의 기초 기댓값.</li>
+                        <li><strong>결정계수 ($R^2 = 0.6401$):</strong> 스트레스 변동의 64.0%를 SNS 사용시간이 설명.</li>
+                        <li><strong>검정 통계량:</strong> $t=23.02$, $F(1, 298)=529.94$ ($p < 0.0001$).</li>
+                        <li><strong>핵심 관찰:</strong> 전체적인 양(+)의 상관관계 속에서 추세선과 크게 이격된 양극단 관측치들이 확인됨.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide-card" id="slide-3">
+        <div class="slide-top">
+            <div>
+                <div class="slide-topic">Problem 4 & 5 • Residual Diagnostics</div>
+                <div class="slide-title">체계적 잔차 분석 및 특이치(12개) 제거 전후 비교</div>
+            </div>
+            <div class="slide-number">Slide 03</div>
+        </div>
+        <div class="slide-content">
+            <div class="slide-grid-2">
+                <div>
+                    <img src="chart2_residual_distribution.png" alt="잔차 분포" class="slide-img">
+                </div>
+                <div>
+                    <div class="stat-highlight-box" style="font-size: 0.88rem; line-height: 1.45;">
+                        <strong>표준화 잔차 판정식:</strong> $e_i^* = \frac{e_i}{s_e}$ ($s_e = 11.0629$)<br>
+                        <strong>특이치 기준:</strong> $|e_i^*| > 2$ (총 12개 관측치 식별)
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 0.6rem 0;">
+                        <thead>
+                            <tr style="background: #f1f5f9; border-bottom: 1px solid var(--border-color);">
+                                <th style="padding: 4px; text-align: left;">구분</th>
+                                <th style="padding: 4px; text-align: right;">전체 (N=300)</th>
+                                <th style="padding: 4px; text-align: right;">12개 제외 (N=288)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td style="padding: 4px;">기울기 ($\hat{\beta}$)</td><td style="padding: 4px; text-align: right;">0.0371</td><td style="padding: 4px; text-align: right; font-weight: 700; color: var(--emerald-accent);">0.0402 (+8.5%)</td></tr>
+                            <tr><td style="padding: 4px;">표준오차 ($SE$)</td><td style="padding: 4px; text-align: right;">0.00161</td><td style="padding: 4px; text-align: right; font-weight: 700; color: var(--emerald-accent);">0.00109 (-32%)</td></tr>
+                            <tr><td style="padding: 4px;">결정계수 ($R^2$)</td><td style="padding: 4px; text-align: right;">0.6401</td><td style="padding: 4px; text-align: right; font-weight: 700; color: var(--emerald-accent);">0.8255 (+18.5%p)</td></tr>
+                        </tbody>
+                    </table>
+                    <div style="font-size: 0.82rem; color: var(--text-sub); line-height: 1.4;">
+                        <strong>방법론적 경고:</strong> 단순 삭제 시 <em>선택 편향(Selection Bias)</em> 발생. 회복탄력성 등 누락변수의 존재를 시사하므로 다중회귀 확장이 타당함.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide-card" id="slide-4">
+        <div class="slide-top">
+            <div>
+                <div class="slide-topic">Problem 6 • Sampling & Central Limit Theorem</div>
+                <div class="slide-title">모집단 가정 하 50명 표본추출 100회 시뮬레이션</div>
+            </div>
+            <div class="slide-number">Slide 04</div>
+        </div>
+        <div class="slide-content">
+            <div class="slide-grid-2">
+                <div>
+                    <img src="chart3_clt_sampling.png" alt="중심극한정리 표본분포" class="slide-img">
+                </div>
+                <div>
+                    <ul class="slide-points" style="font-size: 0.9rem;">
+                        <li><strong>모집단 참 모수 (PRF):</strong> $\beta = 0.037107$ (300명 전수 계수)</li>
+                        <li><strong>단일 표본 ($n=50$):</strong> $\hat{\beta}_{sample} = 0.04117$ (표본오차 $+0.00406$)</li>
+                        <li><strong>100회 반복추출 평균:</strong>
+                            <div class="stat-highlight-box" style="font-weight: 700; color: var(--emerald-accent);">
+                                $$E[\hat{\beta}] = 0.037528 \approx \beta (0.037107)$$
+                                <em>"표본평균이 참 모수로 정확히 수렴: <strong>불편성(Unbiasedness)</strong> 입증"</em>
+                            </div>
+                        </li>
+                        <li><strong>정규성 수렴:</strong> 표본계수들의 분포가 종 모양(Bell-curve) 정규분포를 따름.</li>
+                        <li><strong>계량경제학적 의의:</strong> 오차항 정규성이 불분명해도 CLT에 의해 추정량이 정규성을 획득하므로 <strong>$t$-검정 및 신뢰구간의 통계적 정당성이 보장</strong>됨.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide-card" id="slide-5">
+        <div class="slide-top">
+            <div>
+                <div class="slide-topic">Conclusion • Q&A</div>
+                <div class="slide-title">연구 요약 및 학술적 시사점</div>
+            </div>
+            <div class="slide-number">Slide 05</div>
+        </div>
+        <div class="slide-content">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 1.2rem;">
+                    <h4 style="color: var(--navy-primary); margin-bottom: 0.6rem; font-size: 1.05rem;">1. 실증 분석 결론</h4>
+                    <p style="font-size: 0.88rem; color: var(--text-sub); line-height: 1.6;">
+                        • SNS 연간 이용시간은 청소년 스트레스 지수를 통계적으로 매우 유의하게 증가시킴 ($p < 0.0001$).<br>
+                        • 100시간당 스트레스 약 3.71점 증가 (설명력 64%).<br>
+                        • 특이치 제거 시 설명력은 82.5%까지 상승하나 자의적 삭제 지양 필요.
+                    </p>
+                </div>
+                <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 1.2rem;">
+                    <h4 style="color: var(--navy-primary); margin-bottom: 0.6rem; font-size: 1.05rem;">2. 계량 방법론적 시사점</h4>
+                    <p style="font-size: 0.88rem; color: var(--text-sub); line-height: 1.6;">
+                        • <strong>잔차 진단:</strong> 선형성 가정과 특이치 영향력 검토의 필수성 확인.<br>
+                        • <strong>CLT 실증:</strong> 유한 표본 반복 추출을 통해 OLS 추정량의 점근적 정규성과 가설검정 타당성 증명.
+                    </p>
+                </div>
+            </div>
+            <div style="text-align: center; color: var(--text-muted); font-size: 0.95rem; font-weight: 600;">
+                경청해 주셔서 감사합니다. 질의응답을 진행하겠습니다.
+            </div>
+        </div>
+    </div>
+
+    <!-- 하단 발표자 대본 (Speaker Note) -->
+    <div class="speaker-notes-container">
+        <div class="notes-header">
+            <span>🎙️</span> <strong>발표자 스크립트 (Speaker Note)</strong>
+        </div>
+        <div class="notes-body" id="speakerNoteText">
+            대본 로딩 중...
+        </div>
+    </div>
+</div>
+
+<script>
+    const scripts = [
+        `[슬라이드 1 대본]\n"안녕하십니까, 계량분석방법론연구 제1장 실습 과제 발표를 맡은 박문식입니다. 본 과제는 중학생 300명의 연간 SNS 사용시간과 스트레스 지수 데이터를 활용하여 단순선형회귀모형을 추정하고, 잔차 분석을 통한 특이치 진단, 그리고 100회 반복 표본추출을 통해 계량경제학의 핵심 정리인 중심극한정리(CLT)와 OLS 추정량의 성질을 실증적으로 검증하고자 합니다."`,
+        `[슬라이드 2 대본]\n"먼저 문항 1번과 2번의 산점도 및 기초 OLS 추정 결과입니다. 추정 결과 절편은 27.35, 기울기는 0.0371로 도출되었습니다. 즉, SNS 사용시간이 100시간 증가할 때 스트레스 지수는 평균 3.71점 상승하는 뚜렷한 양의 관계가 관찰됩니다. t값은 23.02로 1% 유의수준에서 극히 유의하며, 모형 설명력인 R²은 64.0%로 매우 우수합니다. 다만 산점도 우하단과 좌상단에 주된 회귀선에서 크게 벗어난 관측치들이 시각적으로 포착됩니다."`,
+        `[슬라이드 3 대본]\n"문항 4번과 5번의 체계적 잔차 분석입니다. 회귀오차 표준편차인 se=11.06을 기준으로 표준화 잔차의 절댓값이 2를 초과하는 극단치를 진단한 결과, 양의 이상치 6명, 음의 이상치 6명으로 총 12명이 식별되었습니다. 이 12개를 제외하고 재추정하면 기울기는 0.0402로 소폭 상승하고, R²은 64%에서 82.5%로 대폭 향상됩니다. 그러나 이는 인위적으로 적합도를 높인 선택 편향을 초래할 수 있으므로, 단순 삭제보다는 다중회귀모형으로의 확장이 필요함을 알 수 있습니다."`,
+        `[슬라이드 4 대본]\n"문항 6번에서는 300명을 모집단(PRF)으로 규정하고, 50명 크기의 표본을 100회 반복 추출하여 OLS 계수의 표본분포를 확인했습니다. 100개 표본기울기의 평균은 0.037528로 모집단 참 모수인 0.037107에 거의 완벽히 일치하여 불편성(Unbiasedness)을 실증했습니다. 또한 히스토그램에서 보듯 계수들의 분포는 정규분포 곡선으로 수렴합니다. 이는 모집단 오차항의 분포와 상관없이 중심극한정리(CLT)에 의해 추정량의 정규성이 확보되며, t검정과 신뢰구간 추정이 정당성을 갖는 근거가 됩니다."`,
+        `[슬라이드 5 대본]\n"결론적으로, 본 실습을 통해 SNS 사용과 스트레스 간의 유의미한 양의 관계를 검증함과 동시에, 특이치 진단의 중요성 및 중심극한정리에 기반한 OLS 추정량의 통계적 정당성을 데이터로 확인할 수 있었습니다. 이상으로 발표를 마치겠습니다. 질문이 있으시면 답변드리겠습니다."`
+    ];
+
+    let currentSlide = 1;
+    const totalSlides = 5;
+
+    function showSlide(n) {
+        if (n < 1) n = 1;
+        if (n > totalSlides) n = totalSlides;
+        currentSlide = n;
+
+        for (let i = 1; i <= totalSlides; i++) {
+            const el = document.getElementById(`slide-${i}`);
+            if (el) el.classList.remove('active');
+        }
+        const activeEl = document.getElementById(`slide-${currentSlide}`);
+        if (activeEl) activeEl.classList.add('active');
+
+        document.getElementById('slideIndicator').innerText = `${currentSlide} / ${totalSlides}`;
+        document.getElementById('speakerNoteText').innerText = scripts[currentSlide - 1];
+
+        renderMathInElement(activeEl, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ]
+        });
+    }
+
+    function nextSlide() { showSlide(currentSlide + 1); }
+    function prevSlide() { showSlide(currentSlide - 1); }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        showSlide(1);
+    });
+</script>
+
+</body>
+</html>

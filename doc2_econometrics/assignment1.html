@@ -383,11 +383,13 @@
             <div class="header-tag">제1장 연구과제 실습실</div>
             <h1>SNS 사용시간과 청소년 스트레스 지수 회귀분석</h1>
             <p>
-                중·고등학생 300명의 일일 SNS 이용 시간과 스트레스 척도 원자료를 토대로 OLS 모형을 추정합니다.
+                중학생 300명의 연간 SNS 이용 시간(X)과 스트레스 지수(Y) 원자료를 토대로 OLS 모형을 추정합니다.
                 잔차 표준화를 통해 12개 이상치를 분리하고 제거 전후 계수 왜곡 양상을 비교합니다.
                 300명 전수 데이터를 모집단으로 규정하여 표본(n=50)을 100회 반복 추출하며 표본 회귀계수가 정규분포로 수렴하는 과정도 검증합니다.
             </p>
             <div class="download-bar">
+                <a href="assignment1_report.pdf" target="_blank" class="download-btn btn-pdf" style="background: #1e3a8a; color: #ffffff; border-color: #1e3a8a; font-weight: 700;">과제 제출 보고서 (PDF)</a>
+                <a href="presentation_slides.html" target="_blank" class="download-btn btn-pdf" style="background: #2563eb; color: #ffffff; border-color: #2563eb; font-weight: 700;">발표 슬라이드·대본 →</a>
                 <a href="숙제_1장.pdf" target="_blank" class="download-btn btn-pdf">과제 문제지 다운로드 (PDF)</a>
                 <a href="SNS사용시간과스트레스_1장데이터-1.xlsx" download class="download-btn btn-xlsx">실습 원자료 다운로드 (XLSX)</a>
                 <a href="회귀분석_제1강_해설서.pdf" target="_blank" class="download-btn btn-pdf">제1강 OLS 상세 해설서 (PDF)</a>
@@ -460,7 +462,7 @@
                 </tbody>
             </table>
             <div class="prose">
-                <p><strong>1. 계수 해석:</strong> 기울기 계수 0.0371은 SNS 이용 시간이 1분 증가할 때 스트레스 지수가 평균 0.0371점 상승함을 뜻합니다. 하루 100분을 더 이용할 경우 스트레스 지수는 약 3.71점 높아집니다. 절편 27.3507은 SNS를 전혀 이용하지 않는 학생(X=0)의 기본 스트레스 수준을 나타냅니다.</p>
+                <p><strong>1. 계수 해석:</strong> 기울기 계수 0.0371은 SNS 연간 이용 시간이 1시간 증가할 때 스트레스 지수가 평균 0.0371점 상승함을 뜻합니다. 연간 100시간을 더 이용할 경우 스트레스 지수는 약 3.71점 높아집니다. 절편 27.3507은 SNS를 전혀 이용하지 않는 학생(X=0)의 기본 스트레스 수준을 나타냅니다.</p>
                 <p><strong>2. 통계적 유의성:</strong> SNS 이용 시간의 t값은 23.02이며 p값은 0.0001 미만입니다. 유의수준 1% 기준에서 귀무가설(\(H_0: \beta = 0\))이 명확히 기각됩니다. SNS 이용과 스트레스 간의 연관성은 우연한 표본오차로 설명되지 않습니다.</p>
                 <p><strong>3. 설명력 및 모형 적합도:</strong> 결정계수(\(R^2\))는 0.6401입니다. 청소년 스트레스 지수 전체 변동의 64.01%가 SNS 이용 시간 변수에 의해 설명됩니다. 모형 전체 유의성을 나타내는 F값은 529.94로 산출됩니다.</p>
             </div>
@@ -482,23 +484,23 @@
                 <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; padding: 0.9rem 1.1rem;">
                     <div style="font-size: 0.84rem; font-weight: 700; color: #b91c1c; margin-bottom: 0.5rem;">양(+)의 이상치 (예측치 대비 고스트레스 6명, \(z_i > +2\))</div>
                     <div style="font-size: 0.83rem; color: var(--text-sub); line-height: 1.65;">
-                        • <strong>ID 176</strong>: 310분 / 86.5점 (\(z = +4.31\))<br>
-                        • <strong>ID 98</strong>: 680분 / 91.0점 (\(z = +3.48\))<br>
-                        • <strong>ID 116</strong>: 960분 / 96.5점 (\(z = +3.04\))<br>
-                        • <strong>ID 249</strong>: 1,185분 / 96.5점 (\(z = +2.28\))<br>
-                        • <strong>ID 198</strong>: 773분 / 80.3점 (\(z = +2.20\))<br>
-                        • <strong>ID 13</strong>: 1,290분 / 98.0점 (\(z = +2.06\))
+                        • <strong>ID 176</strong>: 310시간 / 86.5점 (\(z = +4.31\))<br>
+                        • <strong>ID 98</strong>: 680시간 / 91.0점 (\(z = +3.48\))<br>
+                        • <strong>ID 116</strong>: 960시간 / 96.5점 (\(z = +3.04\))<br>
+                        • <strong>ID 249</strong>: 1,185시간 / 96.5점 (\(z = +2.28\))<br>
+                        • <strong>ID 198</strong>: 773시간 / 80.3점 (\(z = +2.20\))<br>
+                        • <strong>ID 13</strong>: 1,290시간 / 98.0점 (\(z = +2.06\))
                     </div>
                 </div>
                 <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; padding: 0.9rem 1.1rem;">
                     <div style="font-size: 0.84rem; font-weight: 700; color: #1d4ed8; margin-bottom: 0.5rem;">음(-)의 이상치 (예측치 대비 저스트레스 6명, \(z_i < -2\))</div>
                     <div style="font-size: 0.83rem; color: var(--text-sub); line-height: 1.65;">
-                        • <strong>ID 44</strong>: 1,820분 / 36.5점 (\(z = -5.29\))<br>
-                        • <strong>ID 192</strong>: 1,650분 / 32.0점 (\(z = -5.12\))<br>
-                        • <strong>ID 265</strong>: 1,470분 / 28.5점 (\(z = -4.83\))<br>
-                        • <strong>ID 95</strong>: 1,120분 / 22.0점 (\(z = -4.25\))<br>
-                        • <strong>ID 222</strong>: 790분 / 17.5점 (\(z = -3.55\))<br>
-                        • <strong>ID 80</strong>: 420분 / 11.5점 (\(z = -2.85\))
+                        • <strong>ID 44</strong>: 1,820시간 / 36.5점 (\(z = -5.29\))<br>
+                        • <strong>ID 192</strong>: 1,650시간 / 32.0점 (\(z = -5.12\))<br>
+                        • <strong>ID 265</strong>: 1,470시간 / 28.5점 (\(z = -4.83\))<br>
+                        • <strong>ID 95</strong>: 1,120시간 / 22.0점 (\(z = -4.25\))<br>
+                        • <strong>ID 222</strong>: 790시간 / 17.5점 (\(z = -3.55\))<br>
+                        • <strong>ID 80</strong>: 420시간 / 11.5점 (\(z = -2.85\))
                     </div>
                 </div>
             </div>
