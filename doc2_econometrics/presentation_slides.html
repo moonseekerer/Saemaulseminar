@@ -168,39 +168,6 @@
             margin: 0.6rem 0;
             font-size: 0.92rem;
         }
-
-        /* 발표자 노트 (Speaker Note) */
-        .speaker-notes-container {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 1rem 1.4rem;
-        }
-
-        .notes-header {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #38bdf8;
-            margin-bottom: 0.4rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .notes-body {
-            font-size: 0.88rem;
-            color: #cbd5e1;
-            line-height: 1.6;
-        }
-
-        .key-badge {
-            background: #0284c7;
-            color: #ffffff;
-            font-size: 0.75rem;
-            padding: 1px 6px;
-            border-radius: 3px;
-            margin-right: 4px;
-        }
     </style>
 </head>
 <body>
@@ -398,27 +365,9 @@
             </div>
         </div>
     </div>
-
-    <!-- 하단 발표자 대본 (Speaker Note) -->
-    <div class="speaker-notes-container">
-        <div class="notes-header">
-            <span>🎙️</span> <strong>발표자 스크립트 (Speaker Note)</strong>
-        </div>
-        <div class="notes-body" id="speakerNoteText">
-            대본 로딩 중...
-        </div>
-    </div>
 </div>
 
 <script>
-    const scripts = [
-        `[슬라이드 1 대본]\n"안녕하십니까, 계량분석방법론연구 제1장 실습 과제 발표를 맡은 박문식입니다. 본 과제는 중학생 300명의 연간 SNS 사용시간과 스트레스 지수 데이터를 활용하여 단순선형회귀모형을 추정하고, 잔차 분석을 통한 특이치 진단, 그리고 100회 반복 표본추출을 통해 계량경제학의 핵심 정리인 중심극한정리(CLT)와 OLS 추정량의 성질을 실증적으로 검증하고자 합니다."`,
-        `[슬라이드 2 대본]\n"먼저 문항 1번과 2번의 산점도 및 기초 OLS 추정 결과입니다. 추정 결과 절편은 27.35, 기울기는 0.0371로 도출되었습니다. 즉, SNS 사용시간이 100시간 증가할 때 스트레스 지수는 평균 3.71점 상승하는 뚜렷한 양의 관계가 관찰됩니다. t값은 23.02로 1% 유의수준에서 극히 유의하며, 모형 설명력인 R²은 64.0%로 매우 우수합니다. 다만 산점도 우하단과 좌상단에 주된 회귀선에서 크게 벗어난 관측치들이 시각적으로 포착됩니다."`,
-        `[슬라이드 3 대본]\n"문항 4번과 5번의 체계적 잔차 분석입니다. 회귀오차 표준편차인 se=11.06을 기준으로 표준화 잔차의 절댓값이 2를 초과하는 극단치를 진단한 결과, 양의 이상치 6명, 음의 이상치 6명으로 총 12명이 식별되었습니다. 이 12개를 제외하고 재추정하면 기울기는 0.0402로 소폭 상승하고, R²은 64%에서 82.5%로 대폭 향상됩니다. 그러나 이는 인위적으로 적합도를 높인 선택 편향을 초래할 수 있으므로, 단순 삭제보다는 다중회귀모형으로의 확장이 필요함을 알 수 있습니다."`,
-        `[슬라이드 4 대본]\n"문항 6번에서는 300명을 모집단(PRF)으로 규정하고, 50명 크기의 표본을 100회 반복 추출하여 OLS 계수의 표본분포를 확인했습니다. 100개 표본기울기의 평균은 0.037528로 모집단 참 모수인 0.037107에 거의 완벽히 일치하여 불편성(Unbiasedness)을 실증했습니다. 또한 히스토그램에서 보듯 계수들의 분포는 정규분포 곡선으로 수렴합니다. 이는 모집단 오차항의 분포와 상관없이 중심극한정리(CLT)에 의해 추정량의 정규성이 확보되며, t검정과 신뢰구간 추정이 정당성을 갖는 근거가 됩니다."`,
-        `[슬라이드 5 대본]\n"결론적으로, 본 실습을 통해 SNS 사용과 스트레스 간의 유의미한 양의 관계를 검증함과 동시에, 특이치 진단의 중요성 및 중심극한정리에 기반한 OLS 추정량의 통계적 정당성을 데이터로 확인할 수 있었습니다. 이상으로 발표를 마치겠습니다. 질문이 있으시면 답변드리겠습니다."`
-    ];
-
     let currentSlide = 1;
     const totalSlides = 5;
 
@@ -435,7 +384,6 @@
         if (activeEl) activeEl.classList.add('active');
 
         document.getElementById('slideIndicator').innerText = `${currentSlide} / ${totalSlides}`;
-        document.getElementById('speakerNoteText').innerText = scripts[currentSlide - 1];
 
         renderMathInElement(activeEl, {
             delimiters: [
