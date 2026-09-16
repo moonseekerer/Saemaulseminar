@@ -209,6 +209,46 @@
             margin-bottom: 4px;
         }
 
+        .online-link-box {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--navy-primary);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .online-link-text {
+            font-size: 8.2pt;
+            color: var(--text-sub);
+            line-height: 1.45;
+        }
+
+        .online-link-text strong {
+            color: var(--navy-primary);
+        }
+
+        .online-link-text a {
+            color: var(--navy-primary);
+            text-decoration: underline;
+            word-break: break-all;
+            font-weight: 600;
+        }
+
+        .qr-code-img {
+            width: 58px;
+            height: 58px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            background: #ffffff;
+            padding: 2px;
+            flex-shrink: 0;
+        }
+
         .footer-page {
             position: absolute;
             bottom: 0;
@@ -516,6 +556,15 @@
                 추정량의 정규성이 성립하지 않을 경우 <strong>\(t\)-검정, \(F\)-검정, 95% 신뢰구간 도출 등 계량경제학의 모든 통계적 가설검정 절차의 수리적 정당성 상실</strong>. 
                 따라서 중심극한정리에 기반한 계수의 정규분포 수렴은 표본 데이터로부터 모집단의 참된 관계를 과학적으로 일반화하기 위한 필수적 이론적 기반임.
             </p>
+
+            <div class="online-link-box">
+                <div class="online-link-text">
+                    <strong>[온라인 연구과제 인터랙티브 실습실 안내]</strong><br>
+                    본 분석의 300명 데이터 동적 산점도, 12개 이상치 제거 OLS 비교 및 100회 무작위 표본추출 실시간 시뮬레이션 웹 인터페이스 제공:<br>
+                    <a href="https://moonseekerer.github.io/Saemaulseminar/doc2_econometrics/assignment1.html" target="_blank">https://moonseekerer.github.io/Saemaulseminar/doc2_econometrics/assignment1.html</a>
+                </div>
+                <img src="qr_assignment1.png" alt="온라인 실습실 QR코드" class="qr-code-img">
+            </div>
         </section>
         <div class="footer-page">4 / 4</div>
     </div>
