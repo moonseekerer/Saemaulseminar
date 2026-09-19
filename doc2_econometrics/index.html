@@ -436,11 +436,11 @@
                         <td>PRF vs SRF, 오차항 가정, 최소자승법(OLS) 유도, 적합도(R²)</td>
                         <td><strong style="color: var(--emerald-primary);">1장 실습 과제 (완료)</strong></td>
                     </tr>
-                    <tr>
-                        <td><span class="week-badge">2주차</span></td>
-                        <td>다중선형회귀모형(MLRM)과 행렬대수</td>
-                        <td>편회귀계수(Partial Regression Coefficients), 행렬 표현 OLS</td>
-                        <td>2장 발표 및 과제</td>
+                    <tr style="background: #eff6ff;">
+                        <td><span class="week-badge active" style="background: #1e3a8a;">2주차</span></td>
+                        <td><strong>다중회귀분석 및 함수형태·이분산</strong></td>
+                        <td>편회귀계수, 더미변수, 자연로그(Ln) 변환, 이분산(Heteroskedasticity), 역수/다항식 모형</td>
+                        <td><strong style="color: #1e3a8a;">2강 강의안 & 3개 실습자료</strong></td>
                     </tr>
                     <tr>
                         <td><span class="week-badge">3주차</span></td>
@@ -552,6 +552,18 @@
                     </div>
                 </a>
 
+                <!-- 계량 1강 보완자료 PDF -->
+                <a href="제1강_보완자료.pdf" target="_blank" class="card">
+                    <div class="chapter-badge" style="background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe;">제1강 보완자료 PDF</div>
+                    <div class="card-title">가설검정 및 중심극한정리 보완자료</div>
+                    <div class="card-desc">
+                        정규분포 표준화(Z), t-분포 임계값 판정, 귀무가설 기각역 설정 및 OLS 계수 통계적 유의성 검정 원리 정리
+                    </div>
+                    <div class="card-footer">
+                        <span>보완자료 열람 →</span>
+                    </div>
+                </a>
+
                 <!-- 계량 데이터셋 -->
                 <a href="소득과소비_제1장데이터.xlsx" download class="card">
                     <div class="chapter-badge" style="background: var(--emerald-soft); color: var(--emerald-primary); border-color: #a7f3d0;">실습 데이터 XLSX</div>
@@ -573,6 +585,57 @@
                     </div>
                     <div class="card-footer">
                         <span>교재 PDF 열람 →</span>
+                    </div>
+                </a>
+            </div>
+
+            <h2 style="margin-top: 2.5rem;">제2강 핵심 강의 자료 및 실습 데이터 <span class="section-tag" style="background: #e0e7ff; color: #3730a3;">Lecture 2 Materials</span></h2>
+            <div class="grid-container">
+                <!-- 계량 2강 원본 PDF -->
+                <a href="제2강 다중회귀분석.pdf" target="_blank" class="card">
+                    <div class="chapter-badge" style="background: #e0e7ff; color: #3730a3; border-color: #c7d2fe;">제2강 강의자료 PDF</div>
+                    <div class="card-title">제2강 다중회귀분석 강의안</div>
+                    <div class="card-desc">
+                        다중선형회귀모형(MLRM), 편회귀계수, 자연로그(Ln) 변환과 성장률, 잔차 분산과 이분산성, 역수 및 다항식 모형의 함수형태(Functional Form) 이론
+                    </div>
+                    <div class="card-footer">
+                        <span>PDF 열람하기 →</span>
+                    </div>
+                </a>
+
+                <!-- 다중회귀분석 실습 데이터 -->
+                <a href="다중회귀분석자료_제2장데이터.xlsx" download class="card">
+                    <div class="chapter-badge" style="background: var(--emerald-soft); color: var(--emerald-primary); border-color: #a7f3d0;">실습 데이터 XLSX</div>
+                    <div class="card-title">다중회귀분석 실습 데이터셋</div>
+                    <div class="card-desc">
+                        20명 표본 대상 임금(WAGE), 교육연수(EDU), 연령(AGE), 성별(SEX 더미변수) 관측치 데이터. 편회귀계수 추정 및 통제변수 효과 실습
+                    </div>
+                    <div class="card-footer">
+                        <span>데이터 다운로드 →</span>
+                    </div>
+                </a>
+
+                <!-- 인구추세 실습 데이터 -->
+                <a href="인구추세연습자료_제2장데이터.xlsx" download class="card">
+                    <div class="chapter-badge" style="background: var(--emerald-soft); color: var(--emerald-primary); border-color: #a7f3d0;">실습 데이터 XLSX</div>
+                    <div class="card-title">인구추세 분석 실습 데이터셋</div>
+                    <div class="card-desc">
+                        1970~1989년(20개년) 시계열 인구수(POP) 데이터. 시간 추세(t, t², t³)에 따른 비선형 3차 다항식(Cubic Polynomial) 회귀모형 추정 실습
+                    </div>
+                    <div class="card-footer">
+                        <span>데이터 다운로드 →</span>
+                    </div>
+                </a>
+
+                <!-- 함수형태 실습 데이터 -->
+                <a href="functional_form_practice_data.xlsx" download class="card">
+                    <div class="chapter-badge" style="background: var(--emerald-soft); color: var(--emerald-primary); border-color: #a7f3d0;">실습 데이터 XLSX</div>
+                    <div class="card-title">함수형태(역수모형) 실습 데이터셋</div>
+                    <div class="card-desc">
+                        100개국 대상 1인당 소득(Income)과 영아사망률(Child Mortality) 횡단면 데이터. 비선형 관계의 역수변환(1/X) 모형 추정 및 점근선 분석
+                    </div>
+                    <div class="card-footer">
+                        <span>데이터 다운로드 →</span>
                     </div>
                 </a>
             </div>
@@ -613,20 +676,23 @@
                 </div>
             </div>
 
-            <!-- 2주차 과제 (예정 슬롯) -->
-            <div class="assignment-row upcoming">
+            <!-- 2주차 과제 및 실습 자료 -->
+            <div class="assignment-row active">
                 <div class="assignment-info">
                     <div class="assignment-header">
-                        <span class="week-badge">2주차 과제</span>
-                        <span class="status-badge status-pending">발표 및 과제 출제 예정</span>
-                        <div class="assignment-title">제2장 과제: 다중선형회귀모형(MLRM) 추정 및 편회귀계수 해석</div>
+                        <span class="week-badge active" style="background: #1e3a8a; color: #ffffff;">2주차 과제/실습</span>
+                        <span class="status-badge" style="background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe;">강의안 및 실습 데이터 3종 등록 완료</span>
+                        <div class="assignment-title">제2장: 다중선형회귀모형(MLRM) 추정, 함수형태 및 이분산성 실습</div>
                     </div>
                     <div class="assignment-desc">
-                        3개 이상의 독립변수를 포함한 실증 데이터 회귀분석, 다른 조건이 일정할 때(ceteris paribus)의 한계효과 해석, 행렬 대수를 이용한 OLS 추정값 도출 실습
+                        임금결정모형(더미변수/연령/교육), 3차 다항식 인구추세모형, 소득-영아사망률 역수함수 모형 실습용 3종 원자료 및 2강 강의안 배포 완료. 편회귀계수 추정 및 비선형 모형 검증 실습 진행 중.
                     </div>
                 </div>
                 <div class="assignment-actions">
-                    <span style="font-size: 0.8rem; color: var(--text-muted); padding: 0.35rem 0.5rem;">자료 등록 대기</span>
+                    <a href="제2강 다중회귀분석.pdf" target="_blank" class="action-btn action-btn-primary" style="background: #1e3a8a; border-color: #1e3a8a;">2강 강의안 (PDF)</a>
+                    <a href="다중회귀분석자료_제2장데이터.xlsx" download class="action-btn action-btn-outline">다중회귀 데이터 (XLSX)</a>
+                    <a href="인구추세연습자료_제2장데이터.xlsx" download class="action-btn action-btn-outline">인구추세 데이터 (XLSX)</a>
+                    <a href="functional_form_practice_data.xlsx" download class="action-btn action-btn-outline">함수형태 데이터 (XLSX)</a>
                 </div>
             </div>
 
