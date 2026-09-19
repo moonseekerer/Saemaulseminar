@@ -36,7 +36,18 @@
             --purple-soft: #faf5ff;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            word-break: keep-all; 
+            overflow-wrap: break-word; 
+        }
 
         body {
             font-family: 'Presentation', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -457,6 +468,43 @@
         @media (max-width: 1320px) {
             .side-nav {
                 display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body { 
+                padding: 1.2rem 0.85rem 2rem; 
+            }
+            .top-nav { 
+                flex-direction: column; 
+                align-items: flex-start; 
+                gap: 0.8rem; 
+                margin-bottom: 1.4rem; 
+            }
+            .top-nav > div { 
+                flex-wrap: wrap; 
+                width: 100%; 
+            }
+            .back-btn { 
+                flex: 1 1 auto; 
+                justify-content: center; 
+                text-align: center; 
+                padding: 0.45rem 0.6rem; 
+                font-size: 0.8rem; 
+            }
+            header { 
+                padding: 1.2rem 1rem; 
+                margin-bottom: 1.4rem; 
+            }
+            h1 { 
+                font-size: 1.45rem; 
+                line-height: 1.35; 
+            }
+            .subtitle { 
+                font-size: 0.9rem; 
+            }
+            .card { 
+                padding: 1.1rem 0.9rem; 
             }
         }
     </style>
