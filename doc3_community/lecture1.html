@@ -25,7 +25,18 @@
             --navy: #1e3a8a;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            word-break: keep-all; 
+            overflow-wrap: break-word; 
+        }
 
         body {
             font-family: 'Presentation', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -37,6 +48,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 1.2rem 0.85rem 2rem; }
+            h1 { font-size: 1.45rem; line-height: 1.35; margin-bottom: 0.6rem; }
+            .header-sub { font-size: 0.9rem; line-height: 1.6; }
+            section { padding: 1.2rem 1rem; }
+            .top-nav { flex-direction: column; align-items: flex-start; gap: 0.5rem; margin-bottom: 1.2rem; }
         }
 
         .container {
@@ -375,7 +394,11 @@
     <div class="container">
         
         <nav class="top-nav">
-            <a href="index.html">← 과목 포털 및 15주차 목차</a>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+                <a href="index.html">← 교과목 포털</a>
+                <a href="lecture2.html" style="color: var(--primary);">2주차 강의안 →</a>
+                <a href="lecture3.html" style="color: var(--primary); font-weight: 700;">3주차 강의안 →</a>
+            </div>
             <span style="color: var(--text-muted);">영남대학교 대학원 새마을국제개발학과 | 지역사회구조연구 (0682-01)</span>
         </nav>
 

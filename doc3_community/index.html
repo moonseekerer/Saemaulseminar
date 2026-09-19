@@ -23,7 +23,18 @@
             --accent: #1e3a8a;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            word-break: keep-all; 
+            overflow-wrap: break-word; 
+        }
 
         body {
             font-family: 'Presentation', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -35,6 +46,15 @@
             flex-direction: column;
             align-items: center;
             line-height: 1.6;
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 1.2rem 0.85rem 2rem; }
+            h1 { font-size: 1.5rem; line-height: 1.35; margin-bottom: 0.6rem; }
+            .course-desc { font-size: 0.92rem; line-height: 1.6; }
+            .top-nav { flex-direction: column; align-items: flex-start; gap: 0.5rem; margin-bottom: 1.2rem; }
+            header { margin-bottom: 1.8rem; padding-bottom: 1.2rem; }
+            section { margin-bottom: 2rem; }
         }
 
         .container {
@@ -263,7 +283,8 @@
                     <span>2주차 강의 음성 녹취록: <a href="transcript_lecture2.html" style="color: var(--navy); font-weight: 700; text-decoration: underline;">실시간 강의 녹취록 전문 열람 (1,024개 발화 세그먼트) →</a></span>
                     <div>
                         <a href="지역사회구조연구개념.hwpx" download style="color: var(--navy); font-weight: 700; margin-right: 0.8rem;">교재 다운로드 (HWPX)</a>
-                        <a href="lecture2.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">2주차 강의노트 &amp; 과제 가이드 보기 →</a>
+                        <a href="lecture2.html" style="color: var(--primary); font-weight: 700; text-decoration: underline; margin-right: 0.8rem;">2주차 강의노트 →</a>
+                        <a href="lecture3.html" style="color: var(--primary); font-weight: 700; text-decoration: underline;">3주차 강의노트 →</a>
                     </div>
                 </div>
             </div>
@@ -272,7 +293,8 @@
         <!-- 15주차 강의 계획 -->
         <section>
             <h2>주별 강의 계획</h2>
-            <table class="week-table">
+            <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%;">
+            <table class="week-table" style="min-width: 580px;">
                 <thead>
                     <tr>
                         <th>주차</th>
@@ -295,7 +317,13 @@
                         </td>
                         <td style="font-size: 0.85rem; color: var(--primary); font-weight: 600;">2강 강의노트 열람 가능</td>
                     </tr>
-                    <tr><td class="week-no">3주차</td><td class="week-title">지역경제 구조와 산업집적, 지역경쟁력</td><td></td></tr>
+                    <tr class="highlight" style="background-color: #fefce8;">
+                        <td class="week-no" style="color: var(--primary);">3주차</td>
+                        <td class="week-title">
+                            <a href="lecture3.html" style="color: var(--primary); font-weight: 700;">인간생태학과 지역의 공간구조: 시카고학파·POET 복합체, 중심지이론 및 공간정의 →</a>
+                        </td>
+                        <td style="font-size: 0.85rem; color: var(--primary); font-weight: 700;">3강 강의노트 열람 가능</td>
+                    </tr>
                     <tr><td class="week-no">4주차</td><td class="week-title">인구감소, 지방소멸 및 지역 불균형 발전</td><td></td></tr>
                     <tr><td class="week-no">5주차</td><td class="week-title">도시와 농촌의 공간구조 및 지역발전 전략</td><td></td></tr>
                     <tr><td class="week-no">6주차</td><td class="week-title">지역혁신체계와 혁신클러스터 정책</td><td></td></tr>
@@ -310,6 +338,7 @@
                     <tr class="highlight"><td class="week-no">15주차</td><td class="week-title">기말고사</td><td style="font-size: 0.85rem;">평가 20%</td></tr>
                 </tbody>
             </table>
+            </div>
         </section>
 
     </div>
