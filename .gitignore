@@ -1,1 +1,5 @@
 chapter8/image/*.pdf
+clipboard.json
+*.log
+*.py
+main.js
